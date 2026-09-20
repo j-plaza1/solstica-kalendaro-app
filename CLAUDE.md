@@ -8,17 +8,21 @@ Requires the .NET 10 SDK. `Directory.Build.props` sets `TreatWarningsAsErrors` a
 `EnforceCodeStyleInBuild` for every project, so a style violation fails the build.
 
 ```bash
-dotnet build                                      # solution
-dotnet test                                       # core library + test suite
-dotnet test --filter FullyQualifiedName~EveryDayRoundTrips    # one test
-dotnet test --filter FullyQualifiedName~SolsticaCalendarTests # one class
+dotnet test tests/SolsticaKalendaro.Core.Tests     # core library + test suite
+dotnet test tests/SolsticaKalendaro.Core.Tests --filter FullyQualifiedName~EveryDayRoundTrips
+dotnet build src/SolsticaKalendaro.App -f net10.0-android -t:Run   # deploy to a device
 ```
 
-CI (`.github/workflows/ci.yml`) runs restore / build / test in Release on push to `main`
-and on PRs. The Android job is commented out until the app project exists.
+Scope build and test commands to a project rather than the solution: a bare
+`dotnet build` drags in the MAUI app, which needs the `maui-android` workload and an
+Android SDK. CI does the same, for the same reason.
 
-The MAUI app project is not in the repository yet; README *Getting started* has the
-`dotnet new maui` commands that create it and wire it to `SolsticaKalendaro.Core`.
+**The Android build fails under a non-ASCII path** with `APT2265` — `aapt2` rejects
+accents and emoji anywhere in the path, and the error names resources, not the path.
+The core library and tests are unaffected.
+
+CI (`.github/workflows/ci.yml`) runs restore / build / test in Release on push to `main`
+and on PRs, scoped to the test project. The Android job is still commented out.
 
 ## The proposal is the source of truth
 
@@ -36,6 +40,13 @@ this repo.
 
 `src/SolsticaKalendaro.Core` is the executable form of the specification and must stay free
 of any MAUI/UI reference so it remains usable from a CLI, web build or test harness.
+
+`src/SolsticaKalendaro.App` is the Android app: one page, no navigation, no view models.
+It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
+from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree
+with the document. Its csproj blanks the `TargetFramework` inherited from
+`Directory.Build.props`, which would otherwise win over `TargetFrameworks` and silently
+build it as plain `net10.0`.
 
 The conversion is built in four layers, each answering one question:
 

@@ -17,16 +17,20 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      # Scoped to the test project, which pulls in the core library. Building the
+      # whole solution would drag in SolsticaKalendaro.App, and this runner has no
+      # MAUI workloads: the Android build belongs in the job below.
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore tests/SolsticaKalendaro.Core.Tests
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build tests/SolsticaKalendaro.Core.Tests --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test tests/SolsticaKalendaro.Core.Tests --no-build --configuration Release --verbosity normal
 
-  # The Android job is deliberately left until the app project exists. It will need
+  # The app project now exists, but the Android job stays off until someone wants CI
+  # artefacts from it. It will need
   # `dotnet workload install maui-android`, a JDK, and the signing key read from
   # secrets — never from the repository. Roughly:
   #

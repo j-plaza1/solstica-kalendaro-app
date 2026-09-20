@@ -122,7 +122,8 @@ public class SolsticaCalendarTests
             for (int o = 1; o <= SolsticaCalendar.DaysInYear(y); o++)
             {
                 var sk = SolsticaCalendar.FromDayOfYear(y, o);
-                Assert.Equal(o, SolsticaCalendar.DayOfYear(sk));
+                Assert.Equal(o, SolsticaCalendar.DayOfYear(sk));   // always checkable
+                if (!Cal.CanConvert(sk)) continue;                 // beyond DateOnly
                 Assert.Equal(sk, Cal.FromGregorian(Cal.ToGregorian(sk)));
             }
     }
@@ -307,6 +308,17 @@ public class SolsticaCalendarTests
     [Fact]
     public void YearsBeyondTheTabulatedWindowAreRejected() =>
         Assert.Throws<ArgumentOutOfRangeException>(() => ValidityPeriod.For(10001));
+
+    [Fact]
+    public void TheWindowEndsWhereDotNetsGregorianCalendarDoes()
+    {
+        Assert.Equal(new DateOnly(9999, 12, 21), Cal.ToGregorian(new SolsticaDate(10000, PeriodKind.Unua, 1)));
+        Assert.Equal(new DateOnly(9999, 12, 31), Cal.ToGregorian(new SolsticaDate(10000, PeriodKind.Unua, 11)));
+        Assert.Equal(new SolsticaDate(10000, PeriodKind.Unua, 11), Cal.FromGregorian(new DateOnly(9999, 12, 31)));
+        Assert.Equal(new SolsticaDate(10000, PeriodKind.Unua, 11), Cal.MaxRepresentable);
+        Assert.False(Cal.CanConvert(new SolsticaDate(10000, PeriodKind.Unua, 12)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Cal.ToGregorian(new SolsticaDate(10000, PeriodKind.Unua, 12)));
+    }
 
     // ---------- naming ----------
 

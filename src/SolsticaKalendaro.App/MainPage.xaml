@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.MainPage"
+             Title="Solstica Kalendaro">
+
+    <VerticalStackLayout Padding="24" Spacing="28">
+
+        <VerticalStackLayout Spacing="2">
+            <Label Text="Solstica Kalendaro" FontSize="14" />
+            <Label x:Name="SolsticaDateLabel" FontSize="28" />
+            <Label x:Name="SolsticaWeekDayLabel" FontSize="16" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Spacing="2">
+            <Label Text="Gregorian" FontSize="14" />
+            <Label x:Name="GregorianDateLabel" FontSize="28" />
+            <Label x:Name="GregorianWeekDayLabel" FontSize="16" />
+        </VerticalStackLayout>
+
+        <Label x:Name="EpochLabel" FontSize="13" />
+
+    </VerticalStackLayout>
+
+</ContentPage>

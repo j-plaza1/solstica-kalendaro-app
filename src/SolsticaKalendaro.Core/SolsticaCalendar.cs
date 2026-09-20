@@ -62,7 +62,12 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
     public DateOnly ToGregorian(SolsticaDate date)
     {
         EnsureInRange(date.Year);
-        return DateOnly.FromDayNumber(Epoch.YearStart(date.Year).DayNumber + DayOfYear(date) - 1);
+        long dayNumber = (long)Epoch.YearStart(date.Year).DayNumber + DayOfYear(date) - 1;
+        if (dayNumber > DateOnly.MaxValue.DayNumber)
+            throw new ArgumentOutOfRangeException(nameof(date),
+                $"{date} falls after {DateOnly.MaxValue:yyyy-MM-dd}, the last date .NET's Gregorian "
+                + $"calendar represents. The last convertible date is {MaxRepresentable}.");
+        return DateOnly.FromDayNumber((int)dayNumber);
     }
 
     public SolsticaDate FromGregorian(DateOnly date)
@@ -80,6 +85,28 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
 
     public bool IsInRange(int solsticaYear) =>
         solsticaYear >= Epoch.FirstSolsticaYear && ValidityPeriod.IsTabulated(solsticaYear);
+
+    /// <summary>
+    /// The last Solstica date this calendar can convert. Solstica year 10000 begins on
+    /// 21 December 9999 and runs into Gregorian year 10000, which DateOnly cannot
+    /// represent, so its last 355 days have no Gregorian counterpart in .NET. The
+    /// boundary moves with the epoch's anchor, which is why this is an instance member.
+    /// </summary>
+    public SolsticaDate MaxRepresentable
+    {
+        get
+        {
+            int last = ValidityPeriod.Table[^1].LastYear;
+            int ordinal = DateOnly.MaxValue.DayNumber - Epoch.YearStart(last).DayNumber + 1;
+            return ordinal >= DaysInYear(last)
+                ? SolsticaDate.Jarfino(last)
+                : FromDayOfYear(last, ordinal);
+        }
+    }
+
+    public bool CanConvert(SolsticaDate date) =>
+        IsInRange(date.Year)
+        && (long)Epoch.YearStart(date.Year).DayNumber + DayOfYear(date) - 1 <= DateOnly.MaxValue.DayNumber;
 
     private void EnsureInRange(int solsticaYear)
     {

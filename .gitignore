@@ -32,7 +32,6 @@ Platforms/Android/Resources/Resource.designer.cs
 *.apk
 *.aab
 *.ipa
-*.app
 *.dSYM/
 
 # ---- Signing material: never commit any of this ----
