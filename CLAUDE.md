@@ -1,0 +1,90 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+Requires the .NET 10 SDK. `Directory.Build.props` sets `TreatWarningsAsErrors` and
+`EnforceCodeStyleInBuild` for every project, so a style violation fails the build.
+
+```bash
+dotnet build                                      # solution
+dotnet test                                       # core library + test suite
+dotnet test --filter FullyQualifiedName~EveryDayRoundTrips    # one test
+dotnet test --filter FullyQualifiedName~SolsticaCalendarTests # one class
+```
+
+CI (`.github/workflows/ci.yml`) runs restore / build / test in Release on push to `main`
+and on PRs. The Android job is commented out until the app project exists.
+
+The MAUI app project is not in the repository yet; README *Getting started* has the
+`dotnet new maui` commands that create it and wire it to `SolsticaKalendaro.Core`.
+
+## The proposal is the source of truth
+
+The calendar is specified in a separate document (Plaza Alonso, J., *Solstica Kalendaro*,
+<https://doi.org/10.5281/zenodo.22129891>). Where code and document disagree, the document
+is right and the code has a bug. Code comments cite the document by section number
+(e.g. "section 9.3"); keep that convention when adding code, and cite the section in any
+bug report or fix about conversion behaviour.
+
+Do not change the calendar's rules here — the numbers in `ValidityPeriod.Table`, the block
+widths and the leap rule are transcriptions of the document, not design decisions open in
+this repo.
+
+## Architecture
+
+`src/SolsticaKalendaro.Core` is the executable form of the specification and must stay free
+of any MAUI/UI reference so it remains usable from a CLI, web build or test harness.
+
+The conversion is built in four layers, each answering one question:
+
+- **`SolsticaEpoch`** — *which Gregorian date is 1 Unua?* One choice fixes the whole mapping
+  forever, because both calendars use the 4/100/400 rule with the same year numbering.
+  Defaults to `Expository2026` (21 Dec 2026 = 1 Unua 2027); `AdoptionWindows` holds the
+  section 7.6 candidates. The 2031 adoption window (1 Unua 2032) anchors on 22 December (`IsOffAnchor`), which
+  shifts its correspondence permanently one day — surface that in any epoch picker.
+- **`ValidityPeriod`** — *what are the rules in this year?* Eleven rows covering 2000–10000
+  (section 9.3), each carrying a `SeasonAllocation`, a `BlockWidths` arrangement and the
+  `SupertagoSeam`. Resolved by year via `ValidityPeriod.For`. Outside the table, conversion
+  throws.
+- **`YearLayout`** — *where does each block sit?* Start ordinal and length per block for a
+  given `BlockWidths`, cached per arrangement. Ordinals here are **common-year ordinals**:
+  the Supertago is not accounted for at this layer.
+- **`SolsticaCalendar`** — the conversion itself, plus `WeekDay`, `SeasonOf`, `YearFraction`.
+
+All arithmetic goes through `DateOnly.DayNumber` (exact integer day counts). Never introduce
+a floating-point Julian Day: exactness is a property the tests rely on.
+
+### Invariants that are easy to break
+
+- **Common-year ordinal vs. day-of-year.** `YearLayout.CommonOrdinal` / `FromCommonOrdinal`
+  ignore the Supertago; `SolsticaCalendar.DayOfYear` / `FromDayOfYear` insert it. Mixing the
+  two silently shifts leap-year dates by one day.
+- **Period-awareness is narrow.** Recalibration is *semantic*: it moves no date in a common
+  year (section 9.4). Only the block arrangement (one change, in 3324) affects common years;
+  the `SupertagoSeam` affects leap years only, and only the days between the old and new seams.
+- **Extra-weekly days pause the seven-day cycle**, they do not belong to it. `WeekDay` returns
+  `null` for Jarfino and Supertago, and the Solstica weekday diverges from the Gregorian
+  weekday of the same physical day after the first Jarfino. That divergence is the design's
+  trade-off, not a defect — the app shows and labels both.
+- **Every block starts on a Monday**, in every period, because every block length is a
+  multiple of seven. `BlockWidths.IsWellFormed` and the tests enforce this.
+- **Derive, don't tabulate.** The Rekomenco is computed from its astronomical rule
+  (`RekomencoCommonOrdinal`) rather than hard-coded, so it follows the period. Prefer the same
+  approach for anything else the document defines by rule.
+
+### Tests
+
+`tests/SolsticaKalendaro.Core.Tests/SolsticaCalendarTests.cs` (xunit) is a property suite over
+the whole tabulated window, not a handful of examples: every day round-trips, consecutive
+Gregorian days map to consecutive Solstica days, every block starts on a Monday in every
+period, the table tiles 2000–10000 without gap or overlap. New conversion code should be
+covered the same way — assert the invariant across all periods rather than spot-checking dates.
+
+## Naming
+
+Domain names come from the proposal and are Esperanto (`Unua`, `Jarmezo`, `Supertago`,
+`Ekvinokso I`, `Naŭa`). `.editorconfig` disables CA1707 so the analyser will not "fix" them.
+Keep the document's names; `PeriodKindExtensions.Name()` handles the display spellings
+(`Naŭa`, `Dek-unua`, `Ekvinokso I`).
