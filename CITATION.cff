@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: Solstica Kalendaro
+message: >-
+  If you use this software, please cite the proposal document it implements.
+type: software
+authors:
+  - family-names: Plaza Alonso
+    given-names: Javier
+    orcid: https://orcid.org/0009-0009-3908-3759
+abstract: >-
+  Android application showing the Gregorian calendar and the Solstica Kalendaro
+  side by side, with a bidirectional date converter and the seasonal structure
+  of the proposed calendar.
+license: MIT
+references:
+  - type: report
+    title: >-
+      Solstica Kalendaro: a proposal for a regular, solstice-anchored calendar
+      faithful to the real lengths of the seasons
+    authors:
+      - family-names: Plaza Alonso
+        given-names: Javier
+        orcid: https://orcid.org/0009-0009-3908-3759
+    doi: 10.5281/zenodo.22129891
+    license: CC-BY-4.0

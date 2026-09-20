@@ -1,0 +1,26 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{json,yml,yaml,xml,csproj,props,targets,cff}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+# File-scoped namespaces and modern C#
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+dotnet_style_prefer_collection_expression = true:suggestion
+dotnet_sort_system_directives_first = true
+
+# The domain uses names from the proposal. Do not let the analyser "fix" them.
+dotnet_diagnostic.CA1707.severity = none

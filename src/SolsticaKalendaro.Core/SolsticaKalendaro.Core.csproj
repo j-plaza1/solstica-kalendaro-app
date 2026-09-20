@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>SolsticaKalendaro.Core</RootNamespace>
+    <Description>Reference implementation of the Solstica Kalendaro conversion. No UI dependencies.</Description>
+  </PropertyGroup>
+</Project>

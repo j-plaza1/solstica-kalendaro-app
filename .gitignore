@@ -1,0 +1,53 @@
+# ---- .NET build output ----
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.binlog
+
+# ---- Rider / Visual Studio / VS Code ----
+.vs/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.DotSettings.user
+
+# ---- Test and coverage ----
+[Tt]est[Rr]esult*/
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.trx
+
+# ---- .NET MAUI / Android / iOS ----
+*.binlog
+Resources/raw/generated/
+Platforms/Android/Resources/Resource.designer.cs
+*.apk
+*.aab
+*.ipa
+*.app
+*.dSYM/
+
+# ---- Signing material: never commit any of this ----
+# The Android release key lives in a GitHub Actions secret, not in the repository.
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.mobileprovision
+*.cer
+keystore.properties
+secrets.json
+local.properties
+
+# ---- OS noise ----
+.DS_Store
+Thumbs.db
+desktop.ini
