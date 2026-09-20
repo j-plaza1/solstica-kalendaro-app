@@ -35,11 +35,9 @@ the same physical day after the first *Jarfino*. The app shows both and labels t
 
 ```
 src/SolsticaKalendaro.Core        conversion library — no UI dependencies
+src/SolsticaKalendaro.App         the Android app: .NET MAUI, one page
 tests/SolsticaKalendaro.Core.Tests
 ```
-
-The MAUI app project is not here yet. It gets generated with `dotnet new maui` and added
-to the solution; see *Getting started* below.
 
 `SolsticaKalendaro.Core` is deliberately free of any MAUI reference. It is the executable
 form of the specification, and it should stay usable from a CLI, a web build or a test
@@ -69,16 +67,20 @@ was. It is the only such change in the whole tabulated window.
 Requires the .NET 10 SDK.
 
 ```bash
-dotnet test                       # the core library and its test suite
+dotnet test tests/SolsticaKalendaro.Core.Tests    # the core library and its test suite
 ```
 
-To add the app project:
+The app targets Android only for now, and needs the MAUI Android workload:
 
 ```bash
-dotnet new maui -n SolsticaKalendaro.App -o src/SolsticaKalendaro.App
-dotnet sln add src/SolsticaKalendaro.App
-dotnet add src/SolsticaKalendaro.App reference src/SolsticaKalendaro.Core
+dotnet workload install maui-android
+dotnet build src/SolsticaKalendaro.App -f net10.0-android -t:Run   # deploy to a running device
 ```
+
+**Clone to a path with no non-ASCII characters.** Android's `aapt2` refuses to compile
+resources under one and fails with `APT2265`, which reads as a resource error rather than
+a path error. Accents, emoji and the like in any parent folder are enough. The core
+library and its tests do not care; only the Android build does.
 
 ## Contributing
 
