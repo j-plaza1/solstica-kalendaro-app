@@ -314,6 +314,7 @@ public class SolsticaCalendarTests
     {
         Assert.Equal(new DateOnly(9999, 12, 21), Cal.ToGregorian(new SolsticaDate(10000, PeriodKind.Unua, 1)));
         Assert.Equal(new DateOnly(9999, 12, 31), Cal.ToGregorian(new SolsticaDate(10000, PeriodKind.Unua, 11)));
+        Assert.Equal(new SolsticaDate(10000, PeriodKind.Unua, 11), Cal.FromGregorian(new DateOnly(9999, 12, 31)));
         Assert.Equal(new SolsticaDate(10000, PeriodKind.Unua, 11), Cal.MaxRepresentable);
         Assert.False(Cal.CanConvert(new SolsticaDate(10000, PeriodKind.Unua, 12)));
         Assert.Throws<ArgumentOutOfRangeException>(() => Cal.ToGregorian(new SolsticaDate(10000, PeriodKind.Unua, 12)));
