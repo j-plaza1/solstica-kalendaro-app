@@ -1,5 +1,14 @@
 <Project>
   <!-- Shared across every project: bump the framework or language version here only. -->
+  <!--
+    TargetFramework is singular on purpose: it suits the non-UI projects, which are
+    all of them but the app. A multi-targeting project cannot simply declare
+    TargetFrameworks and expect it to take effect: MSBuild honours the singular
+    property when it is set, and the plural one is then ignored, so the project
+    builds as plain net10.0 with no error and no warning. Such a project must blank
+    it in its own csproj: <TargetFramework></TargetFramework>. See
+    src/SolsticaKalendaro.App/SolsticaKalendaro.App.csproj.
+  -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>

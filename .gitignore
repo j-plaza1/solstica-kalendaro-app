@@ -32,11 +32,6 @@ Platforms/Android/Resources/Resource.designer.cs
 *.apk
 *.aab
 *.ipa
-*.app
-# ...but not the app project, whose folder name also ends in ".app". Git matches
-# ignore patterns case-insensitively here, so *.app swallows SolsticaKalendaro.App
-# and every file under it.
-!src/SolsticaKalendaro.App/
 *.dSYM/
 
 # ---- Signing material: never commit any of this ----
