@@ -87,6 +87,12 @@ a floating-point Julian Day: exactness is a property the tests rely on.
 - **Period-awareness is narrow.** Recalibration is *semantic*: it moves no date in a common
   year (section 9.4). Only the block arrangement (one change, in 3324) affects common years;
   the `SupertagoSeam` affects leap years only, and only the days between the old and new seams.
+- **Two dates, two different facts.** From the 7722 period the integer allocation of §9.3
+  saturates: s1 = 91 = 84 + w1, so the 0° season boundary sits on the Ekvinokso I's closing
+  seam rather than inside it. `ContainmentEndsYear` = 8537 is when the astronomical 0°
+  point itself leaves the block (§9.6). Between them the real equinox still falls inside the
+  Ekvinokso I; only the rounding to whole days puts the boundary on the edge. Neither is a
+  bug, and neither should be "reconciled" in code.
 - **Extra-weekly days pause the seven-day cycle**, they do not belong to it. `WeekDay` returns
   `null` for Jarfino and Supertago, and the Solstica weekday diverges from the Gregorian
   weekday of the same physical day after the first Jarfino. That divergence is the design's
