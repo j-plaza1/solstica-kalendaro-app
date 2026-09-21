@@ -153,4 +153,62 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
     /// <summary>Position within the year in [0, 1). Drives the seasonal position bar.</summary>
     public static double YearFraction(SolsticaDate date) =>
         (DayOfYear(date) - 1) / (double)DaysInYear(date.Year);
+
+    // ---------- outline ----------
+
+    /// <summary>
+    /// The whole year as the rows an interface paints from top to bottom: a header opening
+    /// each month and each transition block, the weeks of that block, and the extra-weekly
+    /// days at the ordinal where they fall.
+    ///
+    /// Rows are in ordinal order. The Supertago sits where its validity period puts it
+    /// rather than always inside the Jarmezo: between the Tria and the Ekvinokso I in
+    /// 3151-3323, for instance (section 9.3). Like the Jarfino, which closes the year, it
+    /// opens no section: both stand outside the seven-day cycle, and the block they
+    /// interrupt resumes after them.
+    ///
+    /// This is an instance member because a day's Gregorian date depends on the epoch.
+    /// </summary>
+    public IReadOnlyList<OutlineRow> Outline(int year)
+    {
+        EnsureInRange(year);
+
+        var rows = new List<OutlineRow>();
+        var week = new List<OutlineDay>(7);
+        PeriodKind? section = null;
+
+        for (int ordinal = 1; ordinal <= DaysInYear(year); ordinal++)
+        {
+            var date = FromDayOfYear(year, ordinal);
+
+            if (date.Period.IsExtraWeekly())
+            {
+                rows.Add(new ExtraWeeklyRow(Describe(date)));
+                continue;
+            }
+
+            if (section != date.Period)
+            {
+                section = date.Period;
+                rows.Add(new SectionHeader(date.Period));
+            }
+
+            week.Add(Describe(date));
+
+            // Every block is a whole number of weeks, so this never closes across a seam.
+            if (week.Count == 7)
+            {
+                rows.Add(new WeekRow(date.Period, [.. week]));
+                week.Clear();
+            }
+        }
+
+        return rows;
+    }
+
+    private OutlineDay Describe(SolsticaDate date) => new(
+        date,
+        CanConvert(date) ? ToGregorian(date) : null,
+        SeasonOf(date),
+        date.IsFestivity);
 }
