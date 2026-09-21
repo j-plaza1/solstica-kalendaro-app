@@ -1,4 +1,4 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<?xml version = "1.0" encoding = "UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:SolsticaKalendaro.App"
@@ -9,6 +9,22 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- The four seasons. Numbered, never named after a hemisphere (section 8.1). -->
+            <Color x:Key="SeasonFirst">#4A6FA5</Color>
+            <Color x:Key="SeasonSecond">#4F7A4A</Color>
+            <Color x:Key="SeasonThird">#C1762E</Color>
+            <Color x:Key="SeasonFourth">#B05A78</Color>
+
+            <Color x:Key="Paper">#FAF7F0</Color>
+            <Color x:Key="Ink">#1C1A17</Color>
+            <Color x:Key="Muted">#6B6459</Color>
+            <Color x:Key="Faint">#837A6C</Color>
+            <Color x:Key="Hairline">#E3DCCE</Color>
+            <Color x:Key="CellEdge">#EDE7DA</Color>
+            <Color x:Key="Highlight">#F1E9DA</Color>
+            <Color x:Key="Accent">#A8543C</Color>
+            <Color x:Key="Rule">#C9C0B0</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
