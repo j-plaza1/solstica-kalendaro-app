@@ -281,6 +281,58 @@ public class SolsticaCalendarTests
         }
     }
 
+    // ---------- cardinal points ----------
+
+    [Fact]
+    public void OnlyTheTransitionBlocksCarryACardinalPoint()
+    {
+        Assert.Equal(0, PeriodKind.EkvinoksoI.CardinalLongitude());
+        Assert.Equal(90, PeriodKind.Jarmezo.CardinalLongitude());
+        Assert.Equal(180, PeriodKind.EkvinoksoII.CardinalLongitude());
+
+        foreach (var p in Enum.GetValues<PeriodKind>().Where(p => !p.IsTransitionBlock()))
+            Assert.Null(p.CardinalLongitude());
+    }
+
+    [Fact]
+    public void EveryTransitionBlockEitherHoldsItsCardinalPointOrClosesOnIt()
+    {
+        // The association is to the point the block is built for, and it holds in every
+        // period: the boundary is inside the block, or exactly at the seam that closes it.
+        foreach (var period in ValidityPeriod.Table)
+            foreach (var block in YearLayout.Sequence.Where(b => b.IsTransitionBlock()))
+            {
+                var season = Enum.GetValues<Season>()
+                    .Single(s => s.OpeningLongitude() == block.CardinalLongitude());
+
+                int start = period.Layout.Start(block);
+                int closingSeam = start + period.Layout.Length(block);
+                Assert.InRange(OpeningOrdinal(period, season), start, closingSeam);
+            }
+    }
+
+    [Fact]
+    public void FromThe7722PeriodTheZeroDegreeBoundaryClosesTheEkvinoksoIInsteadOfFallingInside()
+    {
+        // Section 9.6, written down rather than left to be rediscovered: s1 reaches 91 in
+        // the last three periods, so 0° stops being contained by the block built for it.
+        foreach (var period in ValidityPeriod.Table)
+        {
+            int opening = OpeningOrdinal(period, Season.Second);
+            int closingSeam = period.Layout.Start(PeriodKind.EkvinoksoI)
+                            + period.Layout.Length(PeriodKind.EkvinoksoI);
+
+            if (period.FirstYear >= 7722)
+                Assert.Equal(closingSeam, opening);
+            else
+                Assert.InRange(opening, period.Layout.Start(PeriodKind.EkvinoksoI), closingSeam - 1);
+        }
+    }
+
+    /// <summary>Common-year ordinal on which the season opens.</summary>
+    private static int OpeningOrdinal(ValidityPeriod period, Season season) =>
+        Enum.GetValues<Season>().Where(s => s < season).Sum(s => period.Allocation[s]) + 1;
+
     // ---------- epoch ----------
 
     [Fact]
