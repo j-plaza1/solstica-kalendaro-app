@@ -183,7 +183,7 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
 
             if (date.Period.IsExtraWeekly())
             {
-                rows.Add(new ExtraWeeklyRow(date));
+                rows.Add(new ExtraWeeklyRow(Describe(date)));
                 continue;
             }
 
@@ -193,11 +193,7 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
                 rows.Add(new SectionHeader(date.Period));
             }
 
-            week.Add(new OutlineDay(
-                date,
-                CanConvert(date) ? ToGregorian(date) : null,
-                SeasonOf(date),
-                date.IsFestivity));
+            week.Add(Describe(date));
 
             // Every block is a whole number of weeks, so this never closes across a seam.
             if (week.Count == 7)
@@ -209,4 +205,10 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
 
         return rows;
     }
+
+    private OutlineDay Describe(SolsticaDate date) => new(
+        date,
+        CanConvert(date) ? ToGregorian(date) : null,
+        SeasonOf(date),
+        date.IsFestivity);
 }

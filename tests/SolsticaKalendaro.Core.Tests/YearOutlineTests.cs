@@ -72,7 +72,7 @@ public class YearOutlineTests
     public void TheJarfinoClosesTheYear(int year)
     {
         var last = Assert.IsType<ExtraWeeklyRow>(Cal.Outline(year)[^1]);
-        Assert.Equal(SolsticaDate.Jarfino(year), last.Date);
+        Assert.Equal(SolsticaDate.Jarfino(year), last.Day.Date);
     }
 
     // ---------- the Supertago sits where its period puts it ----------
@@ -95,7 +95,43 @@ public class YearOutlineTests
             // And the block it interrupts is the one the period's layout says it interrupts.
             var (block, _) = period.Layout.FromCommonOrdinal(period.SupertagoSeam);
             Assert.Equal(block, before.Block);
+
+            // The seam is a block boundary in nine of the eleven periods, and mid-block in
+            // the other two, so what follows the Supertago is not always the same kind of
+            // row. Let the period's layout say which it should be.
+            var (after, _) = period.Layout.FromCommonOrdinal(period.SupertagoSeam + 1);
+            if (after == block)
+                Assert.Equal(block, Assert.IsType<WeekRow>(rows[at + 1]).Block);
+            else
+                Assert.Equal(after, Assert.IsType<SectionHeader>(rows[at + 1]).Block);
         }
+    }
+
+    [Fact]
+    public void TheSupertagoCarriesItsOwnGregorianDateAndSeason()
+    {
+        // A whole day, not just a name: the band is drawn with a Gregorian date on it, and
+        // the seasonal stripe runs through it. In the current period it falls inside the
+        // Jarmezo, in the third season, immediately after 7 Jarmezo.
+        var rows = Cal.Outline(2028);
+        var supertago = Assert.IsType<ExtraWeeklyRow>(rows[SupertagoAt(rows)]).Day;
+
+        Assert.Equal(Season.Third, supertago.Season);
+        Assert.Equal(
+            Cal.ToGregorian(new SolsticaDate(2028, PeriodKind.Jarmezo, 7)).AddDays(1),
+            supertago.Gregorian);
+        Assert.True(supertago.IsFestivity);
+    }
+
+    [Theory]
+    [MemberData(nameof(SampleYears))]
+    public void TheJarfinoCarriesItsOwnDayToo(int year)
+    {
+        var jarfino = Assert.IsType<ExtraWeeklyRow>(Cal.Outline(year)[^1]).Day;
+
+        Assert.Equal(Season.Fourth, jarfino.Season);
+        Assert.True(jarfino.IsFestivity);
+        Assert.Equal(Cal.CanConvert(jarfino.Date) ? Cal.ToGregorian(jarfino.Date) : null, jarfino.Gregorian);
     }
 
     [Fact]
@@ -172,14 +208,14 @@ public class YearOutlineTests
         rows.SelectMany(r => r switch
         {
             WeekRow w => w.Days.Select(d => d.Date),
-            ExtraWeeklyRow e => new[] { e.Date },
+            ExtraWeeklyRow e => new[] { e.Day.Date },
             _ => []
         });
 
     private static int SupertagoAt(IReadOnlyList<OutlineRow> rows)
     {
         for (int i = 0; i < rows.Count; i++)
-            if (rows[i] is ExtraWeeklyRow { Date.Period: PeriodKind.Supertago }) return i;
+            if (rows[i] is ExtraWeeklyRow { Day.Date.Period: PeriodKind.Supertago }) return i;
         return -1;
     }
 

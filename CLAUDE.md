@@ -64,6 +64,18 @@ The conversion is built in four layers, each answering one question:
   the Supertago is not accounted for at this layer.
 - **`SolsticaCalendar`** — the conversion itself, plus `WeekDay`, `SeasonOf`, `YearFraction`.
 
+`YearOutline.cs` sits on top of those four. `SolsticaCalendar.Outline(year)` returns a year
+as the rows an interface paints from top to bottom: a `SectionHeader` per month and
+transition block, `WeekRow`s of seven days Monday to Sunday, and an `ExtraWeeklyRow` for the
+Jarfino and the Supertago — which open no section, and whose position comes from the
+validity period. Every row carries whole `OutlineDay`s: the Gregorian date (null where
+`CanConvert` says there is none), the season, and whether the day is a festivity, so the UI
+never has to ask the calendar a second question.
+
+**No formatting belongs in the outline.** When to repeat the Gregorian month, how to name a
+weekday, what to abbreviate: that depends on the culture and on the space available, and it
+stays in the interface.
+
 All arithmetic goes through `DateOnly.DayNumber` (exact integer day counts). Never introduce
 a floating-point Julian Day: exactness is a property the tests rely on.
 

@@ -26,11 +26,12 @@ public sealed record WeekRow(PeriodKind Block, IReadOnlyList<OutlineDay> Days) :
 /// <summary>
 /// A Jarfino or a Supertago. These pause the seven-day cycle rather than belonging to it,
 /// so they stand on their own rather than inside a <see cref="WeekRow"/>, and they have no
-/// weekday to align under.
+/// weekday to align under. The day is carried whole: the band such a row is drawn as still
+/// shows a Gregorian date, and the seasonal stripe still changes across it.
 /// </summary>
-public sealed record ExtraWeeklyRow(SolsticaDate Date) : OutlineRow;
+public sealed record ExtraWeeklyRow(OutlineDay Day) : OutlineRow;
 
-/// <summary>One day of a <see cref="WeekRow"/>.</summary>
+/// <summary>One day of the outline.</summary>
 /// <param name="Gregorian">
 /// Null where the day has no Gregorian counterpart .NET can represent. Solstica year 10000
 /// runs past <see cref="DateOnly.MaxValue"/>, so its last days convert to nothing; see
