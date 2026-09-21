@@ -41,6 +41,21 @@ public static class PeriodKindExtensions
     public static bool IsTransitionBlock(this PeriodKind p) => p is
         PeriodKind.EkvinoksoI or PeriodKind.Jarmezo or PeriodKind.EkvinoksoII;
 
+    /// <summary>
+    /// The cardinal point this transition block is built to hold (sections 4.4 and 4.5):
+    /// 0° for Ekvinokso I, 90° for Jarmezo, 180° for Ekvinokso II. Null for months and the
+    /// extra-weekly days. This is the block's design association, not a containment
+    /// guarantee: from the 7722 period the 0° boundary falls on the Ekvinokso I's closing
+    /// seam rather than inside it (section 9.6).
+    /// </summary>
+    public static int? CardinalLongitude(this PeriodKind p) => p switch
+    {
+        PeriodKind.EkvinoksoI => 0,
+        PeriodKind.Jarmezo => 90,
+        PeriodKind.EkvinoksoII => 180,
+        _ => null
+    };
+
     /// <summary>Extra-weekly days stand outside the seven-day cycle and have no weekday.</summary>
     public static bool IsExtraWeekly(this PeriodKind p) =>
         p is PeriodKind.Jarfino or PeriodKind.Supertago;
