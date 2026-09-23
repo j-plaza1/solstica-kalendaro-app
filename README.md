@@ -82,6 +82,14 @@ resources under one and fails with `APT2265`, which reads as a resource error ra
 a path error. Accents, emoji and the like in any parent folder are enough. The core
 library and its tests do not care; only the Android build does.
 
+## Typefaces
+
+The app sets its display type in **Spectral** and everything else in **IBM Plex Sans**,
+both under the SIL Open Font License 1.1. The faces live in
+`src/SolsticaKalendaro.App/Resources/Fonts` with each family's licence beside them, and
+each weight is registered under its own alias: MAUI's `FontAttributes` knows only Bold, so
+a SemiBold or Medium face has to be named directly.
+
 ## Contributing
 
 Bug reports about the *calendar* — a date that converts wrongly, a weekday that does not

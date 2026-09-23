@@ -11,9 +11,9 @@
             <HorizontalStackLayout Padding="20,15,20,7" Spacing="8">
                 <BoxView Color="{Binding Dot}" WidthRequest="7" HeightRequest="7"
                          CornerRadius="3.5" VerticalOptions="Center" />
-                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
+                <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="16"
                        TextColor="{StaticResource Ink}" VerticalOptions="Center" />
-                <Label Text="{Binding Label}" FontSize="11"
+                <Label Text="{Binding Label}" FontFamily="Plex" FontSize="11"
                        TextColor="{StaticResource Muted}" VerticalOptions="Center" />
             </HorizontalStackLayout>
         </DataTemplate>
@@ -31,17 +31,17 @@
                             </Grid.Triggers>
 
                             <VerticalStackLayout VerticalOptions="Center" Spacing="2">
-                                <Label Text="{Binding Number}" FontSize="19" HorizontalOptions="Center"
-                                       TextColor="{StaticResource Ink}">
+                                <Label Text="{Binding Number}" FontFamily="Plex" FontSize="19"
+                                       HorizontalOptions="Center" TextColor="{StaticResource Ink}">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsToday}" Value="True">
                                             <Setter Property="TextColor" Value="{StaticResource Accent}" />
-                                            <Setter Property="FontAttributes" Value="Bold" />
+                                            <Setter Property="FontFamily" Value="PlexSemiBold" />
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <Label Text="{Binding Gregorian}" FontSize="10" HorizontalOptions="Center"
-                                       TextColor="{StaticResource Faint}" />
+                                <Label Text="{Binding Gregorian}" FontFamily="Plex" FontSize="10"
+                                       HorizontalOptions="Center" TextColor="{StaticResource Faint}" />
                             </VerticalStackLayout>
 
                             <!-- The season of the day, at its foot. It can change mid-row. -->
@@ -63,12 +63,12 @@
                 <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
                       BackgroundColor="{StaticResource Highlight}">
                     <VerticalStackLayout Spacing="3">
-                        <Label Text="{Binding Name}" FontSize="17" FontAttributes="Bold"
+                        <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="17"
                                TextColor="{StaticResource Accent}" />
-                        <Label Text="Fora del cicle setmanal" FontSize="11"
+                        <Label Text="Fora del cicle setmanal" FontFamily="Plex" FontSize="11"
                                TextColor="{StaticResource Muted}" />
                     </VerticalStackLayout>
-                    <Label Grid.Column="1" Text="{Binding Gregorian}" FontSize="12.5"
+                    <Label Grid.Column="1" Text="{Binding Gregorian}" FontFamily="Plex" FontSize="12.5"
                            TextColor="{StaticResource Ink}" VerticalOptions="Center" />
                 </Grid>
                 <BoxView Grid.Column="2" Color="{Binding Season}" />
@@ -85,15 +85,17 @@
 
         <VerticalStackLayout Grid.Row="0" Padding="20,44,20,12" Spacing="2">
             <Grid ColumnDefinitions="*,Auto">
-                <Label x:Name="YearLabel" FontSize="27" FontAttributes="Bold"
+                <Label x:Name="YearLabel" FontFamily="SpectralSemiBold" FontSize="27"
                        TextColor="{StaticResource Ink}" VerticalOptions="End" />
                 <Button x:Name="TodayButton" Grid.Column="1" Text="Avui" Clicked="OnTodayClicked"
                         SemanticProperties.Hint="Va a la data d&apos;avui"
-                        FontSize="12" MinimumHeightRequest="44" Padding="16,9" CornerRadius="22"
+                        FontFamily="PlexMedium" FontSize="12"
+                        MinimumHeightRequest="44" Padding="16,9" CornerRadius="22"
                         BorderWidth="1" BorderColor="{StaticResource Rule}"
                         BackgroundColor="Transparent" TextColor="{StaticResource Muted}" />
             </Grid>
-            <Label x:Name="SubtitleLabel" FontSize="12" TextColor="{StaticResource Muted}" />
+            <Label x:Name="SubtitleLabel" FontFamily="Plex" FontSize="12"
+                   TextColor="{StaticResource Muted}" />
         </VerticalStackLayout>
 
         <!-- The Solstica week, which is not the Gregorian one: it pauses at the extra-weekly days. -->

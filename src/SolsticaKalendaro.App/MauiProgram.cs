@@ -11,8 +11,13 @@ public static class MauiProgram
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+				// One alias per weight: FontAttributes only knows Bold, so a page that wants
+				// SemiBold or Medium has to name the face itself.
+				fonts.AddFont("Spectral-Regular.ttf", "Spectral");
+				fonts.AddFont("Spectral-SemiBold.ttf", "SpectralSemiBold");
+				fonts.AddFont("IBMPlexSans-Regular.ttf", "Plex");
+				fonts.AddFont("IBMPlexSans-Medium.ttf", "PlexMedium");
+				fonts.AddFont("IBMPlexSans-SemiBold.ttf", "PlexSemiBold");
 			});
 
 #if DEBUG
