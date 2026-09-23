@@ -7,8 +7,11 @@
 
     <ContentPage.Resources>
 
+        <!-- Each template declares a fixed height. Rows that never change size make
+             scrolling by index exact, which is what going to today depends on. -->
+
         <DataTemplate x:Key="SectionTemplate">
-            <HorizontalStackLayout Padding="20,15,20,7" Spacing="8">
+            <HorizontalStackLayout Padding="20,15,20,7" Spacing="8" HeightRequest="44">
                 <BoxView Color="{Binding Dot}" WidthRequest="7" HeightRequest="7"
                          CornerRadius="3.5" VerticalOptions="Center" />
                 <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="16"
@@ -19,7 +22,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="WeekTemplate">
-            <Grid Padding="12,0" ColumnDefinitions="*,*,*,*,*,*,*"
+            <Grid Padding="12,0" ColumnDefinitions="*,*,*,*,*,*,*" HeightRequest="58"
                   BindableLayout.ItemsSource="{Binding Days}">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
@@ -58,7 +61,7 @@
         <!-- Extra-weekly days are not cells: they cross all seven columns, because that is
              what they are. Outside the week, between the blocks. -->
         <DataTemplate x:Key="BandTemplate">
-            <Grid Margin="12,6" ColumnDefinitions="4,*,4">
+            <Grid Margin="12,6" ColumnDefinitions="4,*,4" HeightRequest="66">
                 <BoxView Color="{Binding Season}" />
                 <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
                       BackgroundColor="{StaticResource Highlight}">
