@@ -71,6 +71,7 @@ public partial class MainPage : ContentPage
         {
             var day = (DayOfWeek)(((int)DayOfWeek.Monday + i) % 7);
             slots[i].Text = names[(int)day].TrimEnd('.').ToUpper(YearView.Culture);
+            slots[i].FontFamily = "PlexSemiBold";
             slots[i].FontSize = 10.5;
             slots[i].CharacterSpacing = 0.6;
             slots[i].HorizontalTextAlignment = TextAlignment.Center;
