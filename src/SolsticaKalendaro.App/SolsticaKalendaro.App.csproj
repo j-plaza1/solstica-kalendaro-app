@@ -35,12 +35,13 @@
 		     changing it later makes a different app rather than an update. -->
 		<ApplicationId>io.github.j_plaza1.solsticakalendaro</ApplicationId>
 
-		<!-- Versions. The release workflow derives both from the tag: vX.Y.Z gives the
-		     display version X.Y.Z and the internal number X*10000 + Y*100 + Z, which only
-		     ever grows and can be worked out again from the tag alone. What is written here
-		     is what the next tag is expected to be, and what a rehearsal build produces. -->
-		<ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>100</ApplicationVersion>
+		<!-- Versions. A release tag is vN.M.O.P: N.M is the version of the proposal
+		     document, held in the core as SpecificationVersion, and O.P is the app's own.
+		     The internal number is N*1000000 + M*10000 + O*100 + P, so no component may
+		     exceed 99. The release workflow sets both from the tag; what stands here is the
+		     N.M.0.0 of a build that is not a release, which is what a local build is. -->
+		<ApplicationDisplayVersion>2.1.0.0</ApplicationDisplayVersion>
+		<ApplicationVersion>2010000</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>

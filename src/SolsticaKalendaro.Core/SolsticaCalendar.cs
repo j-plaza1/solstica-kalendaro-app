@@ -14,6 +14,16 @@ namespace SolsticaKalendaro.Core;
 /// </summary>
 public sealed class SolsticaCalendar(SolsticaEpoch epoch)
 {
+    /// <summary>
+    /// The version of the proposal document this code implements, as major.minor. It is the
+    /// first half of a release tag: an app version says what it is against a given version of
+    /// the document, and the release workflow refuses a tag that disagrees with this.
+    ///
+    /// Raise it when the document is revised and this code is brought in line with it, in the
+    /// same change. It is not a version of the library.
+    /// </summary>
+    public const string SpecificationVersion = "2.1";
+
     public SolsticaEpoch Epoch { get; } = epoch;
 
     public static bool IsLeapYear(int year) =>
