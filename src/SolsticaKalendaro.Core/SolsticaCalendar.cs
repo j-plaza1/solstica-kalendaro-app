@@ -154,6 +154,150 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
     public static double YearFraction(SolsticaDate date) =>
         (DayOfYear(date) - 1) / (double)DaysInYear(date.Year);
 
+    // ---------- one day in full ----------
+
+    /// <summary>
+    /// Everything true of a single day: where it sits in the year and in its season, what both
+    /// calendars call its weekday, and the extra-weekly days on either side of it that explain
+    /// why those two weekdays differ.
+    /// </summary>
+    public DayDetail Describe(SolsticaDate date)
+    {
+        EnsureInRange(date.Year);
+        var period = ValidityPeriod.For(date.Year);
+        var season = SeasonOf(date);
+        var gregorian = CanConvert(date) ? ToGregorian(date) : (DateOnly?)null;
+
+        return new DayDetail(
+            date,
+            gregorian,
+            WeekDay(date),
+            gregorian?.DayOfWeek,
+            DayOfYear(date),
+            DaysInYear(date.Year),
+            season,
+            DayOfYear(date) - SeasonStart(period, season, date.Year) + 1,
+            period.SeasonLength(season, date.Year),
+            period,
+            ShiftBefore(date),
+            ShiftAfter(date));
+    }
+
+    /// <summary>
+    /// Day of the year the season opens on. The Supertago can be that day: it is assigned to the
+    /// deficient season, and where that season begins at the seam, the intercalated day arrives
+    /// before the season's first ordinary day rather than after it.
+    /// </summary>
+    private static int SeasonStart(ValidityPeriod period, Season season, int year)
+    {
+        int common = 1;
+        foreach (var s in Enum.GetValues<Season>())
+        {
+            if (s == season) break;
+            common += period.Allocation[s];
+        }
+
+        if (!IsLeapYear(year)) return common;
+
+        int start = common > period.SupertagoSeam ? common + 1 : common;
+        return period.SupertagoSeason == season
+            ? Math.Min(start, period.SupertagoOrdinal)
+            : start;
+    }
+
+    // ---------- the extra-weekly days, which are what moves the two weekdays apart ----------
+
+    /// <summary>
+    /// The extra-weekly days of a year, in the order they fall. Every year has a Jarfino; a leap
+    /// year has a Supertago before it, at the seam its period puts it on.
+    /// </summary>
+    private static IEnumerable<SolsticaDate> ExtraWeeklyDaysOf(int year)
+    {
+        if (IsLeapYear(year)) yield return SolsticaDate.Supertago(year);
+        yield return SolsticaDate.Jarfino(year);
+    }
+
+    private SolsticaDate? ShiftBefore(SolsticaDate date)
+    {
+        int ordinal = DayOfYear(date);
+
+        for (int year = date.Year; year >= Epoch.FirstSolsticaYear; year--)
+            foreach (var day in ExtraWeeklyDaysOf(year).Reverse())
+                if (year < date.Year || DayOfYear(day) < ordinal)
+                    return day;
+
+        return null;
+    }
+
+    private SolsticaDate? ShiftAfter(SolsticaDate date)
+    {
+        int ordinal = DayOfYear(date);
+
+        for (int year = date.Year; ValidityPeriod.IsTabulated(year); year++)
+            foreach (var day in ExtraWeeklyDaysOf(year))
+                if (year > date.Year || DayOfYear(day) > ordinal)
+                    return day;
+
+        return null;
+    }
+
+    // ---------- festivities ----------
+
+    /// <summary>
+    /// The universal holidays of section 8.3 that follow <paramref name="from"/>, in order,
+    /// crossing the turn of the year as needed. It stops early rather than throwing: at the end
+    /// of the tabulated window, and at <see cref="MaxRepresentable"/>, past which a holiday has
+    /// no Gregorian date to be given.
+    /// </summary>
+    public IReadOnlyList<Festivity> UpcomingFestivities(SolsticaDate from, int count)
+    {
+        EnsureInRange(from.Year);
+        if (count <= 0) return [];
+
+        var found = new List<Festivity>(count);
+        int ordinal = DayOfYear(from);
+
+        for (int year = from.Year; ValidityPeriod.IsTabulated(year) && found.Count < count; year++)
+            foreach (var date in FestivitiesOf(year))
+            {
+                if (year == from.Year && DayOfYear(date) <= ordinal) continue;
+                if (!CanConvert(date)) return found;
+
+                found.Add(new Festivity(date, date.FestivityName!, ToGregorian(date), DaysBetween(from, date)));
+                if (found.Count == count) break;
+            }
+
+        return found;
+    }
+
+    /// <summary>A year's universal holidays, in the order they fall.</summary>
+    private static IEnumerable<SolsticaDate> FestivitiesOf(int year)
+    {
+        var period = ValidityPeriod.For(year);
+        var (block, day) = period.Rekomenco;
+
+        return new[]
+        {
+            new SolsticaDate(year, PeriodKind.Unua, 1),          // Jarkomenco
+            new SolsticaDate(year, block, day),                  // Rekomenco
+            SolsticaDate.Supertago(year),
+            SolsticaDate.Jarfino(year)
+        }
+        .Where(d => d.Period != PeriodKind.Supertago || IsLeapYear(year))
+        .OrderBy(DayOfYear);
+    }
+
+    /// <summary>
+    /// Physical days from one date to a later one. Counted over whole years rather than through
+    /// the Gregorian calendar, so it still answers past the end of what DateOnly can represent.
+    /// </summary>
+    private static int DaysBetween(SolsticaDate from, SolsticaDate to)
+    {
+        int days = DayOfYear(to) - DayOfYear(from);
+        for (int year = from.Year; year < to.Year; year++) days += DaysInYear(year);
+        return days;
+    }
+
     // ---------- outline ----------
 
     /// <summary>
@@ -183,7 +327,7 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
 
             if (date.Period.IsExtraWeekly())
             {
-                rows.Add(new ExtraWeeklyRow(Describe(date)));
+                rows.Add(new ExtraWeeklyRow(AsOutlineDay(date)));
                 continue;
             }
 
@@ -193,7 +337,7 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
                 rows.Add(new SectionHeader(date.Period));
             }
 
-            week.Add(Describe(date));
+            week.Add(AsOutlineDay(date));
 
             // Every block is a whole number of weeks, so this never closes across a seam.
             if (week.Count == 7)
@@ -206,7 +350,7 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
         return rows;
     }
 
-    private OutlineDay Describe(SolsticaDate date) => new(
+    private OutlineDay AsOutlineDay(SolsticaDate date) => new(
         date,
         CanConvert(date) ? ToGregorian(date) : null,
         SeasonOf(date),
