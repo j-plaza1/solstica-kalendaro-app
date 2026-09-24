@@ -76,6 +76,16 @@ never has to ask the calendar a second question.
 weekday, what to abbreviate: that depends on the culture and on the space available, and it
 stays in the interface.
 
+`SolsticaCalendar.Describe(date)` gathers a single day for a detail screen, `LastShift` and
+`NextShift` included: those name the extra-weekly days that account for the gap between the
+two weekdays, so a screen can point at the cause rather than derive it.
+
+**`UpcomingFestivities` is strictly forward-looking.** A festivity falling on the date asked
+about is never in the list — `from` is a position, not a range. A screen showing a day must
+therefore surface that day's own festivity separately (`SolsticaDate.FestivityName` says
+whether it has one) instead of expecting it at the head of the list. Today being the
+Supertago is exactly when the reader most wants to be told so.
+
 All arithmetic goes through `DateOnly.DayNumber` (exact integer day counts). Never introduce
 a floating-point Julian Day: exactness is a property the tests rely on.
 

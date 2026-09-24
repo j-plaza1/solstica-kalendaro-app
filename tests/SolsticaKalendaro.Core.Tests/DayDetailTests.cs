@@ -76,13 +76,19 @@ public class DayDetailTests
     {
         // This is the whole of the divergence: every extra-weekly day pauses the seven-day cycle
         // once, so the Solstica weekday falls one further behind the Gregorian one.
+        int earlier = ExtraWeeklyDaysBeforeTheYear(year);
+        int supertago = SolsticaCalendar.IsLeapYear(year)
+            ? ValidityPeriod.For(year).SupertagoOrdinal
+            : int.MaxValue;
+
         for (int ordinal = 1; ordinal <= SolsticaCalendar.DaysInYear(year); ordinal++)
         {
             var detail = Cal.Describe(SolsticaCalendar.FromDayOfYear(year, ordinal));
             if (detail.WeekDay is not { } solstica) continue;    // an extra-weekly day has none
 
+            int shifts = earlier + (ordinal > supertago ? 1 : 0);
             int gap = ((int)detail.GregorianWeekDay! - (int)solstica + 7) % 7;
-            Assert.Equal(ExtraWeeklyDaysBefore(detail.Date) % 7, gap);
+            Assert.Equal(shifts % 7, gap);
         }
     }
 
@@ -190,23 +196,45 @@ public class DayDetailTests
         Assert.Throws<ArgumentOutOfRangeException>(() => Cal.Describe(new SolsticaDate(10001, PeriodKind.Unua, 1)));
     }
 
+    // ---------- the sample ----------
+
+    [Fact]
+    public void TheSampleHoldsALeapYearOfEveryPeriod()
+    {
+        // The Supertago's seam is what a leap year exercises, and the table holds five distinct
+        // ones. A hand-written sample reached only three of them, so the sample is derived and
+        // this test is what keeps it honest.
+        foreach (var period in ValidityPeriod.Table)
+            Assert.Contains(Sample, y => period.Contains(y) && SolsticaCalendar.IsLeapYear(y));
+
+        Assert.Equal(
+            ValidityPeriod.Table.Select(p => p.SupertagoSeam).Distinct().Order(),
+            Sample.Where(SolsticaCalendar.IsLeapYear)
+                  .Select(y => ValidityPeriod.For(y).SupertagoSeam).Distinct().Order());
+    }
+
     // ---------- helpers ----------
 
-    public static TheoryData<int> SampleYears => [2027, 2028, 2095, 2096, 3323, 3324, 5508];
+    /// <summary>A leap year out of every period, and a few common years around the landmarks.</summary>
+    private static readonly int[] Sample =
+        [.. new SortedSet<int>([2027, 2095, 3323, .. ValidityPeriod.Table.Select(FirstLeapYearIn)])];
 
-    /// <summary>Extra-weekly days from the epoch up to, but not counting, this date.</summary>
-    private static int ExtraWeeklyDaysBefore(SolsticaDate date)
+    public static TheoryData<int> SampleYears => [.. Sample];
+
+    private static int FirstLeapYearIn(ValidityPeriod period)
+    {
+        // The first period opens before the epoch, and nothing is describable before it.
+        int year = Math.Max(period.FirstYear, SolsticaEpoch.Expository2026.FirstSolsticaYear);
+        while (!SolsticaCalendar.IsLeapYear(year)) year++;
+        return year;
+    }
+
+    /// <summary>Extra-weekly days from the epoch through the end of the year before this one.</summary>
+    private static int ExtraWeeklyDaysBeforeTheYear(int year)
     {
         int count = 0;
-        for (int year = SolsticaEpoch.Expository2026.FirstSolsticaYear; year <= date.Year; year++)
-        {
-            if (SolsticaCalendar.IsLeapYear(year)
-                && (year < date.Year
-                    || ValidityPeriod.For(year).SupertagoOrdinal < SolsticaCalendar.DayOfYear(date)))
-                count++;
-
-            if (year < date.Year) count++;                      // that year's Jarfino
-        }
+        for (int y = SolsticaEpoch.Expository2026.FirstSolsticaYear; y < year; y++)
+            count += SolsticaCalendar.IsLeapYear(y) ? 2 : 1;    // a Jarfino, and a Supertago too
         return count;
     }
 }
