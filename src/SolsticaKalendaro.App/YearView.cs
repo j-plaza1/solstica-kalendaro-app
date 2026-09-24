@@ -11,14 +11,16 @@ public sealed record SectionView(string Name, string Label, Color Dot) : RowView
 
 public sealed record WeekView(IReadOnlyList<DayView> Days) : RowView;
 
-public sealed record BandView(string Name, string Gregorian, Color Season, DateOnly? Date) : RowView;
+public sealed record BandView(string Name, string Gregorian, Color Season, DateOnly? Date, SolsticaDate Solstica)
+    : RowView;
 
 /// <summary>
 /// One day cell. Everything about it is fixed once built except <see cref="IsToday"/>, which
 /// moves when the app is resumed on a later day. It notifies rather than being replaced, so
 /// the highlight can move without rebuilding the list and throwing away the reader's place.
 /// </summary>
-public sealed class DayView(int column, string number, string gregorian, Color season, DateOnly? date)
+public sealed class DayView(
+    int column, string number, string gregorian, Color season, DateOnly? date, SolsticaDate solstica)
     : INotifyPropertyChanged
 {
     /// <summary>Its place in the seven-column grid; the outline guarantees the order.</summary>
@@ -28,6 +30,9 @@ public sealed class DayView(int column, string number, string gregorian, Color s
     public string Gregorian { get; } = gregorian;
     public Color Season { get; } = season;
     public DateOnly? Date { get; } = date;
+
+    /// <summary>The day itself, for the detail screen. Gregorian dates run out; this one does not.</summary>
+    public SolsticaDate Solstica { get; } = solstica;
 
     private bool _isToday;
 
@@ -79,7 +84,8 @@ public static class YearView
                         band.Day.Date.Period.Name(),
                         LongDate(band.Day.Gregorian),
                         palette[band.Day.Season],
-                        band.Day.Gregorian));
+                        band.Day.Gregorian,
+                        band.Day.Date));
                     break;
             }
         }
@@ -122,7 +128,8 @@ public static class YearView
                 // and wherever a Gregorian month turns over mid-row.
                 ShortDate(day.Gregorian, withMonth: c == 0 || day.Gregorian?.Day == 1),
                 palette[day.Season],
-                day.Gregorian)
+                day.Gregorian,
+                day.Date)
             {
                 IsToday = day.Gregorian == today
             };
