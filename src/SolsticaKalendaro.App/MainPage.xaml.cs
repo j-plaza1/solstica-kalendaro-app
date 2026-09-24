@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using SolsticaKalendaro.Core;
 
 namespace SolsticaKalendaro.App;
@@ -5,6 +6,12 @@ namespace SolsticaKalendaro.App;
 public partial class MainPage : ContentPage
 {
     private static readonly SolsticaCalendar Cal = new(SolsticaEpoch.Expository2026);
+
+    /// <summary>
+    /// Opens a day. Pushing rather than replacing is what keeps the year where the reader left
+    /// it: this page stays alive behind the detail, scroll position and all.
+    /// </summary>
+    public ICommand OpenDay { get; }
 
     private IReadOnlyList<RowView> _rows = [];
     private DayView? _highlighted;
@@ -14,6 +21,7 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
+        OpenDay = new Command<SolsticaDate>(date => Navigation.PushAsync(new DayDetailPage(Cal, date)));
         NameTheWeekdays();
         Show(Today());
 

@@ -24,6 +24,13 @@ The core library and tests are unaffected.
 CI (`.github/workflows/ci.yml`) runs restore / build / test in Release on push to `main`
 and on PRs, scoped to the test project. The Android job is still commented out.
 
+## Documentation ships with the code it describes
+
+If a change makes this file or the README describe the code wrongly, correcting them is
+part of that change — whatever the branch was scoped to. A branch boundary is about code,
+not about the documentation that describes it, and a stale description is worse than an
+absent one: it is read and believed.
+
 ## The proposal is the source of truth
 
 The calendar is specified in a separate document (Plaza Alonso, J., *Solstica Kalendaro*,
@@ -41,12 +48,18 @@ this repo.
 `src/SolsticaKalendaro.Core` is the executable form of the specification and must stay free
 of any MAUI/UI reference so it remains usable from a CLI, web build or test harness.
 
-`src/SolsticaKalendaro.App` is the Android app: one page, no navigation, no view models.
+`src/SolsticaKalendaro.App` is the Android app: two pages under a `NavigationPage`, the year
+view and the detail of one day. The year is pushed under the detail rather than replaced, so
+coming back finds it where the reader left it.
+
 It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
 from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree
-with the document. Its csproj blanks the `TargetFramework` inherited from
-`Directory.Build.props`, which would otherwise win over `TargetFrameworks` and silently
-build it as plain `net10.0`.
+with the document. `YearView` projects an outline into bindable rows and `Text` holds the
+Catalan, which is the whole of the app's own logic: which Gregorian month to repeat, what to
+call a block, how to say "demà". The core writes no sentences, so all of that belongs here.
+
+Its csproj blanks the `TargetFramework` inherited from `Directory.Build.props`, which would
+otherwise win over `TargetFrameworks` and silently build it as plain `net10.0`.
 
 The conversion is built in four layers, each answering one question:
 

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.DayDetailPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Paper}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,44,20,30" Spacing="0">
+
+            <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                <Button x:Name="BackButton" Clicked="OnBackClicked"
+                        SemanticProperties.Hint="Torna a la vista d&apos;any"
+                        FontFamily="Plex" FontSize="12.5" TextColor="{StaticResource Muted}"
+                        BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                        MinimumHeightRequest="44" HorizontalOptions="Start" />
+                <Label x:Name="PositionLabel" Grid.Column="2" FontFamily="Plex" FontSize="11"
+                       TextColor="{StaticResource Muted}" VerticalOptions="Center" />
+            </Grid>
+
+            <!-- A festivity is never in the upcoming list once it has arrived, so the day has
+                 to announce its own. -->
+            <Label x:Name="FestivityLabel" FontFamily="SpectralSemiBold" FontSize="15"
+                   TextColor="{StaticResource Accent}" Margin="0,16,0,0" IsVisible="False" />
+
+            <Label x:Name="WeekDayLabel" FontFamily="PlexMedium" FontSize="12"
+                   CharacterSpacing="0.9" Margin="0,16,0,5" />
+
+            <VerticalStackLayout Spacing="0">
+                <Label x:Name="DateLabel" FontFamily="SpectralSemiBold" FontSize="42"
+                       TextColor="{StaticResource Ink}" />
+                <Label x:Name="DateYearLabel" FontFamily="SpectralSemiBold" FontSize="42"
+                       TextColor="{StaticResource Ink}" Margin="0,-10,0,0" />
+            </VerticalStackLayout>
+
+            <Border Margin="0,20,0,0" StrokeThickness="0" BackgroundColor="#F3EEE3"
+                    StrokeShape="RoundRectangle 12" Padding="17,15">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="CALENDARI GREGORIÀ" FontFamily="PlexSemiBold" FontSize="10"
+                           CharacterSpacing="0.9" TextColor="{StaticResource Faint}" />
+                    <Label x:Name="GregorianLabel" FontFamily="Spectral" FontSize="21"
+                           TextColor="{StaticResource Ink}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border x:Name="DivergenceCard" Margin="0,13,0,0" IsVisible="False"
+                    Stroke="#DED5C4" StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                    Padding="17,14">
+                <VerticalStackLayout Spacing="5">
+                    <Label x:Name="DivergenceTitle" FontFamily="PlexSemiBold" FontSize="12.5"
+                           TextColor="{StaticResource Ink}" />
+                    <Label x:Name="DivergenceBody" FontFamily="Plex" FontSize="11.5"
+                           LineHeight="1.45" TextColor="#575044" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,Auto" Margin="0,22,0,9">
+                <Label Text="POSICIÓ ESTACIONAL" FontFamily="PlexSemiBold" FontSize="10"
+                       CharacterSpacing="0.9" TextColor="{StaticResource Faint}"
+                       VerticalOptions="Center" />
+                <Label x:Name="SeasonLabel" Grid.Column="1" FontFamily="Plex" FontSize="11.5"
+                       TextColor="#4A4437" VerticalOptions="Center" />
+            </Grid>
+
+            <!-- The segments are the real season lengths of this year, so the bar is the
+                 allocation of the period drawn to scale, not four equal quarters. -->
+            <Grid HeightRequest="18">
+                <Border HeightRequest="9" VerticalOptions="Center" StrokeThickness="0"
+                        StrokeShape="RoundRectangle 5">
+                    <Grid x:Name="SeasonBar" />
+                </Border>
+                <AbsoluteLayout>
+                    <BoxView x:Name="Marker" Color="{StaticResource Ink}" WidthRequest="3"
+                             AbsoluteLayout.LayoutFlags="XProportional"
+                             AbsoluteLayout.LayoutBounds="0,0,3,18" />
+                </AbsoluteLayout>
+            </Grid>
+
+            <AbsoluteLayout x:Name="DegreeRow" HeightRequest="16" Margin="0,4,0,0" />
+
+            <Label Text="PROPERES FESTES UNIVERSALS" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,24,0,8" />
+
+            <VerticalStackLayout x:Name="Festivities" Spacing="0" />
+
+            <BoxView Color="{StaticResource Hairline}" HeightRequest="1" Margin="0,22,0,12" />
+
+            <Label x:Name="FooterLabel" FontFamily="Plex" FontSize="10.5"
+                   TextColor="{StaticResource Muted}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

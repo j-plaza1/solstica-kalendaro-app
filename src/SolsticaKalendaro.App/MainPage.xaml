@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:SolsticaKalendaro.App"
              x:Class="SolsticaKalendaro.App.MainPage"
+             x:Name="Page"
+             NavigationPage.HasNavigationBar="False"
              BackgroundColor="{StaticResource Paper}">
 
     <ContentPage.Resources>
@@ -27,6 +29,11 @@
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <Grid Grid.Column="{Binding Column}" RowDefinitions="*,4" HeightRequest="58">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={x:Reference Page}, Path=OpenDay}"
+                                    CommandParameter="{Binding Solstica}" />
+                            </Grid.GestureRecognizers>
                             <Grid.Triggers>
                                 <DataTrigger TargetType="Grid" Binding="{Binding IsToday}" Value="True">
                                     <Setter Property="BackgroundColor" Value="{StaticResource Highlight}" />
@@ -62,6 +69,11 @@
              what they are. Outside the week, between the blocks. -->
         <DataTemplate x:Key="BandTemplate">
             <Grid Margin="12,6" ColumnDefinitions="4,*,4" HeightRequest="66">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding Source={x:Reference Page}, Path=OpenDay}"
+                        CommandParameter="{Binding Solstica}" />
+                </Grid.GestureRecognizers>
                 <BoxView Color="{Binding Season}" />
                 <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
                       BackgroundColor="{StaticResource Highlight}">

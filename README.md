@@ -35,7 +35,7 @@ the same physical day after the first *Jarfino*. The app shows both and labels t
 
 ```
 src/SolsticaKalendaro.Core        conversion library — no UI dependencies
-src/SolsticaKalendaro.App         the Android app: .NET MAUI, one page
+src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view and day detail
 tests/SolsticaKalendaro.Core.Tests
 ```
 
