@@ -46,8 +46,28 @@ jobs:
           set -euo pipefail
           die() { echo "::error::$*"; exit 1; }
 
-          spec=$(grep -o 'SpecificationVersion = "[0-9.]*"' src/SolsticaKalendaro.Core/SolsticaCalendar.cs | head -1 | cut -d'"' -f2)
-          [ -n "$spec" ] || die "Could not read SpecificationVersion from the core."
+          # Empty when the component is usable; otherwise why it is not. Both halves of a
+          # version are packed into two digits, so both obey the same rule.
+          fault() {
+            case "${1:-}" in
+              ''|*[!0-9]*) echo "\"${1:-}\" is not a whole number"; return ;;
+            esac
+            [ "$1" -le 99 ] || echo "$1 is over 99"
+          }
+
+          spec=$(grep -o 'SpecificationVersion = "[0-9.]*"' src/SolsticaKalendaro.Core/SolsticaCalendar.cs | head -1 | cut -d'"' -f2 || true)
+
+          # A check that cannot read the value it checks against must not pass. If this were
+          # only tested for emptiness, a malformed constant would leave the comparison below
+          # measuring a tag against nonsense and waving every tag through.
+          [ -n "$spec" ] || die "Could not read SpecificationVersion from src/SolsticaKalendaro.Core/SolsticaCalendar.cs."
+
+          IFS=. read -r spec_n spec_m spec_extra <<< "$spec"
+          [ -z "${spec_extra:-}" ] || die "SpecificationVersion is \"$spec\"; it has to be N.M, two components and no more."
+          for part in "$spec_n" "$spec_m"; do
+            reason=$(fault "$part")
+            [ -z "$reason" ] || die "SpecificationVersion is \"$spec\": $reason. It has to be N.M with whole numbers."
+          done
 
           if [ "$GITHUB_REF_TYPE" = "tag" ]; then
             version="${GITHUB_REF_NAME#v}"
@@ -58,14 +78,12 @@ jobs:
           IFS=. read -r n m o p extra <<< "$version"
           [ -z "${extra:-}" ] || die "Tag $GITHUB_REF_NAME has more than four components."
           for part in "$n" "$m" "$o" "$p"; do
-            case "${part:-}" in
-              ''|*[!0-9]*) die "Tag $GITHUB_REF_NAME is not vN.M.O.P with whole numbers." ;;
-            esac
-            [ "$part" -le 99 ] || die "Component $part is over 99; the internal number packs each in two digits."
+            reason=$(fault "$part")
+            [ -z "$reason" ] || die "Tag $GITHUB_REF_NAME is not vN.M.O.P: $reason."
           done
 
-          # The app is released against a stated version of the document, so a tag that
-          # names a different one is a mistake worth stopping for rather than shipping.
+          # The app is released against a stated version of the document, so a tag that names
+          # a different one is a mistake worth stopping for rather than shipping.
           [ "$n.$m" = "$spec" ] || die "Tag $GITHUB_REF_NAME says document $n.$m, but the core implements $spec."
 
           code=$(( n * 1000000 + m * 10000 + o * 100 + p ))
@@ -78,7 +96,6 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
           echo "document $spec, app $o.$p, version $version, internal $code, prerelease $prerelease"
-
 
       # Outside the workspace, so it cannot be committed, packed into the app or picked up
       # by anything that walks the repository.
