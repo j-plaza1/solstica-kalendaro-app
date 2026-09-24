@@ -31,6 +31,30 @@ part of that change — whatever the branch was scoped to. A branch boundary is 
 not about the documentation that describes it, and a stale description is worse than an
 absent one: it is read and believed.
 
+## Versions say which document they implement
+
+A release tag is `vN.M.O.P`. `N.M` is the version of the proposal document the app implements,
+and `O.P` is the app's own. The core states the first half in
+`SolsticaCalendar.SpecificationVersion`, currently `2.1`, and the release workflow refuses a tag
+whose `N.M` disagrees with it rather than shipping an app that claims the wrong document.
+
+- `ApplicationDisplayVersion` is `N.M.O.P`. `ApplicationVersion` is
+  `N*1000000 + M*10000 + O*100 + P`, so no component may exceed 99; the workflow rejects one
+  that does.
+- `O = 0` means preliminary. Those releases are marked prerelease, and the first production
+  release against a document is `vN.M.1.0`.
+- A `workflow_dispatch` run builds `N.M.0.0` from `SpecificationVersion`. That version is never
+  published: its shape says it is a rehearsal.
+
+**`O.P` start again with every new version of the document.** For document `N.M` the
+preliminary releases are `vN.M.0.x` and the first production one is `vN.M.1.0`. After
+`v2.1.3.2`, if the document becomes 2.2, the next tag is `v2.2.0.1` or `v2.2.1.0` — never
+`v2.2.3.3`. The app's version says how far it has come against *that* document, not how far it
+has come overall.
+
+Raising `SpecificationVersion` is part of the change that brings the code in line with a
+revised document, not a separate step afterwards.
+
 ## The proposal is the source of truth
 
 The calendar is specified in a separate document (Plaza Alonso, J., *Solstica Kalendaro*,

@@ -31,12 +31,17 @@
 		<!-- Display name -->
 		<ApplicationTitle>Solstica Kalendaro</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.companyname.solsticakalendaro.app</ApplicationId>
+		<!-- App Identifier. Fixed once published: Android identifies an app by this, and
+		     changing it later makes a different app rather than an update. -->
+		<ApplicationId>io.github.j_plaza1.solsticakalendaro</ApplicationId>
 
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<!-- Versions. A release tag is vN.M.O.P: N.M is the version of the proposal
+		     document, held in the core as SpecificationVersion, and O.P is the app's own.
+		     The internal number is N*1000000 + M*10000 + O*100 + P, so no component may
+		     exceed 99. The release workflow sets both from the tag; what stands here is the
+		     N.M.0.0 of a build that is not a release, which is what a local build is. -->
+		<ApplicationDisplayVersion>2.1.0.0</ApplicationDisplayVersion>
+		<ApplicationVersion>2010000</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>

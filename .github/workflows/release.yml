@@ -1,0 +1,188 @@
+name: Release
+
+# Separate from CI on purpose. CI answers "does this still build?" on every push and needs
+# no secrets; this one holds the signing key, and the fewer runs that touch it the better.
+on:
+  push:
+    tags: ['v*.*.*.*']
+  workflow_dispatch:
+
+permissions:
+  contents: write          # only the tag run uses it, to draft the release
+
+jobs:
+  android:
+    name: Signed Android package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install the MAUI Android workload
+        run: dotnet workload install maui-android
+
+      # A tag is vN.M.O.P. N.M is the version of the proposal document the app implements,
+      # kept in the core as SpecificationVersion; O.P is the app's own version. The internal
+      # number is N*1000000 + M*10000 + O*100 + P, which only ever grows and can be worked
+      # out again from the tag rather than being a counter someone has to remember.
+      #
+      # O = 0 means preliminary, so those releases are marked prerelease and the first
+      # production release of a document is vN.M.1.0.
+      #
+      # A dispatch run is a rehearsal and builds N.M.0.0: a version that is never published,
+      # and that says so by its shape.
+      - name: Work out the version
+        id: version
+        run: |
+          set -euo pipefail
+          die() { echo "::error::$*"; exit 1; }
+
+          # Empty when the component is usable; otherwise why it is not. Both halves of a
+          # version are packed into two digits, so both obey the same rule.
+          fault() {
+            case "${1:-}" in
+              ''|*[!0-9]*) echo "\"${1:-}\" is not a whole number"; return ;;
+            esac
+            [ "$1" -le 99 ] || echo "$1 is over 99"
+          }
+
+          spec=$(grep -o 'SpecificationVersion = "[0-9.]*"' src/SolsticaKalendaro.Core/SolsticaCalendar.cs | head -1 | cut -d'"' -f2 || true)
+
+          # A check that cannot read the value it checks against must not pass. If this were
+          # only tested for emptiness, a malformed constant would leave the comparison below
+          # measuring a tag against nonsense and waving every tag through.
+          [ -n "$spec" ] || die "Could not read SpecificationVersion from src/SolsticaKalendaro.Core/SolsticaCalendar.cs."
+
+          IFS=. read -r spec_n spec_m spec_extra <<< "$spec"
+          [ -z "${spec_extra:-}" ] || die "SpecificationVersion is \"$spec\"; it has to be N.M, two components and no more."
+          for part in "$spec_n" "$spec_m"; do
+            reason=$(fault "$part")
+            [ -z "$reason" ] || die "SpecificationVersion is \"$spec\": $reason. It has to be N.M with whole numbers."
+          done
+
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$spec.0.0"
+          fi
+
+          IFS=. read -r n m o p extra <<< "$version"
+          [ -z "${extra:-}" ] || die "Tag $GITHUB_REF_NAME has more than four components."
+          for part in "$n" "$m" "$o" "$p"; do
+            reason=$(fault "$part")
+            [ -z "$reason" ] || die "Tag $GITHUB_REF_NAME is not vN.M.O.P: $reason."
+          done
+
+          # The app is released against a stated version of the document, so a tag that names
+          # a different one is a mistake worth stopping for rather than shipping.
+          [ "$n.$m" = "$spec" ] || die "Tag $GITHUB_REF_NAME says document $n.$m, but the core implements $spec."
+
+          code=$(( n * 1000000 + m * 10000 + o * 100 + p ))
+          if [ "$o" = "0" ]; then prerelease=true; else prerelease=false; fi
+
+          {
+            echo "display=$version"
+            echo "code=$code"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "document $spec, app $o.$p, version $version, internal $code, prerelease $prerelease"
+
+      # Outside the workspace, so it cannot be committed, packed into the app or picked up
+      # by anything that walks the repository.
+      - name: Unpack the signing key
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+
+      - name: Restore
+        run: dotnet restore src/SolsticaKalendaro.App
+
+      # The passwords go in as `env:NAME` rather than as values. That is .NET Android's own
+      # syntax for reading a password out of the environment, which keeps it off the command
+      # line, out of the process list and out of the build log.
+      #
+      # One password for both store and key: the keystore is PKCS12, where they are the same.
+      # A keystore with a separate key password would need a secret of its own here.
+      - name: Publish a signed APK
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: >
+          dotnet publish src/SolsticaKalendaro.App
+          --no-restore
+          --configuration Release
+          --framework net10.0-android
+          -p:ApplicationDisplayVersion=${{ steps.version.outputs.display }}
+          -p:ApplicationVersion=${{ steps.version.outputs.code }}
+          -p:AndroidPackageFormat=apk
+          -p:AndroidKeyStore=true
+          -p:AndroidSigningKeyStore=$RUNNER_TEMP/release.keystore
+          -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          -p:AndroidSigningStorePass=env:ANDROID_KEYSTORE_PASSWORD
+          -p:AndroidSigningKeyPass=env:ANDROID_KEYSTORE_PASSWORD
+
+      - name: Name the package after its version
+        id: package
+        run: |
+          set -euo pipefail
+          built=$(find src/SolsticaKalendaro.App/bin/Release/net10.0-android/publish -name '*-Signed.apk' | head -1)
+          [ -n "$built" ] || { echo "No signed APK was produced."; exit 1; }
+
+          asset="$RUNNER_TEMP/solstica-kalendaro-${{ steps.version.outputs.display }}.apk"
+          cp "$built" "$asset"
+          echo "path=$asset" >> "$GITHUB_OUTPUT"
+          ls -l "$asset"
+
+      # Printed so that anyone can check an APK they downloaded against the fingerprint in
+      # the README, and so that a key swap would be visible here rather than silent.
+      - name: Verify the signature
+        run: |
+          set -euo pipefail
+          apksigner=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
+          "$apksigner" verify --print-certs "${{ steps.package.outputs.path }}" > certs.txt
+          grep -E 'certificate DN:|certificate SHA-256 digest:' certs.txt
+
+      - name: Remove the signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.keystore"
+
+      # A rehearsal: it proves the key, the signing and the packaging work, and leaves
+      # something installable behind, but it announces nothing.
+      - name: Keep the package for inspection
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: solstica-kalendaro-apk
+          path: ${{ steps.package.outputs.path }}
+          if-no-files-found: error
+
+      # Draft, never published: the tag says a version is ready, a person says it is out.
+      - name: Draft the release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Built as a list rather than inline: under `set -e` a substitution that
+          # tests false and prints nothing ends the step, so a 1.x tag would have
+          # failed right here, at the last moment and for no visible reason.
+          flags=(--draft)
+          if [ "${{ steps.version.outputs.prerelease }}" = "true" ]; then
+            flags+=(--prerelease)
+          fi
+
+          gh release create "$GITHUB_REF_NAME" "${{ steps.package.outputs.path }}" \
+            "${flags[@]}" \
+            --title "Solstica Kalendaro ${{ steps.version.outputs.display }}" \
+            --notes "Instal·lació i verificació de la signatura: vegeu el README."

@@ -31,6 +31,48 @@ the seven-day cycle rather than belonging to it. That is what makes the calendar
 perpetual, and it means the Solstica weekday drifts away from the Gregorian weekday of
 the same physical day after the first *Jarfino*. The app shows both and labels them.
 
+## Installing it
+
+The app is not on any store, so each release carries the APK itself. It needs Android 5.0
+or newer.
+
+1. Open [Releases](https://github.com/j-plaza1/solstica-kalendaro-app/releases) and
+   download `solstica-kalendaro-N.M.O.P.apk`.
+2. Open the downloaded file. Android will stop and offer a setting the first time: allow
+   installing apps from whichever app you downloaded with. That prompt is Android asking
+   whether you trust the source, not a sign that something is wrong — but it is worth
+   turning the permission back off afterwards.
+
+The app installs as `io.github.j_plaza1.solsticakalendaro`.
+
+### Checking what you downloaded
+
+Every release is signed with the same key, which is why Android will refuse an "update"
+signed by anybody else. To check a file before installing it:
+
+```bash
+apksigner verify --print-certs solstica-kalendaro-N.M.O.P.apk
+```
+
+The certificate's SHA-256 fingerprint should be:
+
+```
+TO BE FILLED IN — no release has been signed yet. The release workflow prints the
+certificate's DN and SHA-256 digest in its "Verify the signature" step; copy the
+digest here after the first signed build, and never from anywhere else.
+```
+
+## What the version numbers mean
+
+A release is `N.M.O.P`. The first half is the version of the proposal document the app
+implements — the app and the document are versioned together, so `2.1.x.y` is an app built
+against version 2.1 of the proposal. The second half is the app's own version, and it starts
+again whenever the document is revised.
+
+An `O` of zero means preliminary: `2.1.0.1` is an early build against document 2.1, and
+`2.1.1.0` is the first one meant for daily use. GitHub marks the preliminary ones as
+pre-releases.
+
 ## Repository layout
 
 ```

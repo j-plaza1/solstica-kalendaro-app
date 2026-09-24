@@ -281,6 +281,24 @@ public class SolsticaCalendarTests
         }
     }
 
+    // ---------- which document this is ----------
+
+    [Fact]
+    public void TheSpecificationVersionIsUsableAsHalfOfATag()
+    {
+        // The release workflow splits it and compares it against the tag, so a malformed
+        // value would only surface at release time. Two parts, both numbers, both within the
+        // range the version arithmetic allows.
+        var parts = SolsticaCalendar.SpecificationVersion.Split('.');
+
+        Assert.Equal(2, parts.Length);
+        Assert.All(parts, part =>
+        {
+            Assert.True(int.TryParse(part, out int number), $"\"{part}\" is not a number.");
+            Assert.InRange(number, 0, 99);
+        });
+    }
+
     // ---------- cardinal points ----------
 
     [Fact]
