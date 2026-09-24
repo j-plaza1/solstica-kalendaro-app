@@ -6,14 +6,27 @@ public partial class MainPage : ContentPage
 {
     private static readonly SolsticaCalendar Cal = new(SolsticaEpoch.Expository2026);
 
-    private int _today = -1;
+    private IReadOnlyList<RowView> _rows = [];
+    private DayView? _highlighted;
+    private int _todayRow = -1;
+    private int _shownYear;
 
     public MainPage()
     {
         InitializeComponent();
         NameTheWeekdays();
-        Show(DateOnly.FromDateTime(DateTime.Now));
+        Show(Today());
+
+        // The first attempt scrolled from the constructor and landed a month short: the
+        // CollectionView had no native view yet, so the request went nowhere useful.
+        // Loaded is the event that says it does. Every row has a fixed height, so scrolling
+        // by index is exact whether or not the rows have been realised.
+        Rows.Loaded += ScrollToTodayOnce;
+
+        Loaded += WatchForResume;
     }
+
+    private static DateOnly Today() => DateOnly.FromDateTime(DateTime.Now);
 
     private void Show(DateOnly today)
     {
@@ -21,34 +34,80 @@ public partial class MainPage : ContentPage
         // view opens on the first year it covers and says how long the wait is.
         var outline = Cal.Outline(Cal.Epoch.FirstSolsticaYear);
         var opens = FirstGregorianOf(outline);
-        int year = Cal.Epoch.FirstSolsticaYear;
+        _shownYear = Cal.Epoch.FirstSolsticaYear;
 
         if (opens is { } start && today < start)
         {
             int days = start.DayNumber - today.DayNumber;
             SubtitleLabel.Text = $"Encara no ha començat · falten {days} {(days == 1 ? "dia" : "dies")}";
+            SubtitleLabel.IsVisible = true;
         }
         else
         {
-            year = Cal.FromGregorian(today).Year;
-            outline = Cal.Outline(year);
+            _shownYear = Cal.FromGregorian(today).Year;
+            outline = Cal.Outline(_shownYear);
             SubtitleLabel.IsVisible = false;
         }
 
-        YearLabel.Text = year.ToString(YearView.Culture);
+        YearLabel.Text = _shownYear.ToString(YearView.Culture);
 
-        var rows = YearView.Build(outline, today, Palette());
-        Rows.ItemsSource = rows;
+        _rows = YearView.Build(outline, today, Palette());
+        Rows.ItemsSource = _rows;
+
+        (_todayRow, _highlighted) = YearView.Locate(_rows, today);
 
         // No today to go to in a year the calendar has not reached yet.
-        _today = YearView.IndexOfToday(rows);
-        TodayButton.IsEnabled = _today >= 0;
-        TodayButton.Opacity = _today >= 0 ? 1 : 0.4;
+        TodayButton.IsEnabled = _todayRow >= 0;
+        TodayButton.Opacity = _todayRow >= 0 ? 1 : 0.4;
     }
 
-    private void OnTodayClicked(object? sender, EventArgs e)
+    private void ScrollToTodayOnce(object? sender, EventArgs e)
     {
-        if (_today >= 0) Rows.ScrollTo(_today, position: ScrollToPosition.Center, animate: true);
+        Rows.Loaded -= ScrollToTodayOnce;
+        GoToToday(animate: false);
+    }
+
+    private void OnTodayClicked(object? sender, EventArgs e) => GoToToday(animate: true);
+
+    private void GoToToday(bool animate)
+    {
+        if (_todayRow >= 0) Rows.ScrollTo(_todayRow, position: ScrollToPosition.Center, animate: animate);
+    }
+
+    // ---------- coming back on a later day ----------
+
+    private void WatchForResume(object? sender, EventArgs e)
+    {
+        Loaded -= WatchForResume;
+        if (Window is not null) Window.Resumed += OnResumed;
+    }
+
+    /// <summary>
+    /// The app may have sat in the background across midnight. Move the highlight to the new
+    /// day, but leave the scroll alone: the reader was looking at some part of the year, and
+    /// it is not for us to decide they meant to stop.
+    /// </summary>
+    private void OnResumed(object? sender, EventArgs e)
+    {
+        var today = Today();
+        if (_highlighted?.Date == today) return;
+
+        var (row, cell) = YearView.Locate(_rows, today);
+        if (row < 0)
+        {
+            // A new Solstica year, or the epoch has arrived: the rows themselves are stale.
+            Show(today);
+            GoToToday(animate: false);
+            return;
+        }
+
+        if (_highlighted is not null) _highlighted.IsToday = false;
+        if (cell is not null) cell.IsToday = true;
+
+        _todayRow = row;
+        _highlighted = cell;
+        TodayButton.IsEnabled = true;
+        TodayButton.Opacity = 1;
     }
 
     /// <summary>

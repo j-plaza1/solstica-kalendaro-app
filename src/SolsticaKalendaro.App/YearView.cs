@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Globalization;
 using SolsticaKalendaro.Core;
 
@@ -10,10 +11,39 @@ public sealed record SectionView(string Name, string Label, Color Dot) : RowView
 
 public sealed record WeekView(IReadOnlyList<DayView> Days) : RowView;
 
-public sealed record BandView(string Name, string Gregorian, Color Season) : RowView;
+public sealed record BandView(string Name, string Gregorian, Color Season, DateOnly? Date) : RowView;
 
-/// <param name="Column">Its place in the seven-column grid; the outline guarantees the order.</param>
-public sealed record DayView(int Column, string Number, string Gregorian, Color Season, bool IsToday);
+/// <summary>
+/// One day cell. Everything about it is fixed once built except <see cref="IsToday"/>, which
+/// moves when the app is resumed on a later day. It notifies rather than being replaced, so
+/// the highlight can move without rebuilding the list and throwing away the reader's place.
+/// </summary>
+public sealed class DayView(int column, string number, string gregorian, Color season, DateOnly? date)
+    : INotifyPropertyChanged
+{
+    /// <summary>Its place in the seven-column grid; the outline guarantees the order.</summary>
+    public int Column { get; } = column;
+
+    public string Number { get; } = number;
+    public string Gregorian { get; } = gregorian;
+    public Color Season { get; } = season;
+    public DateOnly? Date { get; } = date;
+
+    private bool _isToday;
+
+    public bool IsToday
+    {
+        get => _isToday;
+        set
+        {
+            if (_isToday == value) return;
+            _isToday = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsToday)));
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+}
 
 /// <summary>
 /// Turns an outline into rows a CollectionView can bind. Everything here is presentation:
@@ -48,7 +78,8 @@ public static class YearView
                     rows.Add(new BandView(
                         band.Day.Date.Period.Name(),
                         LongDate(band.Day.Gregorian),
-                        palette[band.Day.Season]));
+                        palette[band.Day.Season],
+                        band.Day.Gregorian));
                     break;
             }
         }
@@ -56,13 +87,26 @@ public static class YearView
         return rows;
     }
 
-    /// <summary>Index of the row holding today, or -1 when the year does not contain it.</summary>
-    public static int IndexOfToday(IReadOnlyList<RowView> rows)
+    /// <summary>
+    /// Where a Gregorian date sits in the rows: which row to scroll to, and the cell to
+    /// highlight. The cell is null when the date is an extra-weekly day, which is a row of
+    /// its own rather than a cell in a week — there is somewhere to scroll, nothing to mark.
+    /// </summary>
+    public static (int Row, DayView? Cell) Locate(IReadOnlyList<RowView> rows, DateOnly date)
     {
         for (int i = 0; i < rows.Count; i++)
-            if (rows[i] is WeekView week && week.Days.Any(d => d.IsToday))
-                return i;
-        return -1;
+            switch (rows[i])
+            {
+                case WeekView week:
+                    foreach (var day in week.Days)
+                        if (day.Date == date) return (i, day);
+                    break;
+
+                case BandView band when band.Date == date:
+                    return (i, null);
+            }
+
+        return (-1, null);
     }
 
     private static RowView Project(WeekRow week, DateOnly today, YearPalette palette)
@@ -78,7 +122,10 @@ public static class YearView
                 // and wherever a Gregorian month turns over mid-row.
                 ShortDate(day.Gregorian, withMonth: c == 0 || day.Gregorian?.Day == 1),
                 palette[day.Season],
-                day.Gregorian == today);
+                day.Gregorian)
+            {
+                IsToday = day.Gregorian == today
+            };
         }
         return new WeekView(days);
     }
