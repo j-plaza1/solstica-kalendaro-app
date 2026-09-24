@@ -31,6 +31,37 @@ the seven-day cycle rather than belonging to it. That is what makes the calendar
 perpetual, and it means the Solstica weekday drifts away from the Gregorian weekday of
 the same physical day after the first *Jarfino*. The app shows both and labels them.
 
+## Installing it
+
+The app is not on any store, so each release carries the APK itself. It needs Android 5.0
+or newer.
+
+1. Open [Releases](https://github.com/j-plaza1/solstica-kalendaro-app/releases) and
+   download `solstica-kalendaro-X.Y.Z.apk`.
+2. Open the downloaded file. Android will stop and offer a setting the first time: allow
+   installing apps from whichever app you downloaded with. That prompt is Android asking
+   whether you trust the source, not a sign that something is wrong — but it is worth
+   turning the permission back off afterwards.
+
+The app installs as `io.github.j_plaza1.solsticakalendaro`.
+
+### Checking what you downloaded
+
+Every release is signed with the same key, which is why Android will refuse an "update"
+signed by anybody else. To check a file before installing it:
+
+```bash
+apksigner verify --print-certs solstica-kalendaro-X.Y.Z.apk
+```
+
+The certificate's SHA-256 fingerprint should be:
+
+```
+TO BE FILLED IN — no release has been signed yet. The release workflow prints the
+certificate's DN and SHA-256 digest in its "Verify the signature" step; copy the
+digest here after the first signed build, and never from anywhere else.
+```
+
 ## Repository layout
 
 ```

@@ -31,12 +31,16 @@
 		<!-- Display name -->
 		<ApplicationTitle>Solstica Kalendaro</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.companyname.solsticakalendaro.app</ApplicationId>
+		<!-- App Identifier. Fixed once published: Android identifies an app by this, and
+		     changing it later makes a different app rather than an update. -->
+		<ApplicationId>io.github.j_plaza1.solsticakalendaro</ApplicationId>
 
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<!-- Versions. The release workflow derives both from the tag: vX.Y.Z gives the
+		     display version X.Y.Z and the internal number X*10000 + Y*100 + Z, which only
+		     ever grows and can be worked out again from the tag alone. What is written here
+		     is what the next tag is expected to be, and what a rehearsal build produces. -->
+		<ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>100</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
