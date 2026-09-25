@@ -78,7 +78,7 @@
 
             <AbsoluteLayout x:Name="DegreeRow" HeightRequest="16" Margin="0,4,0,0" />
 
-            <Label Text="PROPERES FESTES UNIVERSALS" FontFamily="PlexSemiBold" FontSize="10"
+            <Label x:Name="FestivitiesTitle" FontFamily="PlexSemiBold" FontSize="10"
                    CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,24,0,8" />
 
             <VerticalStackLayout x:Name="Festivities" Spacing="0" />

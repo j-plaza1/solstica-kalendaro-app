@@ -21,12 +21,15 @@ public partial class DayDetailPage : ContentPage
 
         var detail = calendar.Describe(date);
         var palette = Palette();
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        bool isToday = detail.Gregorian == today;
 
         BackButton.Text = $"‹   {detail.Date.Year}";
         PositionLabel.Text = $"dia {detail.DayOfYear} de {detail.DaysInYear}";
 
-        // A festivity that has arrived is no longer upcoming, so the day announces its own.
-        if (detail.Date.FestivityName is { } festivity)
+        // A festivity that has arrived is no longer upcoming, so the day announces its own —
+        // unless the festivity and the day share a name, where the date above says it already.
+        if (detail.Date.FestivityName is { } festivity && festivity != Text.DayName(detail.Date))
         {
             FestivityLabel.Text = festivity;
             FestivityLabel.IsVisible = true;
@@ -34,7 +37,7 @@ public partial class DayDetailPage : ContentPage
 
         WeekDayLabel.Text = detail.WeekDay is { } weekDay
             ? Text.WeekDay(weekDay)
-            : "fora del cicle setmanal";
+            : "sense dia de la setmana";
         WeekDayLabel.TextColor = palette[detail.Season];
 
         DateLabel.Text = Text.DayName(detail.Date);
@@ -46,7 +49,7 @@ public partial class DayDetailPage : ContentPage
 
         ShowDivergence(detail);
         ShowSeason(detail, palette);
-        ShowFestivities(detail);
+        ShowFestivities(detail, today, isToday);
 
         FooterLabel.Text =
             $"Període {detail.Period.FirstYear}–{detail.Period.LastYear} · {detail.Period.Allocation}";
@@ -55,28 +58,31 @@ public partial class DayDetailPage : ContentPage
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
 
     /// <summary>
-    /// Why the two weekdays disagree, said only where they do. An extra-weekly day is both the
-    /// cause and the exception: it has no weekday of its own to disagree with.
+    /// Said only where there is something to say. A Jarfino or a Supertago gets the other half
+    /// of the explanation: it is the day the reader is looking at that has no weekday.
     /// </summary>
     private void ShowDivergence(DayDetail detail)
     {
         if (detail.Date.Period.IsExtraWeekly())
         {
-            DivergenceTitle.Text = "Per què aquest dia és diferent";
-            DivergenceBody.Text = "Aquest dia no té dia de la setmana: és el que endarrereix el compte.";
+            DivergenceTitle.Text = "Per què cada mes comença en dilluns";
+            DivergenceBody.Text =
+                "Perquè aquest dia no pertany a cap dia de la setmana. L'any té 52 setmanes "
+                + "justes i els dies com aquest queden a part, i així cada mes comença en "
+                + "dilluns, tots els anys.";
             DivergenceCard.IsVisible = true;
             return;
         }
 
         if (detail.WeekDay is not { } solstica || detail.GregorianWeekDay is not { } gregorian) return;
 
-        int behind = ((int)gregorian - (int)solstica + 7) % 7;
-        if (behind == 0) return;
+        int apart = ((int)gregorian - (int)solstica + 7) % 7;
+        if (apart == 0) return;
 
         DivergenceTitle.Text = "Per què els dies de la setmana no coincideixen";
         DivergenceBody.Text =
-            "Cada dia extra-setmanal atura un dia el compte setmanal, i per això el calendari "
-            + $"solstici va {Text.Days(behind)} per darrere del gregorià. "
+            "El Jarfino i el Supertago no pertanyen a cap dia de la setmana. Per això el dia de "
+            + $"la setmana d'aquest calendari i el del gregorià tenen {Text.Days(apart)} de diferència. "
             + $"L'últim va ser {Text.Shift(detail.LastShift)}; {NextShiftClause(detail.NextShift)}";
 
         DivergenceCard.IsVisible = true;
@@ -140,8 +146,17 @@ public partial class DayDetailPage : ContentPage
         DegreeRow.Children.Add(label);
     }
 
-    private void ShowFestivities(DayDetail detail)
+    /// <summary>
+    /// What is still ahead of the day being looked at. Two measures, because they answer
+    /// different questions: how far after this day, and how far from now. On today they are the
+    /// same question, so only the second is given — and only today may be told it is tomorrow.
+    /// </summary>
+    private void ShowFestivities(DayDetail detail, DateOnly today, bool isToday)
     {
+        FestivitiesTitle.Text = isToday
+            ? "PROPERES FESTES UNIVERSALS (A PARTIR D'AVUI)"
+            : "PROPERES FESTES UNIVERSALS (A PARTIR D'AQUEST DIA)";
+
         foreach (var festivity in _calendar.UpcomingFestivities(detail.Date, FestivitiesShown))
         {
             var row = new Grid
@@ -173,19 +188,36 @@ public partial class DayDetailPage : ContentPage
                 }
             });
 
-            row.Add(new Label
+            var distances = new VerticalStackLayout
             {
-                Text = Text.Away(festivity.DaysAway),
-                FontFamily = "Plex",
-                FontSize = 11.5,
-                TextColor = Resource("Ink"),
-                VerticalOptions = LayoutOptions.Center
-            }, 1);
+                Spacing = 2,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.End
+            };
+
+            if (!isToday) distances.Add(Distance(Text.After(festivity.DaysAway), Resource("Ink")));
+
+            // Against today this is a plain subtraction of Gregorian dates, so the app may do it.
+            if (festivity.Gregorian is { } gregorian)
+                distances.Add(Distance(
+                    Text.FromToday(gregorian.DayNumber - today.DayNumber),
+                    isToday ? Resource("Ink") : Resource("Muted")));
+
+            row.Add(distances, 1);
 
             Festivities.Add(new BoxView { Color = Resource("Hairline"), HeightRequest = 1 });
             Festivities.Add(row);
         }
     }
+
+    private static Label Distance(string text, Color colour) => new()
+    {
+        Text = text,
+        FontFamily = "Plex",
+        FontSize = 11.5,
+        TextColor = colour,
+        HorizontalTextAlignment = TextAlignment.End
+    };
 
     private static Color Resource(string key) => (Color)Application.Current!.Resources[key];
 

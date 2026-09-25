@@ -55,6 +55,30 @@ has come overall.
 Raising `SpecificationVersion` is part of the change that brings the code in line with a
 revised document, not a separate step afterwards.
 
+## The app's words assume a reader who has not read the document
+
+Someone using the app has not read the proposal and should not have to. Every string in the
+app is Catalan written on that assumption, and this is a constraint on the writing, not a
+matter of taste.
+
+- **No vocabulary from the document.** Not *extra-setmanal*, *cicle setmanal*, *encaix*,
+  *assignació*. The names of the days and the blocks are the exception: those are what the
+  calendar calls things, and the app is where a reader learns them.
+- **No words that suggest something is wrong.** Not *aturar*, *endarrerir*, *desfasament*,
+  *error*. A Jarfino does not stop, delay or break anything; it is simply a day that belongs
+  to no weekday.
+- **Say what a thing is, not how this calendar differs.** "L'any té 52 setmanes justes i els
+  dies com aquest queden a part, i així cada mes comença en dilluns, tots els anys" states a
+  fact and what follows from it. "És el que endarrereix el compte" asks the reader to hold a
+  comparison in their head and hints at a defect in the answer.
+- **"Demà" and "ahir" belong to today and to nothing else.** A distance from the day being
+  looked at is *l'endemà* or *N dies després*; only a distance from today may be *avui*,
+  *demà*, *ahir* or *fa N dies*. The two are different measurements and the words are not
+  interchangeable.
+
+Dates shown beside a Solstica date carry their Gregorian year. Around the turn of the year the
+two disagree — 1 Unua 2028 is 21 December 2027 — and a reader should not have to work that out.
+
 ## The proposal is the source of truth
 
 The calendar is specified in a separate document (Plaza Alonso, J., *Solstica Kalendaro*,

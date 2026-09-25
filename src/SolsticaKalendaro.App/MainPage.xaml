@@ -80,7 +80,7 @@
                     <VerticalStackLayout Spacing="3">
                         <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="17"
                                TextColor="{StaticResource Accent}" />
-                        <Label Text="Fora del cicle setmanal" FontFamily="Plex" FontSize="11"
+                        <Label Text="Sense dia de la setmana" FontFamily="Plex" FontSize="11"
                                TextColor="{StaticResource Muted}" />
                     </VerticalStackLayout>
                     <Label Grid.Column="1" Text="{Binding Gregorian}" FontFamily="Plex" FontSize="12.5"
