@@ -54,13 +54,22 @@ signed by anybody else. To check a file before installing it:
 apksigner verify --print-certs solstica-kalendaro-N.M.O.P.apk
 ```
 
-The certificate's SHA-256 fingerprint should be:
+The certificate is `CN=Javier Plaza Alonso, C=ES`, and its SHA-256 fingerprint is:
 
 ```
-TO BE FILLED IN — no release has been signed yet. The release workflow prints the
-certificate's DN and SHA-256 digest in its "Verify the signature" step; copy the
-digest here after the first signed build, and never from anywhere else.
+ac76ef7e5a6e65d35c32284119de5891715c33f135d8808bbbd55a4a34f63476
 ```
+
+The same fingerprint, grouped in bytes, which is how `keytool` and Android's own settings
+screens print it:
+
+```
+AC:76:EF:7E:5A:6E:65:D3:5C:32:28:41:19:DE:58:91:71:5C:33:F1:35:D8:80:8B:BB:D5:5A:4A:34:F6:34:76
+```
+
+The two are the same 32 bytes written two ways; which one you see depends on the tool. The
+release workflow prints the first in its *Verify the signature* step, so every build can be
+checked against what is written here.
 
 ## What the version numbers mean
 
