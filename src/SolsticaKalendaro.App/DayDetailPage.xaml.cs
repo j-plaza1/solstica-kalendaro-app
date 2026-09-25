@@ -65,7 +65,7 @@ public partial class DayDetailPage : ContentPage
     {
         if (detail.Date.Period.IsExtraWeekly())
         {
-            DivergenceTitle.Text = "Sense dia de la setmana";
+            DivergenceTitle.Text = "Per què cada mes comença en dilluns";
             DivergenceBody.Text =
                 "Aquest dia no pertany a cap dia de la setmana. "
                 + "Per això cada mes comença sempre en dilluns.";
