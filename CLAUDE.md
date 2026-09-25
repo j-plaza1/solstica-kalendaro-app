@@ -67,10 +67,10 @@ matter of taste.
 - **No words that suggest something is wrong.** Not *aturar*, *endarrerir*, *desfasament*,
   *error*. A Jarfino does not stop, delay or break anything; it is simply a day that belongs
   to no weekday.
-- **Say what a thing is, not how this calendar differs.** "Aquest dia no pertany a cap dia de
-  la setmana. Per això cada mes comença sempre en dilluns" states a fact and what follows from
-  it. "És el que endarrereix el compte" asks the reader to hold a comparison in their head and
-  hints at a defect in the answer.
+- **Say what a thing is, not how this calendar differs.** "L'any té 52 setmanes justes i els
+  dies com aquest queden a part, i així cada mes comença en dilluns, tots els anys" states a
+  fact and what follows from it. "És el que endarrereix el compte" asks the reader to hold a
+  comparison in their head and hints at a defect in the answer.
 - **"Demà" and "ahir" belong to today and to nothing else.** A distance from the day being
   looked at is *l'endemà* or *N dies després*; only a distance from today may be *avui*,
   *demà*, *ahir* or *fa N dies*. The two are different measurements and the words are not

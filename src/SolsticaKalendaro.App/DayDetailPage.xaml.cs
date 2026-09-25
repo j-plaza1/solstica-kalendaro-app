@@ -67,8 +67,9 @@ public partial class DayDetailPage : ContentPage
         {
             DivergenceTitle.Text = "Per què cada mes comença en dilluns";
             DivergenceBody.Text =
-                "Aquest dia no pertany a cap dia de la setmana. "
-                + "Per això cada mes comença sempre en dilluns.";
+                "Perquè aquest dia no pertany a cap dia de la setmana. L'any té 52 setmanes "
+                + "justes i els dies com aquest queden a part, i així cada mes comença en "
+                + "dilluns, tots els anys.";
             DivergenceCard.IsVisible = true;
             return;
         }
