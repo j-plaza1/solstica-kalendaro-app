@@ -250,6 +250,18 @@
   <data name="TabDate" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="CalendarBegins" xml:space="preserve">
+    <value>When the calendar begins</value>
+  </data>
+  <data name="SolsticeOn22" xml:space="preserve">
+    <value>That year the solstice falls on the 22nd</value>
+  </data>
+  <data name="CalendarBeginsNote" xml:space="preserve">
+    <value>On each of these dates the December solstice falls on a Monday.</value>
+  </data>
+  <data name="StartsOn" xml:space="preserve">
+    <value>Begins on {0}</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>

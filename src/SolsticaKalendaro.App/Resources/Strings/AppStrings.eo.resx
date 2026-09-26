@@ -250,6 +250,18 @@
   <data name="TabDate" xml:space="preserve">
     <value>Dato</value>
   </data>
+  <data name="CalendarBegins" xml:space="preserve">
+    <value>Kiam la kalendaro komenciĝas</value>
+  </data>
+  <data name="SolsticeOn22" xml:space="preserve">
+    <value>Tiun jaron la solstico okazas la 22-an</value>
+  </data>
+  <data name="CalendarBeginsNote" xml:space="preserve">
+    <value>Ĉe ĉiuj ĉi tiuj datoj la decembra solstico okazas lunde.</value>
+  </data>
+  <data name="StartsOn" xml:space="preserve">
+    <value>Komenciĝas la {0}</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Lingvo</value>
   </data>

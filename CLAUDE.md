@@ -123,9 +123,14 @@ The conversion is built in four layers, each answering one question:
 
 - **`SolsticaEpoch`** — *which Gregorian date is 1 Unua?* One choice fixes the whole mapping
   forever, because both calendars use the 4/100/400 rule with the same year numbering.
-  Defaults to `Expository2026` (21 Dec 2026 = 1 Unua 2027); `AdoptionWindows` holds the
-  section 7.6 candidates. The 2031 adoption window (1 Unua 2032) anchors on 22 December (`IsOffAnchor`), which
-  shifts its correspondence permanently one day — surface that in any epoch picker.
+  `Expository2026` (21 Dec 2026 = 1 Unua 2027) is the app's default; `AdoptionWindows` holds the
+  section 7.6 candidates, and the app offers all of them. **Two epochs anchored on the same day
+  of December are the same calendar wherever they overlap**, so switching between them only
+  removes or adds the years before the first one. The 2031 window (1 Unua 2032) anchors on 22
+  December (`IsOffAnchor`) and is the only choice that moves a date: one day later, for ever.
+  `EpochChoiceTests` states both. In the app the choice lives in `CalendarStart`, which is the
+  only place that may build one — and the app's own words for it are "when the calendar begins",
+  never "epoch" or "adoption window".
 - **`ValidityPeriod`** — *what are the rules in this year?* Eleven rows covering 2000–10000
   (section 9.3), each carrying a `SeasonAllocation`, a `BlockWidths` arrangement and the
   `SupertagoSeam`. Resolved by year via `ValidityPeriod.For`. Outside the table, conversion

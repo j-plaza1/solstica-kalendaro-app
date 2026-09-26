@@ -102,12 +102,18 @@ harness without dragging a UI framework along.
 
 ## Design notes worth knowing before reading the code
 
-**The epoch is configurable.** The correspondence between the two calendars is fixed by
-one choice: which Gregorian date is 1 Unua. The app defaults to 21 December 2026 = 1 Unua
-2027, the expository epoch of the document, and offers the adoption windows of section 7.6
-— the years in which the December solstice falls on a Monday. Because both calendars use
-the 4/100/400 rule with the same year numbering, once that choice is made the two stay in
-permanent lockstep and 1 Unua always falls on the same Gregorian date.
+**The reader chooses when the calendar begins.** The correspondence between the two calendars
+is fixed by one choice: which Gregorian date is 1 Unua. The app offers 21 December 2026 — the
+expository epoch of the document, and the default — and the adoption windows of section 7.6,
+the years in which the December solstice falls on a Monday. The option list says none of that
+in those words: it asks when the calendar begins and lists the dates.
+
+**Choosing changes less than it looks.** Because both calendars use the 4/100/400 rule with the
+same year numbering, an epoch fixes the mapping for ever, and two epochs anchored on the same
+day of December are the same calendar wherever they overlap. Every option but one anchors on 21
+December, so switching between them only removes or adds the years before the first one. The
+2031 window anchors on 22 December, and that is the only choice that moves a date: every
+Gregorian date one day later, for ever. `EpochChoiceTests` states both halves.
 
 **Conversion is period-aware, but only for leap years.** Section 9 of the document
 recalibrates the seasonal allocation eleven times between 2000 and 10000, and moves the

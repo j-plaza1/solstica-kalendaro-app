@@ -23,6 +23,15 @@
             <!-- The languages, and above them the choice of not choosing. -->
             <VerticalStackLayout x:Name="Languages" Spacing="0" />
 
+            <Label x:Name="CalendarBeginsHeading" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,28,0,4" />
+
+            <VerticalStackLayout x:Name="Starts" Spacing="0" />
+
+            <!-- What the dates have in common, said once rather than under each of them. -->
+            <Label x:Name="CalendarBeginsNote" FontFamily="Plex" FontSize="11"
+                   TextColor="{StaticResource Muted}" Margin="0,14,0,0" />
+
         </VerticalStackLayout>
     </ScrollView>
 
