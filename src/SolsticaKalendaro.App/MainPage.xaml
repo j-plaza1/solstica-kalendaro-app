@@ -14,8 +14,8 @@
 
         <DataTemplate x:Key="SectionTemplate">
             <HorizontalStackLayout Padding="20,15,20,7" Spacing="8" HeightRequest="44">
-                <BoxView Color="{Binding Dot}" WidthRequest="7" HeightRequest="7"
-                         CornerRadius="3.5" VerticalOptions="Center" />
+                <Ellipse Fill="{Binding Dot}" WidthRequest="8" HeightRequest="8"
+                         VerticalOptions="Center" />
                 <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="16"
                        TextColor="{StaticResource Ink}" VerticalOptions="Center" />
                 <Label Text="{Binding Label}" FontFamily="Plex" FontSize="11"
@@ -100,13 +100,22 @@
 
         <!-- One row, because it has to keep fitting when the type grows. A second row of
              controls would come out of the grid, which is what the reader came for. -->
-        <VerticalStackLayout Grid.Row="0" Padding="14,44,12,8" Spacing="0">
+        <VerticalStackLayout Grid.Row="0" Padding="14,10,12,8" Spacing="0">
 
             <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto">
                 <Button x:Name="PreviousYearButton" Text="&#8249;" Clicked="OnPreviousYear"
                         SemanticProperties.Hint="Any anterior" />
-                <Button x:Name="YearButton" Grid.Column="1" Clicked="OnYearClicked"
-                        SemanticProperties.Hint="Tria un any, un període o una data" />
+
+                <Grid Grid.Column="1">
+                    <Button x:Name="YearButton" Clicked="OnYearClicked"
+                            SemanticProperties.Hint="Tria un any, un període o una data" />
+                    <Path Data="M 0,0 L 5,4.5 L 10,0" Stroke="#1C1A17"
+                          StrokeThickness="1.5" StrokeLineCap="Round" StrokeLineJoin="Round"
+                          WidthRequest="10" HeightRequest="5"
+                          HorizontalOptions="End" VerticalOptions="Center"
+                          Margin="0,3,8,0" InputTransparent="True" />
+                </Grid>
+
                 <Button x:Name="NextYearButton" Grid.Column="2" Text="&#8250;" Clicked="OnNextYear"
                         SemanticProperties.Hint="Any següent" />
 
@@ -133,7 +142,7 @@
                 <Label x:Name="LeapLabel" FontFamily="Plex" FontSize="12" IsVisible="False"
                        TextColor="{StaticResource Muted}" VerticalOptions="Center"
                        Text=" · any de traspàs" />
-                <Label x:Name="SubtitleLabel" FontFamily="Plex" FontSize="12" IsVisible="False"
+                <Label x:Name="StartsLabel" FontFamily="Plex" FontSize="12" IsVisible="False"
                        TextColor="{StaticResource Muted}" VerticalOptions="Center" />
             </HorizontalStackLayout>
 
@@ -154,6 +163,26 @@
         </Grid>
 
         <CollectionView x:Name="Rows" Grid.Row="2" ItemTemplate="{StaticResource RowSelector}" />
+
+        <!-- Anchored under the button that opens it, and dismissed by tapping anywhere else.
+             A dialog would take the screen and need a button to give it back. -->
+        <Grid x:Name="MenuOverlay" Grid.RowSpan="3" IsVisible="False" BackgroundColor="Transparent">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnDismissMenu" />
+            </Grid.GestureRecognizers>
+
+            <Border HorizontalOptions="End" VerticalOptions="Start" Margin="0,56,12,0"
+                    WidthRequest="210" Padding="0,6"
+                    BackgroundColor="{StaticResource Paper}"
+                    Stroke="{StaticResource Rule}" StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout>
+                    <Button Text="Opcions" Clicked="OnOptionsClicked" />
+                    <Button Text="Com es llegeix" Clicked="OnHowToReadClicked" />
+                    <Button Text="Quant a" Clicked="OnAboutClicked" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
     </Grid>
 
 </ContentPage>

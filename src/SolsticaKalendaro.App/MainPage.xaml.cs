@@ -54,7 +54,7 @@ public partial class MainPage : ContentPage
         _shownYear = Math.Clamp(year, FirstYear, LastYear);
         var today = Today();
 
-        YearButton.Text = $"{_shownYear.ToString(YearView.Culture)} ▾";
+        YearButton.Text = _shownYear.ToString(YearView.Culture);
         PreviousYearButton.IsEnabled = _shownYear > FirstYear;
         NextYearButton.IsEnabled = _shownYear < LastYear;
         PreviousYearButton.Opacity = PreviousYearButton.IsEnabled ? 1 : 0.3;
@@ -74,27 +74,24 @@ public partial class MainPage : ContentPage
     }
 
     /// <summary>
-    /// The line under the header. While the calendar has not begun it carries the wait, because
-    /// that is the fact a reader needs before any period means anything to them.
+    /// The line under the header: the period of the year on screen, always, and the way into
+    /// what that means. The wait is added to it on the one year that holds the calendar's first
+    /// day, which is where it answers a question the reader is actually asking.
     /// </summary>
     private void ShowPeriodLine(DateOnly today)
     {
+        var period = SolsticaCalendar.PeriodFor(_shownYear);
+        PeriodButton.Text = $"Període {period.FirstYear}–{period.LastYear} ›";
+        LeapLabel.IsVisible = SolsticaCalendar.IsLeapYear(_shownYear);
+
         var opens = Cal.Epoch.AdoptionDate;
-        bool begun = today >= opens;
+        bool waiting = _shownYear == FirstYear && today < opens;
+        StartsLabel.IsVisible = waiting;
 
-        PeriodButton.IsVisible = begun;
-        LeapLabel.IsVisible = begun && SolsticaCalendar.IsLeapYear(_shownYear);
-        SubtitleLabel.IsVisible = !begun;
-
-        if (begun)
-        {
-            var period = SolsticaCalendar.PeriodFor(_shownYear);
-            PeriodButton.Text = $"Període {period.FirstYear}–{period.LastYear} ›";
-        }
-        else
+        if (waiting)
         {
             int days = opens.DayNumber - today.DayNumber;
-            SubtitleLabel.Text = $"Encara no ha començat · falten {days} {(days == 1 ? "dia" : "dies")}";
+            StartsLabel.Text = $" · comença d'aquí a {days} {(days == 1 ? "dia" : "dies")}";
         }
     }
 
@@ -107,13 +104,22 @@ public partial class MainPage : ContentPage
     private void OnPeriodClicked(object? sender, EventArgs e) =>
         Navigation.PushAsync(new PlaceholderPage("Període"));
 
-    private async void OnMenuClicked(object? sender, EventArgs e)
-    {
-        string choice = await DisplayActionSheetAsync(null, "Tanca", null,
-            "Opcions", "Com es llegeix", "Quant a");
+    // ---------- the menu ----------
 
-        if (choice is "Opcions" or "Com es llegeix" or "Quant a")
-            await Navigation.PushAsync(new PlaceholderPage(choice));
+    private void OnMenuClicked(object? sender, EventArgs e) => MenuOverlay.IsVisible = true;
+
+    private void OnDismissMenu(object? sender, TappedEventArgs e) => MenuOverlay.IsVisible = false;
+
+    private void OnOptionsClicked(object? sender, EventArgs e) => OpenFromMenu("Opcions");
+
+    private void OnHowToReadClicked(object? sender, EventArgs e) => OpenFromMenu("Com es llegeix");
+
+    private void OnAboutClicked(object? sender, EventArgs e) => OpenFromMenu("Quant a");
+
+    private void OpenFromMenu(string title)
+    {
+        MenuOverlay.IsVisible = false;
+        Navigation.PushAsync(new PlaceholderPage(title));
     }
 
     // ---------- today ----------
@@ -183,7 +189,7 @@ public partial class MainPage : ContentPage
         YearButton.TextColor = (Color)Application.Current!.Resources["Ink"];
         YearButton.BackgroundColor = Colors.Transparent;
         YearButton.BorderWidth = 0;
-        YearButton.Padding = new Thickness(6, 0);
+        YearButton.Padding = new Thickness(6, 0, 24, 0);
         YearButton.MinimumHeightRequest = 44;
 
         foreach (var arrow in new[] { PreviousYearButton, NextYearButton })
@@ -195,8 +201,26 @@ public partial class MainPage : ContentPage
             arrow.BorderWidth = 0;
             arrow.Padding = new Thickness(0);
             arrow.MinimumHeightRequest = 44;
-            arrow.MinimumWidthRequest = 44;
+
+            // Equal widths, so the year sits between equal gaps rather than nearer one arrow.
+            arrow.WidthRequest = 38;
         }
+
+        foreach (var item in new[] { "Opcions", "Com es llegeix", "Quant a" }) StyleMenuItem(item);
+    }
+
+    /// <summary>The menu reads as a list of things to do, so its text is the ordinary ink.</summary>
+    private void StyleMenuItem(string text)
+    {
+        var item = MenuOverlay.GetVisualTreeDescendants().OfType<Button>().First(b => b.Text == text);
+        item.FontFamily = "Plex";
+        item.FontSize = 15;
+        item.TextColor = (Color)Application.Current!.Resources["Ink"];
+        item.BackgroundColor = Colors.Transparent;
+        item.BorderWidth = 0;
+        item.Padding = new Thickness(16, 10);
+        item.MinimumHeightRequest = 44;
+        item.HorizontalOptions = LayoutOptions.Start;
     }
 
     /// <summary>
