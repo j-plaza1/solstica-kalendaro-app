@@ -161,7 +161,13 @@ public partial class DayDetailPage : ContentPage
             ? AppStrings.UpcomingFromToday
             : AppStrings.UpcomingFromThisDay;
 
-        foreach (var festivity in _calendar.UpcomingFestivities(detail.Date, FestivitiesShown))
+        var upcoming = _calendar.UpcomingFestivities(detail.Date, FestivitiesShown);
+
+        // In the last days of 10000 there is nothing ahead that the app can put a date on, and
+        // a heading over an empty space asks the reader what they are failing to see.
+        FestivitiesTitle.IsVisible = upcoming.Count > 0;
+
+        foreach (var festivity in upcoming)
         {
             var row = new Grid
             {

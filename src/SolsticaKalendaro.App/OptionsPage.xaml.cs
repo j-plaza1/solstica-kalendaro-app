@@ -59,68 +59,20 @@ public partial class OptionsPage : ContentPage
     {
         // Following the device comes first: it is what the app does until asked otherwise.
         foreach (string code in new[] { Language.Automatic }.Concat(Language.Codes))
-            Languages.Add(Row(Language.NameOf(code), Language.Chosen == code, null,
-                              () => ChooseLanguage(code)));
+            Languages.Add(ChoiceRow.Build(Language.NameOf(code), Language.Chosen == code, null,
+                                          () => ChooseLanguage(code)));
     }
 
     private void ShowStarts()
     {
         foreach (var epoch in CalendarStart.Options)
-            Starts.Add(Row(
+            Starts.Add(ChoiceRow.Build(
                 Text.LongDate(epoch.AdoptionDate),
                 CalendarStart.Chosen.FirstSolsticaYear == epoch.FirstSolsticaYear,
                 // Only one of them starts on a different day, and that is worth saying where
                 // the reader is choosing rather than afterwards when every date has moved.
                 epoch.IsOffAnchor ? AppStrings.SolsticeOn22 : null,
                 () => ChooseStart(epoch)));
-    }
-
-    private View Row(string text, bool chosen, string? note, Action choose)
-    {
-        var name = new Label
-        {
-            Text = text,
-            FontFamily = chosen ? "PlexSemiBold" : "Plex",
-            FontSize = 16,
-            TextColor = Resource(chosen ? "Ink" : "Muted"),
-            VerticalOptions = LayoutOptions.Center
-        };
-
-        var lines = new VerticalStackLayout { Spacing = 2, VerticalOptions = LayoutOptions.Center };
-        lines.Add(name);
-
-        if (note is not null)
-            lines.Add(new Label
-            {
-                Text = note,
-                FontFamily = "Plex",
-                FontSize = 11,
-                TextColor = Resource("Muted")
-            });
-
-        var tick = new Label
-        {
-            Text = chosen ? "✓" : string.Empty,
-            FontFamily = "Plex",
-            FontSize = 16,
-            TextColor = Resource("Accent"),
-            VerticalOptions = LayoutOptions.Center
-        };
-
-        var row = new Grid
-        {
-            ColumnDefinitions = [new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto)],
-            Padding = new Thickness(0, 14),
-            MinimumHeightRequest = 44
-        };
-        row.Add(lines);
-        row.Add(tick, 1);
-        row.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(choose) });
-
-        var holder = new VerticalStackLayout { Spacing = 0 };
-        holder.Add(new BoxView { Color = Resource("Hairline"), HeightRequest = 1 });
-        holder.Add(row);
-        return holder;
     }
 
     private void ChooseLanguage(string code)
@@ -150,6 +102,4 @@ public partial class OptionsPage : ContentPage
         Application.Current!.Windows[0].Page = navigation;
         navigation.PushAsync(new OptionsPage(Scroller.ScrollY), animated: false);
     }
-
-    private static Color Resource(string key) => (Color)Application.Current!.Resources[key];
 }

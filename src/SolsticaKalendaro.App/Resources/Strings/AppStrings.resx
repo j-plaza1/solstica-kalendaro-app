@@ -123,7 +123,7 @@
     <value>CALENDARI GREGORIÀ</value>
   </data>
   <data name="BeyondGregorian" xml:space="preserve">
-    <value>fora de l'abast del calendari gregorià</value>
+    <value>més enllà del 31 de desembre de 9999</value>
     <comment>For days the Gregorian calendar cannot express.</comment>
   </data>
   <data name="MondayTitle" xml:space="preserve">
@@ -302,5 +302,16 @@
   </data>
   <data name="LanguageEsperanto" xml:space="preserve">
     <value>Esperanto (eo)</value>
+  </data>
+  <data name="YearRange" xml:space="preserve">
+    <value>De {0} a {1}</value>
+    <comment>The years the calendar has: {0} is its first, {1} the last of the table.</comment>
+  </data>
+  <data name="GoButton" xml:space="preserve">
+    <value>Anar-hi</value>
+  </data>
+  <data name="GregorianUpTo" xml:space="preserve">
+    <value>Dates gregorianes fins al 9999</value>
+    <comment>In the last year, where the Gregorian dates run out before the Solstica ones do.</comment>
   </data>
 </root>
