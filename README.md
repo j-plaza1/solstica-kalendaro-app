@@ -12,6 +12,12 @@ is right and the code has a bug.
 > calendar faithful to the real lengths of the seasons.*
 > <https://doi.org/10.5281/zenodo.22129891> (CC BY 4.0)
 
+That DOI is the concept one: it always resolves to the newest version of the document.
+**This app implements version 2.1**, which is
+<https://doi.org/10.5281/zenodo.22755480>. The two are not interchangeable — anyone
+checking the app against the proposal needs the version it was built against, not
+whichever is newest — and the first half of every release tag says which that is.
+
 ## What the calendar looks like
 
 A year is twelve months of 28 days each, separated into four seasons of three months,
