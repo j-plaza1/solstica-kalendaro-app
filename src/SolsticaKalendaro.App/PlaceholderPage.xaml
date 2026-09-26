@@ -7,7 +7,6 @@
 
     <VerticalStackLayout Padding="20,10,20,30" Spacing="0">
         <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
-                SemanticProperties.Hint="Torna enrere"
                 FontFamily="Plex" FontSize="18" TextColor="{StaticResource Muted}"
                 BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                 MinimumHeightRequest="44" MinimumWidthRequest="44"

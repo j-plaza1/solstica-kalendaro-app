@@ -1,3 +1,5 @@
+using SolsticaKalendaro.App.Resources.Strings;
+
 namespace SolsticaKalendaro.App;
 
 /// <summary>
@@ -12,6 +14,12 @@ public partial class GoToPage : ContentPage
     public GoToPage()
     {
         InitializeComponent();
+
+        SemanticProperties.SetHint(BackButton, AppStrings.HintBackToYear);
+        TitleLabel.Text = AppStrings.GoTo;
+        YearTab.Text = AppStrings.TabYear;
+        PeriodTab.Text = AppStrings.TabPeriod;
+        DateTab.Text = AppStrings.TabDate;
 
         foreach (var tab in new[] { YearTab, PeriodTab, DateTab }) StyleTab(tab);
         _selected = YearTab;

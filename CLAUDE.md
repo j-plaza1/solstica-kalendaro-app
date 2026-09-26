@@ -79,6 +79,16 @@ matter of taste.
 Dates shown beside a Solstica date carry their Gregorian year. Around the turn of the year the
 two disagree — 1 Unua 2028 is 21 December 2027 — and a reader should not have to work that out.
 
+**No new text enters the app unless it is in all four languages.** Catalan, Spanish, English
+and Esperanto live in `Resources/Strings/AppStrings*.resx`, Catalan being the original the
+others are translated from. A string added to one file and not the others is a screen that
+falls back to Catalan for a reader who does not read it, which is worse than the feature being
+absent. The criterion above applies to all four, not only to the one it was written in.
+
+Never translated: the names of the blocks (`Unua`, `Jarmezo`) and of the festivities
+(`Jarkomenco`, `Supertago`). Translated: weekdays, the notes beside a block's name, and every
+Gregorian date, which takes its shape from the chosen language.
+
 ## The proposal is the source of truth
 
 The calendar is specified in a separate document (Plaza Alonso, J., *Solstica Kalendaro*,

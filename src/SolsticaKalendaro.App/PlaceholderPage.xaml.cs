@@ -1,3 +1,5 @@
+using SolsticaKalendaro.App.Resources.Strings;
+
 namespace SolsticaKalendaro.App;
 
 /// <summary>
@@ -10,6 +12,7 @@ public partial class PlaceholderPage : ContentPage
     public PlaceholderPage(string title)
     {
         InitializeComponent();
+        SemanticProperties.SetHint(BackButton, AppStrings.HintBack);
         TitleLabel.Text = title;
     }
 
