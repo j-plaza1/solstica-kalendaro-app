@@ -268,6 +268,21 @@
   <data name="TabDate" xml:space="preserve">
     <value>Data</value>
   </data>
+  <data name="CalendarBegins" xml:space="preserve">
+    <value>Quan comença el calendari</value>
+  </data>
+  <data name="SolsticeOn22" xml:space="preserve">
+    <value>Aquell any el solstici cau el dia 22</value>
+    <comment>Shown under the one option whose 1 Unua is not 21 December.</comment>
+  </data>
+  <data name="CalendarBeginsNote" xml:space="preserve">
+    <value>En totes aquestes dates el solstici de desembre cau en dilluns.</value>
+    <comment>Under the whole list.</comment>
+  </data>
+  <data name="StartsOn" xml:space="preserve">
+    <value>Comença el {0}</value>
+    <comment>From a year out, a date says more than a count of days. {0} is that date.</comment>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Idioma</value>
   </data>

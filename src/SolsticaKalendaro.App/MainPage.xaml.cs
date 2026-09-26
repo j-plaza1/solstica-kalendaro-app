@@ -6,7 +6,8 @@ namespace SolsticaKalendaro.App;
 
 public partial class MainPage : ContentPage
 {
-    private static readonly SolsticaCalendar Cal = new(SolsticaEpoch.Expository2026);
+    /// <summary>The one calendar, from wherever the reader has said it begins.</summary>
+    private static SolsticaCalendar Cal => CalendarStart.Calendar;
 
     /// <summary>The years this calendar has. Below the first there is no calendar to show.</summary>
     private static int FirstYear => Cal.Epoch.FirstSolsticaYear;
@@ -22,24 +23,54 @@ public partial class MainPage : ContentPage
     private DayView? _highlighted;
     private int _todayRow = -1;
     private int _shownYear;
+    private int _firstVisibleRow;
+    private int _resumeRow;
 
-    public MainPage()
+    /// <summary>Where the reader was, for a page that replaces this one to carry on from.</summary>
+    public (int Year, int Row) Place => (_shownYear, _firstVisibleRow);
+
+    /// <param name="resume">
+    /// Where to open, when this page is replacing one the reader was already reading. The year
+    /// is kept if the calendar still has it, and the row with it, because the shape of a year
+    /// does not depend on when the calendar begins. Otherwise the first year, from the top,
+    /// where the first day and the wait are.
+    /// </param>
+    public MainPage((int Year, int Row)? resume = null)
     {
         InitializeComponent();
         OpenDay = new Command<SolsticaDate>(date => Navigation.PushAsync(new DayDetailPage(Cal, date)));
         NameEverything();
         StyleYearControls();
 
-        ShowYear(YearOf(Today()) ?? FirstYear);
+        Rows.Scrolled += RememberPlace;
 
-        // The first attempt scrolled from the constructor and landed a month short: the
-        // CollectionView had no native view yet, so the request went nowhere useful.
-        // Loaded is the event that says it does. Every row has a fixed height, so scrolling
-        // by index is exact whether or not the rows have been realised.
-        Rows.Loaded += ScrollToTodayOnce;
+        if (resume is { } place)
+        {
+            bool kept = place.Year >= FirstYear && place.Year <= LastYear;
+            ShowYear(kept ? place.Year : FirstYear);
+
+            // The list has not scrolled yet, so nothing has told us where it is. Say it here:
+            // a page replaced a second time before the reader ever touched it would otherwise
+            // hand on row zero and lose the place.
+            _resumeRow = _firstVisibleRow = kept ? place.Row : 0;
+            Rows.Loaded += ScrollToPlaceOnce;
+        }
+        else
+        {
+            ShowYear(YearOf(Today()) ?? FirstYear);
+
+            // The first attempt scrolled from the constructor and landed a month short: the
+            // CollectionView had no native view yet, so the request went nowhere useful.
+            // Loaded is the event that says it does. Every row has a fixed height, so scrolling
+            // by index is exact whether or not the rows have been realised.
+            Rows.Loaded += ScrollToTodayOnce;
+        }
 
         Loaded += WatchForResume;
     }
+
+    private void RememberPlace(object? sender, ItemsViewScrolledEventArgs e) =>
+        _firstVisibleRow = e.FirstVisibleItemIndex;
 
     private static DateOnly Today() => DateOnly.FromDateTime(DateTime.Now);
 
@@ -66,6 +97,10 @@ public partial class MainPage : ContentPage
         _rows = YearView.Build(Cal.Outline(_shownYear), today, Palette());
         Rows.ItemsSource = _rows;
 
+        // A new source starts at the top, and the row we were on belonged to the old year.
+        // Whatever scrolls next — Today, or the reader — says so through Scrolled.
+        _firstVisibleRow = 0;
+
         (_todayRow, _highlighted) = YearView.Locate(_rows, today);
 
         // No today to go to in a year that does not contain it.
@@ -91,14 +126,24 @@ public partial class MainPage : ContentPage
         int days = opens.DayNumber - today.DayNumber;
 
         string? prefix =
-            _shownYear == FirstYear && today < opens
-                ? (days == 1 ? AppStrings.StartsOne : string.Format(Language.Culture, AppStrings.StartsMany, days))
+            _shownYear == FirstYear && today < opens ? Wait(days, opens)
             : SolsticaCalendar.IsLeapYear(_shownYear) ? AppStrings.LeapYear
             : null;
 
         PrefixLabel.IsVisible = prefix is not null;
         if (prefix is not null) PrefixLabel.Text = $"{prefix} · ";
     }
+
+    /// <summary>
+    /// How long until the calendar starts. Counted in days while a count still means something,
+    /// and given as a date once it does not: "begins in 18,000 days" is a number, not an answer.
+    /// </summary>
+    private static string Wait(int days, DateOnly opens) => days switch
+    {
+        1 => AppStrings.StartsOne,
+        <= 365 => string.Format(Language.Culture, AppStrings.StartsMany, days),
+        _ => string.Format(Language.Culture, AppStrings.StartsOn, Text.LongDate(opens))
+    };
 
     private void OnPreviousYear(object? sender, EventArgs e) => ShowYear(_shownYear - 1);
 
@@ -138,6 +183,17 @@ public partial class MainPage : ContentPage
     {
         Rows.Loaded -= ScrollToTodayOnce;
         GoToToday(animate: false);
+    }
+
+    /// <summary>
+    /// Where the reader was, restored once. Loaded fires again every time the page becomes
+    /// visible — coming back from a day, for one — and a handler left attached would drag the
+    /// list back to a place the reader has since left.
+    /// </summary>
+    private void ScrollToPlaceOnce(object? sender, EventArgs e)
+    {
+        Rows.Loaded -= ScrollToPlaceOnce;
+        Rows.ScrollTo(_resumeRow, position: ScrollToPosition.Start, animate: false);
     }
 
     /// <summary>Today is in some year, which may not be the one on screen.</summary>
