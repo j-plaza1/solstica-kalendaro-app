@@ -5,7 +5,7 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="{StaticResource Paper}">
 
-    <ScrollView>
+    <ScrollView x:Name="Scroller">
         <VerticalStackLayout Padding="20,10,20,30" Spacing="0">
 
             <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"

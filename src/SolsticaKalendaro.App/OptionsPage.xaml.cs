@@ -8,14 +8,23 @@ namespace SolsticaKalendaro.App;
 /// days, which is why this is a page rather than a dialog.
 ///
 /// Both choices rebuild the pages, because everything already drawn was drawn with the old
-/// answer. Both keep the reader where they were: on this page, and behind it the year they were
-/// reading, at the row they had reached.
+/// answer. Both keep the reader where they were: on this page, scrolled to where they were
+/// reading it, and behind it the year they were reading, at the row they had reached.
 /// </summary>
 public partial class OptionsPage : ContentPage
 {
-    public OptionsPage()
+    private readonly double _resumeScroll;
+
+    /// <param name="resumeScroll">
+    /// How far down the reader had come, when this page is replacing one they were already
+    /// looking at. The lists are longer than a phone screen, so the tick that has just moved
+    /// may well be below the fold, and a page that opened at the top would hide the answer to
+    /// what the reader just did.
+    /// </param>
+    public OptionsPage(double resumeScroll = 0)
     {
         InitializeComponent();
+        _resumeScroll = resumeScroll;
 
         SemanticProperties.SetHint(BackButton, AppStrings.HintBack);
         TitleLabel.Text = AppStrings.MenuOptions;
@@ -25,6 +34,23 @@ public partial class OptionsPage : ContentPage
 
         ShowLanguages();
         ShowStarts();
+
+        // Loaded comes too early: the page exists but nothing has been measured, and a scroll
+        // to a position the content does not yet reach is clamped to the top. The first size
+        // the ScrollView is given is the moment there is something to scroll within.
+        if (_resumeScroll > 0) Scroller.SizeChanged += RestoreScrollOnce;
+    }
+
+    /// <summary>
+    /// Restored once. Detached at the first attempt, so that every later layout — a rotation,
+    /// a keyboard — leaves the scrolling to the reader, whose it is by then.
+    /// </summary>
+    private void RestoreScrollOnce(object? sender, EventArgs e)
+    {
+        if (Scroller.Height <= 0) return;
+
+        Scroller.SizeChanged -= RestoreScrollOnce;
+        Scroller.ScrollToAsync(0, _resumeScroll, animated: false);
     }
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
@@ -112,8 +138,9 @@ public partial class OptionsPage : ContentPage
     }
 
     /// <summary>
-    /// Everything on screen was built with the old answer, so it is all built again — and the
-    /// year underneath is told where it was, so that coming back is not a return to the top.
+    /// Everything on screen was built with the old answer, so it is all built again — and both
+    /// pages are told where they were: this one so the reader can see the tick that has just
+    /// moved, the year underneath so that coming back is not a return to the top.
     /// </summary>
     private void Rebuild()
     {
@@ -121,7 +148,7 @@ public partial class OptionsPage : ContentPage
 
         var navigation = new NavigationPage(new MainPage(place));
         Application.Current!.Windows[0].Page = navigation;
-        navigation.PushAsync(new OptionsPage(), animated: false);
+        navigation.PushAsync(new OptionsPage(Scroller.ScrollY), animated: false);
     }
 
     private static Color Resource(string key) => (Color)Application.Current!.Resources[key];

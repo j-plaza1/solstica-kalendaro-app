@@ -24,6 +24,7 @@ public partial class MainPage : ContentPage
     private int _todayRow = -1;
     private int _shownYear;
     private int _firstVisibleRow;
+    private int _resumeRow;
 
     /// <summary>Where the reader was, for a page that replaces this one to carry on from.</summary>
     public (int Year, int Row) Place => (_shownYear, _firstVisibleRow);
@@ -43,15 +44,16 @@ public partial class MainPage : ContentPage
 
         Rows.Scrolled += RememberPlace;
 
-        if (resume is { } place && place.Year >= FirstYear && place.Year <= LastYear)
+        if (resume is { } place)
         {
-            ShowYear(place.Year);
-            Rows.Loaded += (_, _) => Rows.ScrollTo(place.Row, position: ScrollToPosition.Start, animate: false);
-        }
-        else if (resume is not null)
-        {
-            ShowYear(FirstYear);
-            Rows.Loaded += (_, _) => Rows.ScrollTo(0, position: ScrollToPosition.Start, animate: false);
+            bool kept = place.Year >= FirstYear && place.Year <= LastYear;
+            ShowYear(kept ? place.Year : FirstYear);
+
+            // The list has not scrolled yet, so nothing has told us where it is. Say it here:
+            // a page replaced a second time before the reader ever touched it would otherwise
+            // hand on row zero and lose the place.
+            _resumeRow = _firstVisibleRow = kept ? place.Row : 0;
+            Rows.Loaded += ScrollToPlaceOnce;
         }
         else
         {
@@ -94,6 +96,10 @@ public partial class MainPage : ContentPage
 
         _rows = YearView.Build(Cal.Outline(_shownYear), today, Palette());
         Rows.ItemsSource = _rows;
+
+        // A new source starts at the top, and the row we were on belonged to the old year.
+        // Whatever scrolls next — Today, or the reader — says so through Scrolled.
+        _firstVisibleRow = 0;
 
         (_todayRow, _highlighted) = YearView.Locate(_rows, today);
 
@@ -177,6 +183,17 @@ public partial class MainPage : ContentPage
     {
         Rows.Loaded -= ScrollToTodayOnce;
         GoToToday(animate: false);
+    }
+
+    /// <summary>
+    /// Where the reader was, restored once. Loaded fires again every time the page becomes
+    /// visible — coming back from a day, for one — and a handler left attached would drag the
+    /// list back to a place the reader has since left.
+    /// </summary>
+    private void ScrollToPlaceOnce(object? sender, EventArgs e)
+    {
+        Rows.Loaded -= ScrollToPlaceOnce;
+        Rows.ScrollTo(_resumeRow, position: ScrollToPosition.Start, animate: false);
     }
 
     /// <summary>Today is in some year, which may not be the one on screen.</summary>
