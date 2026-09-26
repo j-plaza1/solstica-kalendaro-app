@@ -98,19 +98,45 @@
 
     <Grid RowDefinitions="Auto,Auto,*">
 
-        <VerticalStackLayout Grid.Row="0" Padding="20,44,20,12" Spacing="2">
-            <Grid ColumnDefinitions="*,Auto">
-                <Label x:Name="YearLabel" FontFamily="SpectralSemiBold" FontSize="27"
-                       TextColor="{StaticResource Ink}" VerticalOptions="End" />
-                <Button x:Name="TodayButton" Grid.Column="1" Text="Avui" Clicked="OnTodayClicked"
+        <!-- One row, because it has to keep fitting when the type grows. A second row of
+             controls would come out of the grid, which is what the reader came for. -->
+        <VerticalStackLayout Grid.Row="0" Padding="14,44,12,8" Spacing="0">
+
+            <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto">
+                <Button x:Name="PreviousYearButton" Text="&#8249;" Clicked="OnPreviousYear"
+                        SemanticProperties.Hint="Any anterior" />
+                <Button x:Name="YearButton" Grid.Column="1" Clicked="OnYearClicked"
+                        SemanticProperties.Hint="Tria un any, un període o una data" />
+                <Button x:Name="NextYearButton" Grid.Column="2" Text="&#8250;" Clicked="OnNextYear"
+                        SemanticProperties.Hint="Any següent" />
+
+                <Button x:Name="TodayButton" Grid.Column="4" Text="Avui" Clicked="OnTodayClicked"
                         SemanticProperties.Hint="Va a la data d&apos;avui"
                         FontFamily="PlexMedium" FontSize="12"
-                        MinimumHeightRequest="44" Padding="16,9" CornerRadius="22"
+                        MinimumHeightRequest="44" Padding="14,9" CornerRadius="22"
                         BorderWidth="1" BorderColor="{StaticResource Rule}"
                         BackgroundColor="Transparent" TextColor="{StaticResource Muted}" />
+                <Button x:Name="MenuButton" Grid.Column="5" Text="&#8942;" Clicked="OnMenuClicked"
+                        SemanticProperties.Hint="Opcions, com es llegeix i quant a"
+                        FontFamily="Plex" FontSize="20" TextColor="{StaticResource Muted}"
+                        BackgroundColor="Transparent" BorderWidth="0" Padding="0"
+                        MinimumHeightRequest="44" MinimumWidthRequest="44" />
             </Grid>
-            <Label x:Name="SubtitleLabel" FontFamily="Plex" FontSize="12"
-                   TextColor="{StaticResource Muted}" />
+
+            <!-- The period of the year on screen, and the way into what that means. Before the
+                 calendar begins there is no period to speak of, so it carries the wait. -->
+            <HorizontalStackLayout Spacing="0" Margin="6,0,0,0">
+                <Button x:Name="PeriodButton" Clicked="OnPeriodClicked"
+                        FontFamily="Plex" FontSize="12" TextColor="{StaticResource Muted}"
+                        BackgroundColor="Transparent" BorderWidth="0" Padding="0,6"
+                        MinimumHeightRequest="32" />
+                <Label x:Name="LeapLabel" FontFamily="Plex" FontSize="12" IsVisible="False"
+                       TextColor="{StaticResource Muted}" VerticalOptions="Center"
+                       Text=" · any de traspàs" />
+                <Label x:Name="SubtitleLabel" FontFamily="Plex" FontSize="12" IsVisible="False"
+                       TextColor="{StaticResource Muted}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
         </VerticalStackLayout>
 
         <!-- The Solstica week, which is not the Gregorian one: it pauses at the extra-weekly days. -->

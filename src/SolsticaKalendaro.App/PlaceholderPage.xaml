@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.PlaceholderPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Paper}">
+
+    <VerticalStackLayout Padding="20,44,20,30" Spacing="0">
+        <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
+                SemanticProperties.Hint="Torna enrere"
+                FontFamily="Plex" FontSize="18" TextColor="{StaticResource Muted}"
+                BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                MinimumHeightRequest="44" MinimumWidthRequest="44"
+                HorizontalOptions="Start" />
+
+        <Label x:Name="TitleLabel" FontFamily="SpectralSemiBold" FontSize="32"
+               TextColor="{StaticResource Ink}" Margin="0,12,0,0" />
+    </VerticalStackLayout>
+
+</ContentPage>
