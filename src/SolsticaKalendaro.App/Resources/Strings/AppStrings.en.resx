@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="HintPreviousYear" xml:space="preserve">
+    <value>Previous year</value>
+  </data>
+  <data name="HintNextYear" xml:space="preserve">
+    <value>Next year</value>
+  </data>
+  <data name="HintYear" xml:space="preserve">
+    <value>Choose a year, a period or a date</value>
+  </data>
+  <data name="HintToday" xml:space="preserve">
+    <value>Goes to today's date</value>
+  </data>
+  <data name="HintMenu" xml:space="preserve">
+    <value>Options, how to read it and about</value>
+  </data>
+  <data name="MenuOptions" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="MenuHowToRead" xml:space="preserve">
+    <value>How to read it</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>Period {0}–{1} ›</value>
+  </data>
+  <data name="LeapYear" xml:space="preserve">
+    <value>Leap year</value>
+  </data>
+  <data name="StartsOne" xml:space="preserve">
+    <value>Begins in 1 day</value>
+  </data>
+  <data name="StartsMany" xml:space="preserve">
+    <value>Begins in {0} days</value>
+  </data>
+  <data name="BandNoWeekday" xml:space="preserve">
+    <value>No weekday</value>
+  </data>
+  <data name="HintBackToYear" xml:space="preserve">
+    <value>Back to the year</value>
+  </data>
+  <data name="HintBack" xml:space="preserve">
+    <value>Go back</value>
+  </data>
+  <data name="DayOfYear" xml:space="preserve">
+    <value>day {0} of {1}</value>
+  </data>
+  <data name="NoWeekday" xml:space="preserve">
+    <value>no weekday</value>
+  </data>
+  <data name="GregorianCalendar" xml:space="preserve">
+    <value>GREGORIAN CALENDAR</value>
+  </data>
+  <data name="BeyondGregorian" xml:space="preserve">
+    <value>beyond the Gregorian calendar's reach</value>
+  </data>
+  <data name="MondayTitle" xml:space="preserve">
+    <value>Why every month starts on a Monday</value>
+  </data>
+  <data name="MondayBody" xml:space="preserve">
+    <value>Because this day belongs to no weekday. The year is exactly 52 weeks, days like this one stand apart, and so every month starts on a Monday, every year.</value>
+  </data>
+  <data name="DivergenceTitle" xml:space="preserve">
+    <value>Why the weekdays do not match</value>
+  </data>
+  <data name="DivergenceOne" xml:space="preserve">
+    <value>The Jarfino and the Supertago belong to no weekday. That is why this calendar's weekday and the Gregorian one are one day apart. The last was {0}; {1}</value>
+  </data>
+  <data name="DivergenceMany" xml:space="preserve">
+    <value>The Jarfino and the Supertago belong to no weekday. That is why this calendar's weekday and the Gregorian one are {0} days apart. The last was {1}; {2}</value>
+  </data>
+  <data name="NextShift" xml:space="preserve">
+    <value>the next will be {0}, on {1}.</value>
+  </data>
+  <data name="NextShiftNoDate" xml:space="preserve">
+    <value>the next will be {0}.</value>
+  </data>
+  <data name="NoMoreShifts" xml:space="preserve">
+    <value>and there are no more in this calendar.</value>
+  </data>
+  <data name="ShiftName" xml:space="preserve">
+    <value>the {0} of {1}</value>
+  </data>
+  <data name="SeasonalPosition" xml:space="preserve">
+    <value>SEASONAL POSITION</value>
+  </data>
+  <data name="SeasonLine" xml:space="preserve">
+    <value>{0} · day {1} of {2}</value>
+  </data>
+  <data name="Season1" xml:space="preserve">
+    <value>first season</value>
+  </data>
+  <data name="Season2" xml:space="preserve">
+    <value>second season</value>
+  </data>
+  <data name="Season3" xml:space="preserve">
+    <value>third season</value>
+  </data>
+  <data name="Season4" xml:space="preserve">
+    <value>fourth season</value>
+  </data>
+  <data name="UpcomingFromThisDay" xml:space="preserve">
+    <value>NEXT UNIVERSAL HOLIDAYS (FROM THIS DAY)</value>
+  </data>
+  <data name="UpcomingFromToday" xml:space="preserve">
+    <value>NEXT UNIVERSAL HOLIDAYS (FROM TODAY)</value>
+  </data>
+  <data name="AfterOne" xml:space="preserve">
+    <value>the next day</value>
+  </data>
+  <data name="AfterMany" xml:space="preserve">
+    <value>{0} days later</value>
+  </data>
+  <data name="FromTodayToday" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="FromTodayTomorrow" xml:space="preserve">
+    <value>tomorrow</value>
+  </data>
+  <data name="FromTodayYesterday" xml:space="preserve">
+    <value>yesterday</value>
+  </data>
+  <data name="FromTodayIn" xml:space="preserve">
+    <value>in {0} days</value>
+  </data>
+  <data name="FromTodayAgo" xml:space="preserve">
+    <value>{0} days ago</value>
+  </data>
+  <data name="DateWithYear" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="PeriodFooter" xml:space="preserve">
+    <value>Period {0}–{1} · {2}</value>
+  </data>
+  <data name="Month1" xml:space="preserve">
+    <value>first month</value>
+  </data>
+  <data name="Month2" xml:space="preserve">
+    <value>second month</value>
+  </data>
+  <data name="Month3" xml:space="preserve">
+    <value>third month</value>
+  </data>
+  <data name="Month4" xml:space="preserve">
+    <value>fourth month</value>
+  </data>
+  <data name="Month5" xml:space="preserve">
+    <value>fifth month</value>
+  </data>
+  <data name="Month6" xml:space="preserve">
+    <value>sixth month</value>
+  </data>
+  <data name="Month7" xml:space="preserve">
+    <value>seventh month</value>
+  </data>
+  <data name="Month8" xml:space="preserve">
+    <value>eighth month</value>
+  </data>
+  <data name="Month9" xml:space="preserve">
+    <value>ninth month</value>
+  </data>
+  <data name="Month10" xml:space="preserve">
+    <value>tenth month</value>
+  </data>
+  <data name="Month11" xml:space="preserve">
+    <value>eleventh month</value>
+  </data>
+  <data name="Month12" xml:space="preserve">
+    <value>twelfth month</value>
+  </data>
+  <data name="CentralPeriod" xml:space="preserve">
+    <value>central period · {0}°</value>
+  </data>
+  <data name="Transition" xml:space="preserve">
+    <value>transition · {0}°</value>
+  </data>
+  <data name="GoTo" xml:space="preserve">
+    <value>Go to</value>
+  </data>
+  <data name="TabYear" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="TabPeriod" xml:space="preserve">
+    <value>Period</value>
+  </data>
+  <data name="TabDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageAutomatic" xml:space="preserve">
+    <value>Automatic (device language)</value>
+  </data>
+  <data name="LanguageCatalan" xml:space="preserve">
+    <value>Catalan (ca)</value>
+  </data>
+  <data name="LanguageSpanish" xml:space="preserve">
+    <value>Spanish (es)</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>English (en)</value>
+  </data>
+  <data name="LanguageEsperanto" xml:space="preserve">
+    <value>Esperanto (eo)</value>
+  </data>
+</root>

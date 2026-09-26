@@ -80,4 +80,17 @@
 	  <ProjectReference Include="..\SolsticaKalendaro.Core\SolsticaKalendaro.Core.csproj" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+		<!-- One table of strings, four files, one generated class. The neutral file is the
+		     Catalan, which is the original the others are translated from. -->
+		<EmbeddedResource Update="Resources\Strings\AppStrings.resx">
+			<Generator>MSBuild:Compile</Generator>
+			<StronglyTypedFileName>$(IntermediateOutputPath)AppStrings.Designer.cs</StronglyTypedFileName>
+			<StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+			<StronglyTypedNamespace>SolsticaKalendaro.App.Resources.Strings</StronglyTypedNamespace>
+			<StronglyTypedClassName>AppStrings</StronglyTypedClassName>
+		</EmbeddedResource>
+	</ItemGroup>
+
 </Project>

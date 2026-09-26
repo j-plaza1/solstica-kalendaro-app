@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Today" xml:space="preserve">
+    <value>Avui</value>
+    <comment>The button that goes to today.</comment>
+  </data>
+  <data name="HintPreviousYear" xml:space="preserve">
+    <value>Any anterior</value>
+  </data>
+  <data name="HintNextYear" xml:space="preserve">
+    <value>Any següent</value>
+  </data>
+  <data name="HintYear" xml:space="preserve">
+    <value>Tria un any, un període o una data</value>
+  </data>
+  <data name="HintToday" xml:space="preserve">
+    <value>Va a la data d'avui</value>
+  </data>
+  <data name="HintMenu" xml:space="preserve">
+    <value>Opcions, com es llegeix i quant a</value>
+  </data>
+  <data name="MenuOptions" xml:space="preserve">
+    <value>Opcions</value>
+  </data>
+  <data name="MenuHowToRead" xml:space="preserve">
+    <value>Com es llegeix</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>Quant a</value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>Període {0}–{1} ›</value>
+    <comment>{0} first year, {1} last year of the period.</comment>
+  </data>
+  <data name="LeapYear" xml:space="preserve">
+    <value>Any de traspàs</value>
+  </data>
+  <data name="StartsOne" xml:space="preserve">
+    <value>Comença d'aquí a 1 dia</value>
+    <comment>The calendar begins tomorrow.</comment>
+  </data>
+  <data name="StartsMany" xml:space="preserve">
+    <value>Comença d'aquí a {0} dies</value>
+    <comment>{0} days until the calendar begins.</comment>
+  </data>
+  <data name="BandNoWeekday" xml:space="preserve">
+    <value>Sense dia de la setmana</value>
+    <comment>Under the name of a Jarfino or a Supertago in the year view.</comment>
+  </data>
+  <data name="HintBackToYear" xml:space="preserve">
+    <value>Torna a la vista d'any</value>
+  </data>
+  <data name="HintBack" xml:space="preserve">
+    <value>Torna enrere</value>
+  </data>
+  <data name="DayOfYear" xml:space="preserve">
+    <value>dia {0} de {1}</value>
+    <comment>{0} day, {1} days in the year.</comment>
+  </data>
+  <data name="NoWeekday" xml:space="preserve">
+    <value>sense dia de la setmana</value>
+    <comment>In place of the weekday, on a day that has none.</comment>
+  </data>
+  <data name="GregorianCalendar" xml:space="preserve">
+    <value>CALENDARI GREGORIÀ</value>
+  </data>
+  <data name="BeyondGregorian" xml:space="preserve">
+    <value>fora de l'abast del calendari gregorià</value>
+    <comment>For days the Gregorian calendar cannot express.</comment>
+  </data>
+  <data name="MondayTitle" xml:space="preserve">
+    <value>Per què cada mes comença en dilluns</value>
+  </data>
+  <data name="MondayBody" xml:space="preserve">
+    <value>Perquè aquest dia no pertany a cap dia de la setmana. L'any té 52 setmanes justes i els dies com aquest queden a part, i així cada mes comença en dilluns, tots els anys.</value>
+  </data>
+  <data name="DivergenceTitle" xml:space="preserve">
+    <value>Per què els dies de la setmana no coincideixen</value>
+  </data>
+  <data name="DivergenceOne" xml:space="preserve">
+    <value>El Jarfino i el Supertago no pertanyen a cap dia de la setmana. Per això el dia de la setmana d'aquest calendari i el del gregorià tenen un dia de diferència. L'últim va ser {0}; {1}</value>
+    <comment>{0} the last such day, {1} the clause about the next one.</comment>
+  </data>
+  <data name="DivergenceMany" xml:space="preserve">
+    <value>El Jarfino i el Supertago no pertanyen a cap dia de la setmana. Per això el dia de la setmana d'aquest calendari i el del gregorià tenen {0} dies de diferència. L'últim va ser {1}; {2}</value>
+    <comment>{0} how many days apart, {1} the last such day, {2} the clause about the next.</comment>
+  </data>
+  <data name="NextShift" xml:space="preserve">
+    <value>el pròxim serà {0}, el {1}.</value>
+    <comment>{0} the day, {1} its Gregorian date.</comment>
+  </data>
+  <data name="NextShiftNoDate" xml:space="preserve">
+    <value>el pròxim serà {0}.</value>
+  </data>
+  <data name="NoMoreShifts" xml:space="preserve">
+    <value>i no n'hi ha cap més en aquest calendari.</value>
+  </data>
+  <data name="ShiftName" xml:space="preserve">
+    <value>el {0} de {1}</value>
+    <comment>{0} the block's name, never translated; {1} its year.</comment>
+  </data>
+  <data name="SeasonalPosition" xml:space="preserve">
+    <value>POSICIÓ ESTACIONAL</value>
+  </data>
+  <data name="SeasonLine" xml:space="preserve">
+    <value>{0} · dia {1} de {2}</value>
+    <comment>{0} the season, {1} the day within it, {2} its length.</comment>
+  </data>
+  <data name="Season1" xml:space="preserve">
+    <value>primera estació</value>
+  </data>
+  <data name="Season2" xml:space="preserve">
+    <value>segona estació</value>
+  </data>
+  <data name="Season3" xml:space="preserve">
+    <value>tercera estació</value>
+  </data>
+  <data name="Season4" xml:space="preserve">
+    <value>quarta estació</value>
+  </data>
+  <data name="UpcomingFromThisDay" xml:space="preserve">
+    <value>PROPERES FESTES UNIVERSALS (A PARTIR D'AQUEST DIA)</value>
+  </data>
+  <data name="UpcomingFromToday" xml:space="preserve">
+    <value>PROPERES FESTES UNIVERSALS (A PARTIR D'AVUI)</value>
+  </data>
+  <data name="AfterOne" xml:space="preserve">
+    <value>l'endemà</value>
+    <comment>How far after the day being looked at. Never 'tomorrow'.</comment>
+  </data>
+  <data name="AfterMany" xml:space="preserve">
+    <value>{0} dies després</value>
+  </data>
+  <data name="FromTodayToday" xml:space="preserve">
+    <value>avui</value>
+  </data>
+  <data name="FromTodayTomorrow" xml:space="preserve">
+    <value>demà</value>
+  </data>
+  <data name="FromTodayYesterday" xml:space="preserve">
+    <value>ahir</value>
+  </data>
+  <data name="FromTodayIn" xml:space="preserve">
+    <value>d'aquí a {0} dies</value>
+  </data>
+  <data name="FromTodayAgo" xml:space="preserve">
+    <value>fa {0} dies</value>
+  </data>
+  <data name="DateWithYear" xml:space="preserve">
+    <value>{0} del {1}</value>
+    <comment>{0} a day and its month, {1} the year. Catalan joins them with 'del'.</comment>
+  </data>
+  <data name="PeriodFooter" xml:space="preserve">
+    <value>Període {0}–{1} · {2}</value>
+    <comment>{0} first year, {1} last year, {2} the seasonal allocation.</comment>
+  </data>
+  <data name="Month1" xml:space="preserve">
+    <value>primer mes</value>
+  </data>
+  <data name="Month2" xml:space="preserve">
+    <value>segon mes</value>
+  </data>
+  <data name="Month3" xml:space="preserve">
+    <value>tercer mes</value>
+  </data>
+  <data name="Month4" xml:space="preserve">
+    <value>quart mes</value>
+  </data>
+  <data name="Month5" xml:space="preserve">
+    <value>cinquè mes</value>
+  </data>
+  <data name="Month6" xml:space="preserve">
+    <value>sisè mes</value>
+  </data>
+  <data name="Month7" xml:space="preserve">
+    <value>setè mes</value>
+  </data>
+  <data name="Month8" xml:space="preserve">
+    <value>vuitè mes</value>
+  </data>
+  <data name="Month9" xml:space="preserve">
+    <value>novè mes</value>
+  </data>
+  <data name="Month10" xml:space="preserve">
+    <value>desè mes</value>
+  </data>
+  <data name="Month11" xml:space="preserve">
+    <value>onzè mes</value>
+  </data>
+  <data name="Month12" xml:space="preserve">
+    <value>dotzè mes</value>
+  </data>
+  <data name="CentralPeriod" xml:space="preserve">
+    <value>període central · {0}°</value>
+    <comment>{0} the cardinal point in degrees.</comment>
+  </data>
+  <data name="Transition" xml:space="preserve">
+    <value>transició · {0}°</value>
+    <comment>{0} the cardinal point in degrees.</comment>
+  </data>
+  <data name="GoTo" xml:space="preserve">
+    <value>Anar a</value>
+  </data>
+  <data name="TabYear" xml:space="preserve">
+    <value>Any</value>
+  </data>
+  <data name="TabPeriod" xml:space="preserve">
+    <value>Període</value>
+  </data>
+  <data name="TabDate" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="LanguageAutomatic" xml:space="preserve">
+    <value>Automàtic (idioma del dispositiu)</value>
+  </data>
+  <data name="LanguageCatalan" xml:space="preserve">
+    <value>Català (ca)</value>
+    <comment>Named as its own speakers name it, then the ISO code.</comment>
+  </data>
+  <data name="LanguageSpanish" xml:space="preserve">
+    <value>Castellà (es)</value>
+    <comment>Never 'espanyol' in Catalan.</comment>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>Anglès (en)</value>
+  </data>
+  <data name="LanguageEsperanto" xml:space="preserve">
+    <value>Esperanto (eo)</value>
+  </data>
+</root>

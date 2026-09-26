@@ -1,4 +1,5 @@
 using Microsoft.Maui.Layouts;
+using SolsticaKalendaro.App.Resources.Strings;
 using SolsticaKalendaro.Core;
 
 namespace SolsticaKalendaro.App;
@@ -24,8 +25,13 @@ public partial class DayDetailPage : ContentPage
         var today = DateOnly.FromDateTime(DateTime.Now);
         bool isToday = detail.Gregorian == today;
 
-        BackButton.Text = $"‹   {detail.Date.Year}";
-        PositionLabel.Text = $"dia {detail.DayOfYear} de {detail.DaysInYear}";
+        SemanticProperties.SetHint(BackButton, AppStrings.HintBackToYear);
+        GregorianHeading.Text = AppStrings.GregorianCalendar;
+        SeasonHeading.Text = AppStrings.SeasonalPosition;
+
+        BackButton.Text = $"‹   {detail.Date.Year.ToString(Language.Culture)}";
+        PositionLabel.Text = string.Format(
+            Language.Culture, AppStrings.DayOfYear, detail.DayOfYear, detail.DaysInYear);
 
         // A festivity that has arrived is no longer upcoming, so the day announces its own —
         // unless the festivity and the day share a name, where the date above says it already.
@@ -37,22 +43,22 @@ public partial class DayDetailPage : ContentPage
 
         WeekDayLabel.Text = detail.WeekDay is { } weekDay
             ? Text.WeekDay(weekDay)
-            : "sense dia de la setmana";
+            : AppStrings.NoWeekday;
         WeekDayLabel.TextColor = palette[detail.Season];
 
         DateLabel.Text = Text.DayName(detail.Date);
-        DateYearLabel.Text = detail.Date.Year.ToString(YearView.Culture);
+        DateYearLabel.Text = detail.Date.Year.ToString(Language.Culture);
 
         GregorianLabel.Text = detail.Gregorian is { } gregorian
             ? Text.FullDate(gregorian)
-            : "fora de l'abast del calendari gregorià";
+            : AppStrings.BeyondGregorian;
 
         ShowDivergence(detail);
         ShowSeason(detail, palette);
         ShowFestivities(detail, today, isToday);
 
-        FooterLabel.Text =
-            $"Període {detail.Period.FirstYear}–{detail.Period.LastYear} · {detail.Period.Allocation}";
+        FooterLabel.Text = string.Format(Language.Culture, AppStrings.PeriodFooter,
+            detail.Period.FirstYear, detail.Period.LastYear, detail.Period.Allocation);
     }
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
@@ -65,11 +71,8 @@ public partial class DayDetailPage : ContentPage
     {
         if (detail.Date.Period.IsExtraWeekly())
         {
-            DivergenceTitle.Text = "Per què cada mes comença en dilluns";
-            DivergenceBody.Text =
-                "Perquè aquest dia no pertany a cap dia de la setmana. L'any té 52 setmanes "
-                + "justes i els dies com aquest queden a part, i així cada mes comença en "
-                + "dilluns, tots els anys.";
+            DivergenceTitle.Text = AppStrings.MondayTitle;
+            DivergenceBody.Text = AppStrings.MondayBody;
             DivergenceCard.IsVisible = true;
             return;
         }
@@ -79,23 +82,24 @@ public partial class DayDetailPage : ContentPage
         int apart = ((int)gregorian - (int)solstica + 7) % 7;
         if (apart == 0) return;
 
-        DivergenceTitle.Text = "Per què els dies de la setmana no coincideixen";
-        DivergenceBody.Text =
-            "El Jarfino i el Supertago no pertanyen a cap dia de la setmana. Per això el dia de "
-            + $"la setmana d'aquest calendari i el del gregorià tenen {Text.Days(apart)} de diferència. "
-            + $"L'últim va ser {Text.Shift(detail.LastShift)}; {NextShiftClause(detail.NextShift)}";
+        DivergenceTitle.Text = AppStrings.DivergenceTitle;
+        DivergenceBody.Text = apart == 1
+            ? string.Format(Language.Culture, AppStrings.DivergenceOne,
+                Text.Shift(detail.LastShift), NextShiftClause(detail.NextShift))
+            : string.Format(Language.Culture, AppStrings.DivergenceMany,
+                apart, Text.Shift(detail.LastShift), NextShiftClause(detail.NextShift));
 
         DivergenceCard.IsVisible = true;
     }
 
     private string NextShiftClause(SolsticaDate? next)
     {
-        if (next is not { } shift) return "i no n'hi ha cap més en aquest calendari.";
+        if (next is not { } shift) return AppStrings.NoMoreShifts;
 
         string when = _calendar.CanConvert(shift) ? Text.LongDate(_calendar.ToGregorian(shift)) : string.Empty;
         return when.Length > 0
-            ? $"el pròxim serà {Text.Shift(shift)}, el {when}."
-            : $"el pròxim serà {Text.Shift(shift)}.";
+            ? string.Format(Language.Culture, AppStrings.NextShift, Text.Shift(shift), when)
+            : string.Format(Language.Culture, AppStrings.NextShiftNoDate, Text.Shift(shift));
     }
 
     /// <summary>
@@ -105,8 +109,8 @@ public partial class DayDetailPage : ContentPage
     /// </summary>
     private void ShowSeason(DayDetail detail, YearPalette palette)
     {
-        SeasonLabel.Text =
-            $"{Text.SeasonName(detail.Season)} · dia {detail.DayOfSeason} de {detail.SeasonLength}";
+        SeasonLabel.Text = string.Format(Language.Culture, AppStrings.SeasonLine,
+            Text.SeasonName(detail.Season), detail.DayOfSeason, detail.SeasonLength);
 
         var seasons = Enum.GetValues<Season>();
         double total = detail.DaysInYear;
@@ -154,8 +158,8 @@ public partial class DayDetailPage : ContentPage
     private void ShowFestivities(DayDetail detail, DateOnly today, bool isToday)
     {
         FestivitiesTitle.Text = isToday
-            ? "PROPERES FESTES UNIVERSALS (A PARTIR D'AVUI)"
-            : "PROPERES FESTES UNIVERSALS (A PARTIR D'AQUEST DIA)";
+            ? AppStrings.UpcomingFromToday
+            : AppStrings.UpcomingFromThisDay;
 
         foreach (var festivity in _calendar.UpcomingFestivities(detail.Date, FestivitiesShown))
         {

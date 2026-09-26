@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using SolsticaKalendaro.App.Resources.Strings;
 using SolsticaKalendaro.Core;
 
 namespace SolsticaKalendaro.App;
@@ -26,7 +27,7 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         OpenDay = new Command<SolsticaDate>(date => Navigation.PushAsync(new DayDetailPage(Cal, date)));
-        NameTheWeekdays();
+        NameEverything();
         StyleYearControls();
 
         ShowYear(YearOf(Today()) ?? FirstYear);
@@ -54,7 +55,7 @@ public partial class MainPage : ContentPage
         _shownYear = Math.Clamp(year, FirstYear, LastYear);
         var today = Today();
 
-        YearButton.Text = _shownYear.ToString(YearView.Culture);
+        YearButton.Text = _shownYear.ToString(Language.Culture);
         PreviousYearButton.IsEnabled = _shownYear > FirstYear;
         NextYearButton.IsEnabled = _shownYear < LastYear;
         PreviousYearButton.Opacity = PreviousYearButton.IsEnabled ? 1 : 0.3;
@@ -75,24 +76,28 @@ public partial class MainPage : ContentPage
 
     /// <summary>
     /// The line under the header: the period of the year on screen, always, and the way into
-    /// what that means. The wait is added to it on the one year that holds the calendar's first
-    /// day, which is where it answers a question the reader is actually asking.
+    /// what that means. What comes before it is either nothing, or the one thing worth saying
+    /// about this year — that it is long, or that the calendar has not reached it yet.
+    ///
+    /// The link is last because "› ·" would put two separators together.
     /// </summary>
     private void ShowPeriodLine(DateOnly today)
     {
         var period = SolsticaCalendar.PeriodFor(_shownYear);
-        PeriodButton.Text = $"Període {period.FirstYear}–{period.LastYear} ›";
-        LeapLabel.IsVisible = SolsticaCalendar.IsLeapYear(_shownYear);
+        PeriodButton.Text = string.Format(
+            Language.Culture, AppStrings.Period, period.FirstYear, period.LastYear);
 
         var opens = Cal.Epoch.AdoptionDate;
-        bool waiting = _shownYear == FirstYear && today < opens;
-        StartsLabel.IsVisible = waiting;
+        int days = opens.DayNumber - today.DayNumber;
 
-        if (waiting)
-        {
-            int days = opens.DayNumber - today.DayNumber;
-            StartsLabel.Text = $" · comença d'aquí a {days} {(days == 1 ? "dia" : "dies")}";
-        }
+        string? prefix =
+            _shownYear == FirstYear && today < opens
+                ? (days == 1 ? AppStrings.StartsOne : string.Format(Language.Culture, AppStrings.StartsMany, days))
+            : SolsticaCalendar.IsLeapYear(_shownYear) ? AppStrings.LeapYear
+            : null;
+
+        PrefixLabel.IsVisible = prefix is not null;
+        if (prefix is not null) PrefixLabel.Text = $"{prefix} · ";
     }
 
     private void OnPreviousYear(object? sender, EventArgs e) => ShowYear(_shownYear - 1);
@@ -102,7 +107,7 @@ public partial class MainPage : ContentPage
     private void OnYearClicked(object? sender, EventArgs e) => Navigation.PushAsync(new GoToPage());
 
     private void OnPeriodClicked(object? sender, EventArgs e) =>
-        Navigation.PushAsync(new PlaceholderPage("Període"));
+        Navigation.PushAsync(new PlaceholderPage(AppStrings.TabPeriod));
 
     // ---------- the menu ----------
 
@@ -110,11 +115,16 @@ public partial class MainPage : ContentPage
 
     private void OnDismissMenu(object? sender, TappedEventArgs e) => MenuOverlay.IsVisible = false;
 
-    private void OnOptionsClicked(object? sender, EventArgs e) => OpenFromMenu("Opcions");
+    private void OnOptionsClicked(object? sender, EventArgs e)
+    {
+        MenuOverlay.IsVisible = false;
+        Navigation.PushAsync(new OptionsPage());
+    }
 
-    private void OnHowToReadClicked(object? sender, EventArgs e) => OpenFromMenu("Com es llegeix");
+    private void OnHowToReadClicked(object? sender, EventArgs e) =>
+        OpenFromMenu(AppStrings.MenuHowToRead);
 
-    private void OnAboutClicked(object? sender, EventArgs e) => OpenFromMenu("Quant a");
+    private void OnAboutClicked(object? sender, EventArgs e) => OpenFromMenu(AppStrings.MenuAbout);
 
     private void OpenFromMenu(string title)
     {
@@ -206,13 +216,12 @@ public partial class MainPage : ContentPage
             arrow.WidthRequest = 38;
         }
 
-        foreach (var item in new[] { "Opcions", "Com es llegeix", "Quant a" }) StyleMenuItem(item);
+        foreach (var item in new[] { OptionsItem, HowToReadItem, AboutItem }) StyleMenuItem(item);
     }
 
     /// <summary>The menu reads as a list of things to do, so its text is the ordinary ink.</summary>
-    private void StyleMenuItem(string text)
+    private static void StyleMenuItem(Button item)
     {
-        var item = MenuOverlay.GetVisualTreeDescendants().OfType<Button>().First(b => b.Text == text);
         item.FontFamily = "Plex";
         item.FontSize = 15;
         item.TextColor = (Color)Application.Current!.Resources["Ink"];
@@ -227,15 +236,26 @@ public partial class MainPage : ContentPage
     /// Monday to Sunday: the Solstica week, which every block of the year begins on. It is not
     /// the Gregorian week of the same days, and after the first Jarfino the two do not agree.
     /// </summary>
-    private void NameTheWeekdays()
+    private void NameEverything()
     {
+        TodayButton.Text = AppStrings.Today;
+        OptionsItem.Text = AppStrings.MenuOptions;
+        HowToReadItem.Text = AppStrings.MenuHowToRead;
+        AboutItem.Text = AppStrings.MenuAbout;
+
+        SemanticProperties.SetHint(PreviousYearButton, AppStrings.HintPreviousYear);
+        SemanticProperties.SetHint(NextYearButton, AppStrings.HintNextYear);
+        SemanticProperties.SetHint(YearButton, AppStrings.HintYear);
+        SemanticProperties.SetHint(TodayButton, AppStrings.HintToday);
+        SemanticProperties.SetHint(MenuButton, AppStrings.HintMenu);
+
         Label[] slots = [Weekday0, Weekday1, Weekday2, Weekday3, Weekday4, Weekday5, Weekday6];
-        var names = YearView.Culture.DateTimeFormat.AbbreviatedDayNames;
+        var names = Language.Culture.DateTimeFormat.AbbreviatedDayNames;
 
         for (int i = 0; i < slots.Length; i++)
         {
             var day = (DayOfWeek)(((int)DayOfWeek.Monday + i) % 7);
-            slots[i].Text = names[(int)day].TrimEnd('.').ToUpper(YearView.Culture);
+            slots[i].Text = names[(int)day].TrimEnd('.').ToUpper(Language.Culture);
             slots[i].FontFamily = "PlexSemiBold";
             slots[i].FontSize = 10.5;
             slots[i].CharacterSpacing = 0.6;

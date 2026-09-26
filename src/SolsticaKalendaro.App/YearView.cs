@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Globalization;
+using SolsticaKalendaro.App.Resources.Strings;
 using SolsticaKalendaro.Core;
 
 namespace SolsticaKalendaro.App;
@@ -7,11 +8,20 @@ namespace SolsticaKalendaro.App;
 /// <summary>A row of the year view, ready to bind. One per row of the outline.</summary>
 public abstract record RowView;
 
-public sealed record SectionView(string Name, string Label, Color Dot) : RowView;
+public sealed record SectionView(string Name, string Label, Color Dot) : RowView
+{
+    /// <summary>
+    /// Esperanto names its months by their ordinal already, so "Unua · unua monato" says the
+    /// same thing twice. Where a language has nothing to add, nothing is shown.
+    /// </summary>
+    public bool HasLabel => Label.Length > 0;
+}
 
 public sealed record WeekView(IReadOnlyList<DayView> Days) : RowView;
 
-public sealed record BandView(string Name, string Gregorian, Color Season, DateOnly? Date, SolsticaDate Solstica)
+/// <param name="Note">What a day outside the week is, said under its name.</param>
+public sealed record BandView(
+    string Name, string Note, string Gregorian, Color Season, DateOnly? Date, SolsticaDate Solstica)
     : RowView;
 
 /// <summary>
@@ -57,8 +67,7 @@ public sealed class DayView(
 /// </summary>
 public static class YearView
 {
-    /// <summary>The app speaks Catalan, so it formats dates in Catalan whatever the device is set to.</summary>
-    public static readonly CultureInfo Culture = CultureInfo.GetCultureInfo("ca-ES");
+    private static CultureInfo Culture => Language.Culture;
 
     public static IReadOnlyList<RowView> Build(IReadOnlyList<OutlineRow> outline, DateOnly today, YearPalette palette)
     {
@@ -82,6 +91,7 @@ public static class YearView
                 case ExtraWeeklyRow band:
                     rows.Add(new BandView(
                         band.Day.Date.Period.Name(),
+                        AppStrings.BandNoWeekday,
                         LongDate(band.Day.Gregorian),
                         palette[band.Day.Season],
                         band.Day.Gregorian,
@@ -168,20 +178,13 @@ public static class YearView
         if (block.IsMonth())
         {
             int nth = Array.FindIndex(YearLayout.Sequence.Where(p => p.IsMonth()).ToArray(), p => p == block);
-            return $"{Ordinals[nth]} mes";
+            return Text.MonthLabel(nth);
         }
 
         int degrees = block.CardinalLongitude() ?? 0;
-        return block == PeriodKind.Jarmezo
-            ? $"període central · {degrees}°"
-            : $"transició · {degrees}°";
+        return string.Format(Culture,
+            block == PeriodKind.Jarmezo ? AppStrings.CentralPeriod : AppStrings.Transition, degrees);
     }
-
-    private static readonly string[] Ordinals =
-    [
-        "primer", "segon", "tercer", "quart", "cinquè", "sisè",
-        "setè", "vuitè", "novè", "desè", "onzè", "dotzè"
-    ];
 }
 
 /// <summary>The four season colours, read from the page's resources so the XAML owns them.</summary>

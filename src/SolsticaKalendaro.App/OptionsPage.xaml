@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.OptionsPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Paper}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,10,20,30" Spacing="0">
+
+            <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
+                    FontFamily="Plex" FontSize="18" TextColor="{StaticResource Muted}"
+                    BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                    MinimumHeightRequest="44" MinimumWidthRequest="44"
+                    HorizontalOptions="Start" />
+
+            <Label x:Name="TitleLabel" FontFamily="SpectralSemiBold" FontSize="32"
+                   TextColor="{StaticResource Ink}" Margin="0,12,0,0" />
+
+            <Label x:Name="LanguageHeading" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,28,0,4" />
+
+            <!-- The languages, and above them the choice of not choosing. -->
+            <VerticalStackLayout x:Name="Languages" Spacing="0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
