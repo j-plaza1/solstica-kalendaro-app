@@ -21,8 +21,10 @@ Android SDK. CI does the same, for the same reason.
 accents and emoji anywhere in the path, and the error names resources, not the path.
 The core library and tests are unaffected.
 
-CI (`.github/workflows/ci.yml`) runs restore / build / test in Release on push to `main`
-and on PRs, scoped to the test project. The Android job is still commented out.
+CI (`.github/workflows/ci.yml`) runs on push to `main` and on PRs, in two jobs: one restores,
+builds and tests the core in Release, scoped to the test project; the other installs the
+`maui-android` workload and builds the app unsigned, which answers whether its resources and
+fonts still pack. Neither builds the solution.
 
 ## Documentation ships with the code it describes
 
