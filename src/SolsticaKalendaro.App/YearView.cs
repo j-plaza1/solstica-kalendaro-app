@@ -8,7 +8,14 @@ namespace SolsticaKalendaro.App;
 /// <summary>A row of the year view, ready to bind. One per row of the outline.</summary>
 public abstract record RowView;
 
-public sealed record SectionView(string Name, string Label, Color Dot) : RowView;
+public sealed record SectionView(string Name, string Label, Color Dot) : RowView
+{
+    /// <summary>
+    /// Esperanto names its months by their ordinal already, so "Unua · unua monato" says the
+    /// same thing twice. Where a language has nothing to add, nothing is shown.
+    /// </summary>
+    public bool HasLabel => Label.Length > 0;
+}
 
 public sealed record WeekView(IReadOnlyList<DayView> Days) : RowView;
 

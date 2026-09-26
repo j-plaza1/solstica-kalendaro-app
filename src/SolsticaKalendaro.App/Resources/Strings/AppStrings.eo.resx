@@ -74,16 +74,16 @@
     <value>Iras al la hodiaŭa dato</value>
   </data>
   <data name="HintMenu" xml:space="preserve">
-    <value>Agordoj, kiel legi ĝin kaj pri</value>
+    <value>Agordoj, kiel legi la kalendaron kaj pri la aplikaĵo</value>
   </data>
   <data name="MenuOptions" xml:space="preserve">
     <value>Agordoj</value>
   </data>
   <data name="MenuHowToRead" xml:space="preserve">
-    <value>Kiel legi ĝin</value>
+    <value>Kiel legi la kalendaron</value>
   </data>
   <data name="MenuAbout" xml:space="preserve">
-    <value>Pri</value>
+    <value>Pri la aplikaĵo</value>
   </data>
   <data name="Period" xml:space="preserve">
     <value>Periodo {0}–{1} ›</value>
@@ -122,7 +122,7 @@
     <value>Kial ĉiu monato komenciĝas lunde</value>
   </data>
   <data name="MondayBody" xml:space="preserve">
-    <value>Ĉar ĉi tiu tago apartenas al neniu semajntago. La jaro havas ĝuste 52 semajnojn kaj tagoj kiel ĉi tiu restas flanke, kaj tiel ĉiu monato komenciĝas lunde, ĉiun jaron.</value>
+    <value>Ĉar ĉi tiu tago apartenas al neniu semajntago. La jaro havas ĝuste 52 semajnojn kaj tagoj kiel ĉi tiu restas aparte, kaj tiel ĉiu monato komenciĝas lunde, ĉiun jaron.</value>
   </data>
   <data name="DivergenceTitle" xml:space="preserve">
     <value>Kial la semajntagoj ne kongruas</value>
@@ -197,40 +197,40 @@
     <value>Periodo {0}–{1} · {2}</value>
   </data>
   <data name="Month1" xml:space="preserve">
-    <value>unua monato</value>
+    <value></value>
   </data>
   <data name="Month2" xml:space="preserve">
-    <value>dua monato</value>
+    <value></value>
   </data>
   <data name="Month3" xml:space="preserve">
-    <value>tria monato</value>
+    <value></value>
   </data>
   <data name="Month4" xml:space="preserve">
-    <value>kvara monato</value>
+    <value></value>
   </data>
   <data name="Month5" xml:space="preserve">
-    <value>kvina monato</value>
+    <value></value>
   </data>
   <data name="Month6" xml:space="preserve">
-    <value>sesa monato</value>
+    <value></value>
   </data>
   <data name="Month7" xml:space="preserve">
-    <value>sepa monato</value>
+    <value></value>
   </data>
   <data name="Month8" xml:space="preserve">
-    <value>oka monato</value>
+    <value></value>
   </data>
   <data name="Month9" xml:space="preserve">
-    <value>naŭa monato</value>
+    <value></value>
   </data>
   <data name="Month10" xml:space="preserve">
-    <value>deka monato</value>
+    <value></value>
   </data>
   <data name="Month11" xml:space="preserve">
-    <value>dek-unua monato</value>
+    <value></value>
   </data>
   <data name="Month12" xml:space="preserve">
-    <value>dek-dua monato</value>
+    <value></value>
   </data>
   <data name="CentralPeriod" xml:space="preserve">
     <value>centra periodo · {0}°</value>
