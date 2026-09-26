@@ -108,9 +108,13 @@ this repo.
 `src/SolsticaKalendaro.Core` is the executable form of the specification and must stay free
 of any MAUI/UI reference so it remains usable from a CLI, web build or test harness.
 
-`src/SolsticaKalendaro.App` is the Android app: two pages under a `NavigationPage`, the year
-view and the detail of one day. The year is pushed under the detail rather than replaced, so
-coming back finds it where the reader left it.
+`src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
+view, the detail of one day, the "Go to" panel — a year typed or a period chosen, with the Date
+tab still to come (#16) — and Options. Everything is pushed on top of the year rather than
+replacing it, so coming back finds it where the reader left it. A year asked for by name is the
+exception: it opens at its top, because that is what was asked for. `ChoiceRow` draws one line
+of a list to choose from, and Options and the panel share it so that the second list a reader
+meets reads like the first.
 
 It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
 from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree
