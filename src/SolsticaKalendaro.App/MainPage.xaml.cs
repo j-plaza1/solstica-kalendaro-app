@@ -125,8 +125,13 @@ public partial class MainPage : ContentPage
         var opens = Cal.Epoch.AdoptionDate;
         int days = opens.DayNumber - today.DayNumber;
 
+        // One line, so one thing. The last year is long and also runs out of Gregorian dates,
+        // and of the two that is the one worth saying: the Supertago's own band shows the year
+        // is long, while nothing else on screen explains a column of days with no date under
+        // them. The Jarfino closes the year, so it is the day to ask about.
         string? prefix =
             _shownYear == FirstYear && today < opens ? Wait(days, opens)
+            : !Cal.CanConvert(SolsticaDate.Jarfino(_shownYear)) ? AppStrings.GregorianUpTo
             : SolsticaCalendar.IsLeapYear(_shownYear) ? AppStrings.LeapYear
             : null;
 
@@ -149,7 +154,18 @@ public partial class MainPage : ContentPage
 
     private void OnNextYear(object? sender, EventArgs e) => ShowYear(_shownYear + 1);
 
-    private void OnYearClicked(object? sender, EventArgs e) => Navigation.PushAsync(new GoToPage());
+    private void OnYearClicked(object? sender, EventArgs e) =>
+        Navigation.PushAsync(new GoToPage(_shownYear, GoToYear));
+
+    /// <summary>
+    /// Where the panel sends the reader. A year arrived at deliberately opens at its beginning:
+    /// they asked for the year, not for the part of it they happened to be reading.
+    /// </summary>
+    private void GoToYear(int year)
+    {
+        ShowYear(year);
+        Rows.ScrollTo(0, position: ScrollToPosition.Start, animate: false);
+    }
 
     private void OnPeriodClicked(object? sender, EventArgs e) =>
         Navigation.PushAsync(new PlaceholderPage(AppStrings.TabPeriod));

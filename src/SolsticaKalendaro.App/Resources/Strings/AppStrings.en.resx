@@ -116,7 +116,7 @@
     <value>GREGORIAN CALENDAR</value>
   </data>
   <data name="BeyondGregorian" xml:space="preserve">
-    <value>beyond the Gregorian calendar's reach</value>
+    <value>after 31 December 9999</value>
   </data>
   <data name="MondayTitle" xml:space="preserve">
     <value>Why every month starts on a Monday</value>
@@ -279,5 +279,14 @@
   </data>
   <data name="LanguageEsperanto" xml:space="preserve">
     <value>Esperanto (eo)</value>
+  </data>
+  <data name="YearRange" xml:space="preserve">
+    <value>From {0} to {1}</value>
+  </data>
+  <data name="GoButton" xml:space="preserve">
+    <value>Go</value>
+  </data>
+  <data name="GregorianUpTo" xml:space="preserve">
+    <value>Gregorian dates up to 9999</value>
   </data>
 </root>

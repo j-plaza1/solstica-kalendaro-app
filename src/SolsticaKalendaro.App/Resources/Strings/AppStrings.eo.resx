@@ -116,7 +116,7 @@
     <value>GREGORIA KALENDARO</value>
   </data>
   <data name="BeyondGregorian" xml:space="preserve">
-    <value>ekster la atingo de la gregoria kalendaro</value>
+    <value>post la 31-a de decembro 9999</value>
   </data>
   <data name="MondayTitle" xml:space="preserve">
     <value>Kial ĉiu monato komenciĝas lunde</value>
@@ -279,5 +279,14 @@
   </data>
   <data name="LanguageEsperanto" xml:space="preserve">
     <value>Esperanto (eo)</value>
+  </data>
+  <data name="YearRange" xml:space="preserve">
+    <value>De {0} ĝis {1}</value>
+  </data>
+  <data name="GoButton" xml:space="preserve">
+    <value>Iri</value>
+  </data>
+  <data name="GregorianUpTo" xml:space="preserve">
+    <value>Gregoriaj datoj ĝis 9999</value>
   </data>
 </root>

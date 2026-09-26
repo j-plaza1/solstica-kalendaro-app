@@ -92,7 +92,7 @@ pre-releases.
 
 ```
 src/SolsticaKalendaro.Core        conversion library — no UI dependencies
-src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view and day detail
+src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view, day detail, panel
 tests/SolsticaKalendaro.Core.Tests
 ```
 
