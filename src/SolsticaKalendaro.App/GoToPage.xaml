@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.GoToPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Paper}">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20,10,20,0">
+
+        <Grid ColumnDefinitions="Auto,*">
+            <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
+                    SemanticProperties.Hint="Torna a l&apos;any"
+                    FontFamily="Plex" FontSize="18" TextColor="{StaticResource Muted}"
+                    BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                    MinimumHeightRequest="44" MinimumWidthRequest="44"
+                    HorizontalOptions="Start" />
+            <Label Grid.Column="1" Text="Anar a" FontFamily="SpectralSemiBold" FontSize="22"
+                   TextColor="{StaticResource Ink}" VerticalOptions="Center" Margin="4,0,0,0" />
+        </Grid>
+
+        <!-- Three tabs, one panel. Year and Period are #15, Date is #16; the panel itself is
+             what this issue places, so the tabs are here and their contents are not. -->
+        <Grid x:Name="Tabs" Grid.Row="1" ColumnDefinitions="*,*,*" Margin="0,16,0,0">
+            <Button x:Name="YearTab" Text="Any" Clicked="OnTabClicked" />
+            <Button x:Name="PeriodTab" Grid.Column="1" Text="Període" Clicked="OnTabClicked" />
+            <Button x:Name="DateTab" Grid.Column="2" Text="Data" Clicked="OnTabClicked" />
+            <BoxView Grid.ColumnSpan="3" Color="{StaticResource Hairline}" HeightRequest="1"
+                     VerticalOptions="End" />
+            <BoxView x:Name="TabUnderline" Color="{StaticResource Accent}" HeightRequest="2"
+                     VerticalOptions="End" />
+        </Grid>
+
+        <!-- Deliberately empty: filled by #15 and #16. -->
+        <ContentView x:Name="TabContent" Grid.Row="2" />
+
+    </Grid>
+
+</ContentPage>
