@@ -16,6 +16,19 @@ public static class Text
     public static string WeekDay(DayOfWeek day) => Culture.DateTimeFormat.GetDayName(day);
 
     /// <summary>
+    /// The seven column heads, Monday to Sunday: the Solstica week, which every block of the
+    /// year begins on. Said once here because the year view and the introduction's example have
+    /// to head their columns the same way.
+    /// </summary>
+    public static string[] WeekdayInitials()
+    {
+        string[] names = Culture.DateTimeFormat.AbbreviatedDayNames;
+
+        return [.. Enumerable.Range(0, 7).Select(i =>
+            names[((int)DayOfWeek.Monday + i) % 7].TrimEnd('.').ToUpper(Culture))];
+    }
+
+    /// <summary>
     /// "12 Kvara", or just the name for a day that has no number of its own. The block's name
     /// is never translated: it is what the calendar calls it.
     /// </summary>

@@ -97,7 +97,8 @@ pre-releases, and so does the app: its About screen reads the same rule from
 
 ```
 src/SolsticaKalendaro.Core        conversion library — no UI dependencies
-src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view, day detail, panel
+src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view, day detail, panel,
+                                  period, options, about and the introduction
 tests/SolsticaKalendaro.Core.Tests
 ```
 

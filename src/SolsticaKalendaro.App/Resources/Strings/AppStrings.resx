@@ -404,4 +404,74 @@
     <value>Codi: MIT. Article: CC BY 4.0. Lletres Spectral i IBM Plex Sans: SIL Open Font License 1.1.</value>
     <comment>Licence names are not translated.</comment>
   </data>
+  <data name="IntroTitle1" xml:space="preserve">
+    <value>Un calendari que es repeteix cada any</value>
+  </data>
+  <data name="IntroWhat1" xml:space="preserve">
+    <value>Solstica Kalendaro és una proposta de calendari solar. L'any comença al solstici de desembre, i cada data cau cada any el mateix dia de la setmana: un aniversari que avui cau en dimarts hi caurà sempre.</value>
+  </data>
+  <data name="IntroWhat2" xml:space="preserve">
+    <value>Té dotze mesos de quatre setmanes justes, tres blocs de transició al voltant dels equinoccis i del solstici de juny, i un dia que no pertany a cap dia de la setmana per tancar l'any (dos, els anys de traspàs).</value>
+  </data>
+  <data name="IntroWhat3" xml:space="preserve">
+    <value>Com que és una proposta, la data en què comença la pots triar a {0}.</value>
+    <comment>{0} is the name of the Options screen.</comment>
+  </data>
+  <data name="IntroRead1" xml:space="preserve">
+    <value>Cada fila és una setmana, de dilluns a diumenge. El número gran és el dia del calendari solstici, i el petit, la data gregoriana del mateix dia. La franja de color de sota indica l'estació.</value>
+  </data>
+  <data name="IntroRead2" xml:space="preserve">
+    <value>Com que els mesos tenen quatre setmanes justes, tots comencen en dilluns.</value>
+  </data>
+  <data name="IntroRead3" xml:space="preserve">
+    <value>Els dies que no pertanyen a cap dia de la setmana ocupen tota una fila: el Jarfino, que tanca cada any, i el Supertago, que s'afegeix als anys de traspàs.</value>
+  </data>
+  <data name="IntroRead4" xml:space="preserve">
+    <value>Toca un dia per veure'n el detall, i toca l'any per anar a un altre any, a un període o a una data.</value>
+  </data>
+  <data name="IntroTitle3" xml:space="preserve">
+    <value>Què volen dir els noms</value>
+  </data>
+  <data name="IntroNamesLead" xml:space="preserve">
+    <value>Els noms són en esperanto i no es tradueixen.</value>
+  </data>
+  <data name="IntroNameMonths" xml:space="preserve">
+    <value>primer, segon, tercer… dotzè mes.</value>
+    <comment>What a name means, said after the name itself, which is never translated.</comment>
+  </data>
+  <data name="IntroNameEkvinokso" xml:space="preserve">
+    <value>els blocs dels equinoccis de març i de setembre.</value>
+  </data>
+  <data name="IntroNameJarmezo" xml:space="preserve">
+    <value>el mig de l'any, al voltant del solstici de juny.</value>
+  </data>
+  <data name="IntroNameJarkomenco" xml:space="preserve">
+    <value>el començament de l'any, l'1 d'Unua.</value>
+  </data>
+  <data name="IntroNameRekomenco" xml:space="preserve">
+    <value>el recomençament, quan comença la segona meitat de l'any.</value>
+  </data>
+  <data name="IntroNameJarfino" xml:space="preserve">
+    <value>la fi de l'any, el dia que el tanca.</value>
+  </data>
+  <data name="IntroNameSupertago" xml:space="preserve">
+    <value>el dia de més dels anys de traspàs.</value>
+  </data>
+  <data name="IntroSkip" xml:space="preserve">
+    <value>Salta</value>
+  </data>
+  <data name="IntroNext" xml:space="preserve">
+    <value>Següent</value>
+  </data>
+  <data name="IntroStart" xml:space="preserve">
+    <value>Comença</value>
+    <comment>The last button, on the first launch.</comment>
+  </data>
+  <data name="IntroClose" xml:space="preserve">
+    <value>Tanca</value>
+    <comment>The last button, when the introduction was asked for.</comment>
+  </data>
+  <data name="IntroAgain" xml:space="preserve">
+    <value>Torna a veure l'explicació ›</value>
+  </data>
 </root>

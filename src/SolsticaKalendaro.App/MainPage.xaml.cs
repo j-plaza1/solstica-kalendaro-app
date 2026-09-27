@@ -67,6 +67,17 @@ public partial class MainPage : ContentPage
         }
 
         Loaded += WatchForResume;
+
+        // The first launch, and only that: the year has already been built and scrolled to
+        // where it belongs, so closing the introduction leaves the reader where they would
+        // have been. A page rebuilt for a change of language or of start is not a first launch.
+        if (resume is null && !Introduction.Seen) Loaded += ShowIntroductionOnce;
+    }
+
+    private void ShowIntroductionOnce(object? sender, EventArgs e)
+    {
+        Loaded -= ShowIntroductionOnce;
+        Navigation.PushModalAsync(new IntroPage(firstTime: true), animated: false);
     }
 
     private void RememberPlace(object? sender, ItemsViewScrolledEventArgs e) =>
@@ -203,19 +214,17 @@ public partial class MainPage : ContentPage
         Navigation.PushAsync(new OptionsPage());
     }
 
-    private void OnHowToReadClicked(object? sender, EventArgs e) =>
-        OpenFromMenu(AppStrings.MenuHowToRead);
+    /// <summary>The introduction again, asked for: the same three screens, closing rather than starting.</summary>
+    private void OnHowToReadClicked(object? sender, EventArgs e)
+    {
+        MenuOverlay.IsVisible = false;
+        Navigation.PushModalAsync(new IntroPage(firstTime: false));
+    }
 
     private void OnAboutClicked(object? sender, EventArgs e)
     {
         MenuOverlay.IsVisible = false;
         Navigation.PushAsync(new AboutPage());
-    }
-
-    private void OpenFromMenu(string title)
-    {
-        MenuOverlay.IsVisible = false;
-        Navigation.PushAsync(new PlaceholderPage(title));
     }
 
     // ---------- today ----------
@@ -347,12 +356,11 @@ public partial class MainPage : ContentPage
         SemanticProperties.SetHint(MenuButton, AppStrings.HintMenu);
 
         Label[] slots = [Weekday0, Weekday1, Weekday2, Weekday3, Weekday4, Weekday5, Weekday6];
-        var names = Language.Culture.DateTimeFormat.AbbreviatedDayNames;
+        string[] names = Text.WeekdayInitials();
 
         for (int i = 0; i < slots.Length; i++)
         {
-            var day = (DayOfWeek)(((int)DayOfWeek.Monday + i) % 7);
-            slots[i].Text = names[(int)day].TrimEnd('.').ToUpper(Language.Culture);
+            slots[i].Text = names[i];
             slots[i].FontFamily = "PlexSemiBold";
             slots[i].FontSize = 10.5;
             slots[i].CharacterSpacing = 0.6;

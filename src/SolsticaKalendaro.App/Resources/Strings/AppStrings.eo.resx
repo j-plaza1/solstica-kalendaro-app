@@ -373,4 +373,70 @@
   <data name="Licences" xml:space="preserve">
     <value>Kodo: MIT. Artikolo: CC BY 4.0. Tiparoj Spectral kaj IBM Plex Sans: SIL Open Font License 1.1.</value>
   </data>
+  <data name="IntroTitle1" xml:space="preserve">
+    <value>Kalendaro, kiu ripetiĝas ĉiujare</value>
+  </data>
+  <data name="IntroWhat1" xml:space="preserve">
+    <value>Solstica Kalendaro estas propono de suna kalendaro. La jaro komenciĝas je la decembra solstico, kaj ĉiu dato ĉiujare falas en la saman tagon de la semajno: naskiĝtago, kiu hodiaŭ falas marde, ĉiam falos marde.</value>
+  </data>
+  <data name="IntroWhat2" xml:space="preserve">
+    <value>Ĝi havas dek du monatojn de ĝuste kvar semajnoj, tri transirajn blokojn ĉirkaŭ la ekvinoksoj kaj la junia solstico, kaj unu tagon, kiu apartenas al neniu tago de la semajno, por fermi la jaron (du en superjaroj).</value>
+  </data>
+  <data name="IntroWhat3" xml:space="preserve">
+    <value>Ĉar ĝi estas propono, vi povas elekti la daton, kiam ĝi komenciĝas, en {0}.</value>
+  </data>
+  <data name="IntroRead1" xml:space="preserve">
+    <value>Ĉiu vico estas semajno, de lundo ĝis dimanĉo. La granda nombro estas la tago en la Solstica kalendaro, kaj la malgranda, la gregoria dato de la sama tago. La kolora strio sube montras la sezonon.</value>
+  </data>
+  <data name="IntroRead2" xml:space="preserve">
+    <value>Ĉar la monatoj havas ĝuste kvar semajnojn, ĉiuj komenciĝas lunde.</value>
+  </data>
+  <data name="IntroRead3" xml:space="preserve">
+    <value>La tagoj, kiuj apartenas al neniu tago de la semajno, okupas tutan vicon: la Jarfino, kiu fermas ĉiun jaron, kaj la Supertago, aldonata en superjaroj.</value>
+  </data>
+  <data name="IntroRead4" xml:space="preserve">
+    <value>Tuŝu tagon por vidi ĝiajn detalojn, kaj tuŝu la jaron por iri al alia jaro, periodo aŭ dato.</value>
+  </data>
+  <data name="IntroTitle3" xml:space="preserve">
+    <value>Kion signifas la nomoj</value>
+  </data>
+  <data name="IntroNamesLead" xml:space="preserve">
+    <value>La nomoj estas en Esperanto kaj ne estas tradukataj.</value>
+  </data>
+  <data name="IntroNameMonths" xml:space="preserve">
+    <value>la unua, dua, tria… dek-dua monato.</value>
+  </data>
+  <data name="IntroNameEkvinokso" xml:space="preserve">
+    <value>la blokoj de la marta kaj la septembra ekvinoksoj.</value>
+  </data>
+  <data name="IntroNameJarmezo" xml:space="preserve">
+    <value>la mezo de la jaro, ĉirkaŭ la junia solstico.</value>
+  </data>
+  <data name="IntroNameJarkomenco" xml:space="preserve">
+    <value>la komenco de la jaro, 1 Unua.</value>
+  </data>
+  <data name="IntroNameRekomenco" xml:space="preserve">
+    <value>la rekomenco, kiam komenciĝas la dua duono de la jaro.</value>
+  </data>
+  <data name="IntroNameJarfino" xml:space="preserve">
+    <value>la fino de la jaro, la tago, kiu fermas ĝin.</value>
+  </data>
+  <data name="IntroNameSupertago" xml:space="preserve">
+    <value>la aldona tago de superjaroj.</value>
+  </data>
+  <data name="IntroSkip" xml:space="preserve">
+    <value>Preterlasi</value>
+  </data>
+  <data name="IntroNext" xml:space="preserve">
+    <value>Sekva</value>
+  </data>
+  <data name="IntroStart" xml:space="preserve">
+    <value>Komenci</value>
+  </data>
+  <data name="IntroClose" xml:space="preserve">
+    <value>Fermi</value>
+  </data>
+  <data name="IntroAgain" xml:space="preserve">
+    <value>Revidi la klarigon ›</value>
+  </data>
 </root>

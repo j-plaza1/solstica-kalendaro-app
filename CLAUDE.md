@@ -117,13 +117,24 @@ of any MAUI/UI reference so it remains usable from a CLI, web build or test harn
 
 `src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
 view, the detail of one day, the "Go to" panel — a year typed, a period chosen, or a day named
-in either calendar — and Options. Everything is pushed on top of the year rather than replacing
+in either calendar — Options, About, the period, and the introduction. Everything is pushed on top of the year rather than replacing
 it, so coming back finds it where the reader left it. A year asked for by name is the exception:
 it opens at its top, and a day asked for opens centred and **marked** (`IsMarked` on the cell or
 the band, an outline because today is a fill and one day can be both). The mark survives
 scrolling, the day detail and Today; it goes whenever `ShowYear` builds the rows again.
 `ChoiceRow` draws one line of a list to choose from and `YearField` a year typed into one, and
 both are shared, so the second list — or field — a reader meets reads like the first.
+`IntroPage` is the way in for a reader who has not read the proposal: what the calendar is, how
+to read the year, and what the names mean. It is pushed **modally** over the year view on the
+first launch only — `Introduction.Seen`, a preference that skipping, finishing and the system's
+back button all set — and afterwards it is there to be asked for, from "How to read it" on the
+menu and from About. A page rebuilt for a change of language or of start is not a first launch
+and does not show it again. Its middle screen draws a real week and a real Jarfino with the year
+view's own row templates, which is why those live in `Resources/Styles/Rows.xaml` rather than in
+`MainPage.xaml`: an example that explains the view by being the view cannot afford to drift from
+it. A template in a shared dictionary cannot name the page it came from, so the day's tap asks
+for `MainPage` by type and finds nothing inside the introduction, which is what an example wants.
+
 `AboutPage` says what the app is: its version (marked preliminary by `ReleaseVersion`, read
 from `AppInfo.Current.VersionString`), where new versions and the source are, which version of
 the proposal it implements, and the licences. It shows no signing fingerprint — an app printing

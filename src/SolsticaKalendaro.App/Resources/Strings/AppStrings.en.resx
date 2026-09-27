@@ -373,4 +373,70 @@
   <data name="Licences" xml:space="preserve">
     <value>Code: MIT. Article: CC BY 4.0. Spectral and IBM Plex Sans typefaces: SIL Open Font License 1.1.</value>
   </data>
+  <data name="IntroTitle1" xml:space="preserve">
+    <value>A calendar that repeats every year</value>
+  </data>
+  <data name="IntroWhat1" xml:space="preserve">
+    <value>Solstica Kalendaro is a proposed solar calendar. The year begins at the December solstice, and every date falls on the same day of the week every year: a birthday that falls on a Tuesday today always will.</value>
+  </data>
+  <data name="IntroWhat2" xml:space="preserve">
+    <value>It has twelve months of exactly four weeks, three transition blocks around the equinoxes and the June solstice, and one day that belongs to no day of the week to close the year (two in leap years).</value>
+  </data>
+  <data name="IntroWhat3" xml:space="preserve">
+    <value>Since it is a proposal, you can choose the date it begins in {0}.</value>
+  </data>
+  <data name="IntroRead1" xml:space="preserve">
+    <value>Each row is a week, Monday to Sunday. The large number is the day in the Solstica calendar, and the small one the Gregorian date of the same day. The coloured strip underneath shows the season.</value>
+  </data>
+  <data name="IntroRead2" xml:space="preserve">
+    <value>Because the months are exactly four weeks long, they all begin on a Monday.</value>
+  </data>
+  <data name="IntroRead3" xml:space="preserve">
+    <value>The days that belong to no day of the week take up a whole row: the Jarfino, which closes every year, and the Supertago, added in leap years.</value>
+  </data>
+  <data name="IntroRead4" xml:space="preserve">
+    <value>Tap a day to see its details, and tap the year to go to another year, a period or a date.</value>
+  </data>
+  <data name="IntroTitle3" xml:space="preserve">
+    <value>What the names mean</value>
+  </data>
+  <data name="IntroNamesLead" xml:space="preserve">
+    <value>The names are in Esperanto and are not translated.</value>
+  </data>
+  <data name="IntroNameMonths" xml:space="preserve">
+    <value>first, second, third… twelfth month.</value>
+  </data>
+  <data name="IntroNameEkvinokso" xml:space="preserve">
+    <value>the blocks of the March and September equinoxes.</value>
+  </data>
+  <data name="IntroNameJarmezo" xml:space="preserve">
+    <value>the middle of the year, around the June solstice.</value>
+  </data>
+  <data name="IntroNameJarkomenco" xml:space="preserve">
+    <value>the beginning of the year, 1 Unua.</value>
+  </data>
+  <data name="IntroNameRekomenco" xml:space="preserve">
+    <value>the new beginning, when the second half of the year starts.</value>
+  </data>
+  <data name="IntroNameJarfino" xml:space="preserve">
+    <value>the end of the year, the day that closes it.</value>
+  </data>
+  <data name="IntroNameSupertago" xml:space="preserve">
+    <value>the extra day of leap years.</value>
+  </data>
+  <data name="IntroSkip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="IntroNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="IntroStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="IntroClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="IntroAgain" xml:space="preserve">
+    <value>See the introduction again ›</value>
+  </data>
 </root>

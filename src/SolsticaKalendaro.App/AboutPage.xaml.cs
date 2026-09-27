@@ -32,6 +32,7 @@ public partial class AboutPage : ContentPage
         VersionLabel.Text = Version();
         ReleasesButton.Text = AppStrings.NewVersions;
         SourceButton.Text = AppStrings.SourceCode;
+        IntroButton.Text = AppStrings.IntroAgain;
 
         ArticleLabel.Text = string.Format(Language.Culture, AppStrings.ArticleVersion,
                                           SolsticaCalendar.SpecificationVersion);
@@ -59,6 +60,9 @@ public partial class AboutPage : ContentPage
     private void OnNewVersions(object? sender, EventArgs e) => Links.Open(Links.Releases);
 
     private void OnSourceCode(object? sender, EventArgs e) => Links.Open(Links.Source);
+
+    private void OnSeeIntroduction(object? sender, EventArgs e) =>
+        Navigation.PushModalAsync(new IntroPage(firstTime: false));
 
     private void OnReadArticle(object? sender, EventArgs e) =>
         Links.Open(SolsticaCalendar.SpecificationUrl);
