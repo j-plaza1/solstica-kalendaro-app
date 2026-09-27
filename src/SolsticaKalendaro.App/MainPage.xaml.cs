@@ -355,18 +355,7 @@ public partial class MainPage : ContentPage
         SemanticProperties.SetHint(TodayButton, AppStrings.HintToday);
         SemanticProperties.SetHint(MenuButton, AppStrings.HintMenu);
 
-        Label[] slots = [Weekday0, Weekday1, Weekday2, Weekday3, Weekday4, Weekday5, Weekday6];
-        string[] names = Text.WeekdayInitials();
-
-        for (int i = 0; i < slots.Length; i++)
-        {
-            slots[i].Text = names[i];
-            slots[i].FontFamily = "PlexSemiBold";
-            slots[i].FontSize = 10.5;
-            slots[i].CharacterSpacing = 0.6;
-            slots[i].HorizontalTextAlignment = TextAlignment.Center;
-            slots[i].TextColor = (Color)Application.Current!.Resources["Muted"];
-        }
+        Weekdays.Content = WeekdayHeader.Build(withRule: true);
     }
 
     private YearPalette Palette() => new(

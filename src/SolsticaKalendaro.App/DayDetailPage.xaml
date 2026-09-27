@@ -22,6 +22,10 @@
             <Label x:Name="FestivityLabel" FontFamily="SpectralSemiBold" FontSize="15"
                    TextColor="{StaticResource Accent}" Margin="0,16,0,0" IsVisible="False" />
 
+            <!-- Why the day is free, one line per reason. The grid marks them all alike; this
+                 is where the reasons are told apart. -->
+            <VerticalStackLayout x:Name="DayOffReasons" Spacing="1" Margin="0,10,0,0" />
+
             <Label x:Name="WeekDayLabel" FontFamily="PlexMedium" FontSize="12"
                    CharacterSpacing="0.9" Margin="0,16,0,5" />
 

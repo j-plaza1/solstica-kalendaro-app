@@ -33,22 +33,38 @@
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainPage}}, Path=OpenDay}"
                                 CommandParameter="{Binding Solstica}" />
                         </Grid.GestureRecognizers>
+
+                        <!-- A free day is shaded, whatever makes it one. Today is not: it is
+                             the circle below, so that a day can be both at once. -->
                         <Grid.Triggers>
-                            <DataTrigger TargetType="Grid" Binding="{Binding IsToday}" Value="True">
-                                <Setter Property="BackgroundColor" Value="{StaticResource Highlight}" />
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsDayOff}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource DayOffShade}" />
                             </DataTrigger>
                         </Grid.Triggers>
 
                         <VerticalStackLayout VerticalOptions="Center" Spacing="2">
-                            <Label Text="{Binding Number}" FontFamily="Plex" FontSize="19"
-                                   HorizontalOptions="Center" TextColor="{StaticResource Ink}">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding IsToday}" Value="True">
-                                        <Setter Property="TextColor" Value="{StaticResource Accent}" />
-                                        <Setter Property="FontFamily" Value="PlexSemiBold" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
+
+                            <!-- Fixed at 28, so that neither the circle nor the weight of a
+                                 free day's number can push the row past its 58. -->
+                            <Grid HeightRequest="28" WidthRequest="28" HorizontalOptions="Center">
+                                <Ellipse Fill="{StaticResource Ink}" WidthRequest="28" HeightRequest="28"
+                                         IsVisible="{Binding IsToday}" />
+                                <Label Text="{Binding Number}" FontFamily="Plex" FontSize="19"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       TextColor="{StaticResource Ink}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsDayOff}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource DayOffRed}" />
+                                            <Setter Property="FontFamily" Value="PlexSemiBold" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsToday}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource Paper}" />
+                                            <Setter Property="FontFamily" Value="PlexSemiBold" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </Grid>
+
                             <Label Text="{Binding Gregorian}" FontFamily="Plex" FontSize="10"
                                    HorizontalOptions="Center" TextColor="{StaticResource Faint}" />
                         </VerticalStackLayout>
@@ -61,7 +77,7 @@
                              of the fixed height away from anything. -->
                         <Border Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsMarked}"
                                 InputTransparent="True" BackgroundColor="Transparent"
-                                Stroke="{StaticResource Accent}" StrokeThickness="1.5" />
+                                Stroke="{StaticResource Mark}" StrokeThickness="2" />
 
                         <BoxView Grid.Row="0" Color="{StaticResource CellEdge}"
                                  WidthRequest="1" HorizontalOptions="End" />
@@ -81,11 +97,13 @@
                     CommandParameter="{Binding Solstica}" />
             </Grid.GestureRecognizers>
             <BoxView Color="{Binding Season}" />
+            <!-- A day outside the week is a festivity, so the band is shaded and named in
+                 the same red as a free day's number. -->
             <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
-                  BackgroundColor="{StaticResource Highlight}">
+                  BackgroundColor="{StaticResource DayOffShade}">
                 <VerticalStackLayout Spacing="3">
                     <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="17"
-                           TextColor="{StaticResource Accent}" />
+                           TextColor="{StaticResource DayOffRed}" />
                     <Label Text="{Binding Note}" FontFamily="Plex" FontSize="11"
                            TextColor="{StaticResource Muted}" />
                 </VerticalStackLayout>
@@ -98,7 +116,7 @@
                  the whole of it. -->
             <Border Grid.ColumnSpan="3" IsVisible="{Binding IsMarked}"
                     InputTransparent="True" BackgroundColor="Transparent"
-                    Stroke="{StaticResource Accent}" StrokeThickness="1.5" />
+                    Stroke="{StaticResource Mark}" StrokeThickness="2" />
         </Grid>
     </DataTemplate>
 

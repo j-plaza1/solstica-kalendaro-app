@@ -439,4 +439,13 @@
   <data name="IntroAgain" xml:space="preserve">
     <value>Volver a ver la explicación ›</value>
   </data>
+  <data name="RestDaysHeading" xml:space="preserve">
+    <value>Días de descanso</value>
+  </data>
+  <data name="DetailRestDay" xml:space="preserve">
+    <value>Día de descanso</value>
+  </data>
+  <data name="DetailCalendarFestivity" xml:space="preserve">
+    <value>Fiesta del calendario</value>
+  </data>
 </root>

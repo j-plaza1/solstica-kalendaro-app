@@ -147,6 +147,19 @@ and what changed when the period began — with arrows that walk the table on th
 never move the year behind it. It is reached from the period line in the header and from the
 foot of the day detail, and it is where the app names the document it implements and links to it.
 
+**One marking for every day off, whatever the reason.** A rest day, a festivity of the calendar
+and later a local holiday (#25) all look the same in the grid: the cell shaded `DayOffShade` and
+the number `DayOffRed` and semibold, the bands the same with their name in red, and the rest
+days' whole columns — their heads included, which is why `WeekdayHeader` is built in code and
+shared with the introduction's example. Which reason it is belongs to the day detail, which says
+one line per reason; telling them apart in the grid would take a legend. `RestDays` holds the
+reader's choice (Saturday and Sunday by default, none allowed), as `Language` and
+`CalendarStart` hold theirs, and `YearView` asks `IsDayOff` once per day while building the rows.
+
+Because red and shading now mean "day off", **today is an ink circle behind the number** — a day
+can be both — and the go-to mark is violet (`Mark`), not red. All of it is drawn inside the rows'
+fixed heights: 44, 58 and 66 are what `ScrollTo` by index depends on.
+
 It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
 from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree
 with the document. `YearView` projects an outline into bindable rows and `Text` holds the
@@ -180,7 +193,8 @@ The conversion is built in four layers, each answering one question:
   given `BlockWidths`, cached per arrangement. Ordinals here are **common-year ordinals**:
   the Supertago is not accounted for at this layer.
 - **`SolsticaCalendar`** — the conversion itself, plus `WeekDay`, `SeasonOf`, `YearFraction`,
-  and `Blocks(year)`: the blocks of a year in the order they occur, with the days in each.
+  `IsDayOff(date, restDays)` — a festivity, or a day of the week the reader rests on, with the
+  extra-weekly days never consulting the set because they have no weekday — and `Blocks(year)`: the blocks of a year in the order they occur, with the days in each.
   The Supertago is one of them in a leap year, placed by the day of the year it opens on, which
   is where the period puts it — inside a block in two of the eleven periods, between two in the
   rest. An interface offering a day to pick has to offer exactly these.

@@ -50,19 +50,10 @@
 
         </VerticalStackLayout>
 
-        <!-- The Solstica week, which is not the Gregorian one: it pauses at the extra-weekly days. -->
-        <Grid x:Name="WeekdayHeader" Grid.Row="1" Padding="12,6,12,7"
-              ColumnDefinitions="*,*,*,*,*,*,*">
-            <Label x:Name="Weekday0" />
-            <Label x:Name="Weekday1" Grid.Column="1" />
-            <Label x:Name="Weekday2" Grid.Column="2" />
-            <Label x:Name="Weekday3" Grid.Column="3" />
-            <Label x:Name="Weekday4" Grid.Column="4" />
-            <Label x:Name="Weekday5" Grid.Column="5" />
-            <Label x:Name="Weekday6" Grid.Column="6" />
-            <BoxView Grid.ColumnSpan="7" Color="{StaticResource Hairline}"
-                     HeightRequest="1" VerticalOptions="End" Margin="0,0,0,-7" />
-        </Grid>
+        <!-- The Solstica week, which is not the Gregorian one: it pauses at the extra-weekly
+             days. Built in code, and shared with the introduction's example, because the rest
+             days shade their columns here too. -->
+        <ContentView x:Name="Weekdays" Grid.Row="1" />
 
         <CollectionView x:Name="Rows" Grid.Row="2" ItemTemplate="{StaticResource RowSelector}" />
 
