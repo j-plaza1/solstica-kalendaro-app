@@ -4,8 +4,8 @@ namespace SolsticaKalendaro.App;
 
 /// <summary>
 /// A page that exists so that the structure can be walked before its screens are written. It
-/// carries its title and nothing else. Each one is replaced by the issue that fills it:
-/// Opcions by #13, #14 and #20; Com es llegeix by #19; Quant a by #18; Període by #17.
+/// carries its title and nothing else. One is left: Com es llegeix, which #19 replaces. Options
+/// came with #13 and #14, the period with #17 and About with #18.
 /// </summary>
 public partial class PlaceholderPage : ContentPage
 {

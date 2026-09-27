@@ -49,7 +49,9 @@ period screen prints both, so a raised version with a stale link says so on scre
   `N*1000000 + M*10000 + O*100 + P`, so no component may exceed 99; the workflow rejects one
   that does.
 - `O = 0` means preliminary. Those releases are marked prerelease, and the first production
-  release against a document is `vN.M.1.0`.
+  release against a document is `vN.M.1.0`. `ReleaseVersion.IsPreview` states that rule once, in
+  the core, so the About screen marks a build exactly where the workflow would; anything that is
+  not four numbers is not a release version and is shown unmarked rather than throwing.
 - A `workflow_dispatch` run builds `N.M.0.0` from `SpecificationVersion`. That version is never
   published: its shape says it is a rehearsal.
 
@@ -122,6 +124,13 @@ the band, an outline because today is a fill and one day can be both). The mark 
 scrolling, the day detail and Today; it goes whenever `ShowYear` builds the rows again.
 `ChoiceRow` draws one line of a list to choose from and `YearField` a year typed into one, and
 both are shared, so the second list — or field — a reader meets reads like the first.
+`AboutPage` says what the app is: its version (marked preliminary by `ReleaseVersion`, read
+from `AppInfo.Current.VersionString`), where new versions and the source are, which version of
+the proposal it implements, and the licences. It shows no signing fingerprint — an app printing
+its own verifies nothing, and the check belongs before installing, against the README. `Links`
+holds the repository and releases URLs; the article's own stays in the core beside the version
+it belongs to, and is not copied.
+
 `PeriodPage` says one row of section 9.3 in sentences — the seasons' days, the blocks' widths,
 and what changed when the period began — with arrows that walk the table on the page itself and
 never move the year behind it. It is reached from the period line in the header and from the
