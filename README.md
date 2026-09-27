@@ -18,6 +18,10 @@ That DOI is the concept one: it always resolves to the newest version of the doc
 checking the app against the proposal needs the version it was built against, not
 whichever is newest — and the first half of every release tag says which that is.
 
+The version and its link live together in the core, as `SolsticaCalendar.SpecificationVersion`
+and `SolsticaCalendar.SpecificationUrl`, and the app's period screen prints both: it says which
+version it follows and offers the link to it.
+
 ## What the calendar looks like
 
 A year is twelve months of 28 days each, separated into four seasons of three months,

@@ -194,7 +194,7 @@
     <value>{0} {1}</value>
   </data>
   <data name="PeriodFooter" xml:space="preserve">
-    <value>Periodo {0}–{1} · {2}</value>
+    <value>Periodo {0}–{1} · {2} ›</value>
   </data>
   <data name="Month1" xml:space="preserve">
     <value></value>
@@ -297,5 +297,50 @@
   </data>
   <data name="BeforeCalendarBegins" xml:space="preserve">
     <value>Ĉi tiu dato estas antaŭ la komenciĝo de la kalendaro, la {0}.</value>
+  </data>
+  <data name="SeasonDays" xml:space="preserve">
+    <value>Tagoj de ĉiu sezono</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>{0} tagoj</value>
+  </data>
+  <data name="LeapSeason" xml:space="preserve">
+    <value>En superjaroj la {0} havas {1}: la Supertago venas post {2}.</value>
+  </data>
+  <data name="TransitionBlocks" xml:space="preserve">
+    <value>Transiraj blokoj</value>
+  </data>
+  <data name="ChangesOnEntering" xml:space="preserve">
+    <value>Kiam ĉi tiu periodo komenciĝas, en {0}</value>
+  </data>
+  <data name="BlockChanged" xml:space="preserve">
+    <value>{0} havas {2} tagojn anstataŭ {1}.</value>
+  </data>
+  <data name="MonthsEarlier" xml:space="preserve">
+    <value>{0} komenciĝas {1} tagojn pli frue; la resto de la jaro ne moviĝas.</value>
+  </data>
+  <data name="SeasonChanged" xml:space="preserve">
+    <value>La {0} havas {2} tagojn anstataŭ {1}.</value>
+  </data>
+  <data name="SupertagoMoved" xml:space="preserve">
+    <value>La Supertago, kiu venis post {0}, nun venas post {1}.</value>
+  </data>
+  <data name="ListAnd" xml:space="preserve">
+    <value>{0} kaj {1}</value>
+  </data>
+  <data name="ArticleVersion" xml:space="preserve">
+    <value>Ĉi tiu aplikaĵo sekvas la version {0} de la artikolo.</value>
+  </data>
+  <data name="ReadArticle" xml:space="preserve">
+    <value>Legu la artikolon ›</value>
+  </data>
+  <data name="HintPreviousPeriod" xml:space="preserve">
+    <value>Antaŭa periodo</value>
+  </data>
+  <data name="HintNextPeriod" xml:space="preserve">
+    <value>Sekva periodo</value>
+  </data>
+  <data name="HintOpenPeriod" xml:space="preserve">
+    <value>Malfermu la periodon</value>
   </data>
 </root>

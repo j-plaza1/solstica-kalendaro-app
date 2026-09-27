@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.PeriodPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Paper}">
+
+    <ScrollView x:Name="Scroller">
+        <VerticalStackLayout Padding="20,10,20,34" Spacing="0">
+
+            <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
+                    FontFamily="Plex" FontSize="18" TextColor="{StaticResource Muted}"
+                    BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                    MinimumHeightRequest="44" MinimumWidthRequest="44"
+                    HorizontalOptions="Start" />
+
+            <Label x:Name="KindLabel" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,12,0,2" />
+
+            <!-- One period at a time, with the rest of the table an arrow away. The arrows
+                 move this page and nothing else: the year the reader came from stays where
+                 it was. -->
+            <Grid ColumnDefinitions="Auto,Auto,Auto" Margin="-8,0,0,0">
+                <Button x:Name="PreviousButton" Text="&#8249;" Clicked="OnPrevious" />
+                <Label x:Name="YearsLabel" Grid.Column="1" FontFamily="SpectralSemiBold"
+                       FontSize="30" TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+                <Button x:Name="NextButton" Grid.Column="2" Text="&#8250;" Clicked="OnNext" />
+            </Grid>
+
+            <Label x:Name="SeasonDaysHeading" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,26,0,2" />
+            <VerticalStackLayout x:Name="Seasons" Spacing="0" />
+
+            <!-- Which season the Supertago is given to, and the day it follows. -->
+            <Label x:Name="LeapLabel" FontFamily="Plex" FontSize="11.5"
+                   TextColor="{StaticResource Muted}" Margin="0,12,0,0" />
+
+            <Label x:Name="BlocksHeading" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,26,0,2" />
+            <VerticalStackLayout x:Name="Blocks" Spacing="0" />
+
+            <!-- What is different once this period has begun. The first period begins
+                 nothing, and shows none of this. -->
+            <Label x:Name="ChangesHeading" FontFamily="PlexSemiBold" FontSize="10"
+                   CharacterSpacing="0.9" TextColor="{StaticResource Faint}" Margin="0,26,0,2" />
+            <VerticalStackLayout x:Name="Changes" Spacing="0" />
+
+            <BoxView Color="{StaticResource Hairline}" HeightRequest="1" Margin="0,28,0,14" />
+
+            <Label x:Name="ArticleLabel" FontFamily="Plex" FontSize="11.5"
+                   TextColor="{StaticResource Muted}" />
+            <Button x:Name="ArticleButton" Clicked="OnReadArticle"
+                    FontFamily="PlexMedium" FontSize="13" TextColor="{StaticResource Accent}"
+                    BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                    MinimumHeightRequest="44" HorizontalOptions="Start" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

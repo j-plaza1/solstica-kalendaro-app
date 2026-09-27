@@ -40,6 +40,11 @@ and `O.P` is the app's own. The core states the first half in
 `SolsticaCalendar.SpecificationVersion`, currently `2.1`, and the release workflow refuses a tag
 whose `N.M` disagrees with it rather than shipping an app that claims the wrong document.
 
+`SolsticaCalendar.SpecificationUrl` sits beside it and holds that version's DOI — the version
+one, not the concept one, because an app that names the document it implements has to point at
+that document and not at whichever is newest. The two constants change in the same commit; the
+period screen prints both, so a raised version with a stale link says so on screen.
+
 - `ApplicationDisplayVersion` is `N.M.O.P`. `ApplicationVersion` is
   `N*1000000 + M*10000 + O*100 + P`, so no component may exceed 99; the workflow rejects one
   that does.
@@ -117,6 +122,10 @@ the band, an outline because today is a fill and one day can be both). The mark 
 scrolling, the day detail and Today; it goes whenever `ShowYear` builds the rows again.
 `ChoiceRow` draws one line of a list to choose from and `YearField` a year typed into one, and
 both are shared, so the second list — or field — a reader meets reads like the first.
+`PeriodPage` says one row of section 9.3 in sentences — the seasons' days, the blocks' widths,
+and what changed when the period began — with arrows that walk the table on the page itself and
+never move the year behind it. It is reached from the period line in the header and from the
+foot of the day detail, and it is where the app names the document it implements and links to it.
 
 It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
 from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree
@@ -142,7 +151,11 @@ The conversion is built in four layers, each answering one question:
 - **`ValidityPeriod`** — *what are the rules in this year?* Eleven rows covering 2000–10000
   (section 9.3), each carrying a `SeasonAllocation`, a `BlockWidths` arrangement and the
   `SupertagoSeam`. Resolved by year via `ValidityPeriod.For`. Outside the table, conversion
-  throws.
+  throws. A row also knows its neighbours (`Previous`, `Next`), the day the Supertago follows
+  (`SupertagoFollows`, the seam named as a block and a day) and `ChangesOnEntering`: the seasons
+  that change length, the blocks that change width, the months that move and where the Supertago
+  goes, all compared against the row before and none of it written down. It is null for the
+  first period, which begins nothing.
 - **`YearLayout`** — *where does each block sit?* Start ordinal and length per block for a
   given `BlockWidths`, cached per arrangement. Ordinals here are **common-year ordinals**:
   the Supertago is not accounted for at this layer.

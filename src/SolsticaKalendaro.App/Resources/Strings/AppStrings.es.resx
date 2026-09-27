@@ -194,7 +194,7 @@
     <value>{0} de {1}</value>
   </data>
   <data name="PeriodFooter" xml:space="preserve">
-    <value>Período {0}–{1} · {2}</value>
+    <value>Período {0}–{1} · {2} ›</value>
   </data>
   <data name="Month1" xml:space="preserve">
     <value>primer mes</value>
@@ -297,5 +297,50 @@
   </data>
   <data name="BeforeCalendarBegins" xml:space="preserve">
     <value>Esta fecha es anterior al comienzo del calendario, el {0}.</value>
+  </data>
+  <data name="SeasonDays" xml:space="preserve">
+    <value>Días de cada estación</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>{0} días</value>
+  </data>
+  <data name="LeapSeason" xml:space="preserve">
+    <value>En años bisiestos, la {0} tiene {1}: el Supertago va después del {2}.</value>
+  </data>
+  <data name="TransitionBlocks" xml:space="preserve">
+    <value>Bloques de transición</value>
+  </data>
+  <data name="ChangesOnEntering" xml:space="preserve">
+    <value>Al empezar este período, en {0}</value>
+  </data>
+  <data name="BlockChanged" xml:space="preserve">
+    <value>{0} pasa de {1} a {2} días.</value>
+  </data>
+  <data name="MonthsEarlier" xml:space="preserve">
+    <value>{0} empiezan {1} días antes; el resto del año no se mueve.</value>
+  </data>
+  <data name="SeasonChanged" xml:space="preserve">
+    <value>La {0} pasa de {1} a {2} días.</value>
+  </data>
+  <data name="SupertagoMoved" xml:space="preserve">
+    <value>El Supertago, que iba después del {0}, pasa a ir después del {1}.</value>
+  </data>
+  <data name="ListAnd" xml:space="preserve">
+    <value>{0} y {1}</value>
+  </data>
+  <data name="ArticleVersion" xml:space="preserve">
+    <value>Esta app sigue la versión {0} del artículo.</value>
+  </data>
+  <data name="ReadArticle" xml:space="preserve">
+    <value>Lee el artículo ›</value>
+  </data>
+  <data name="HintPreviousPeriod" xml:space="preserve">
+    <value>Período anterior</value>
+  </data>
+  <data name="HintNextPeriod" xml:space="preserve">
+    <value>Período siguiente</value>
+  </data>
+  <data name="HintOpenPeriod" xml:space="preserve">
+    <value>Abre el período</value>
   </data>
 </root>

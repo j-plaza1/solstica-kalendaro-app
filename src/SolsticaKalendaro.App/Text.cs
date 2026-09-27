@@ -37,6 +37,31 @@ public static class Text
     public static string Shift(SolsticaDate? date) =>
         date is { } d ? string.Format(Culture, AppStrings.ShiftName, d.Period.Name(), d.Year) : string.Empty;
 
+    /// <summary>
+    /// A season's name where a line begins with it. The strings themselves are lower case,
+    /// being written to sit inside a sentence, and the capital belongs to the language.
+    /// </summary>
+    public static string SeasonTitle(Season season) =>
+        SeasonName(season) is var name && name.Length > 0
+            ? char.ToUpper(name[0], Culture) + name[1..]
+            : name;
+
+    /// <summary>
+    /// "7 Jarmezo": a day named by its block, with no year, for a screen that speaks of every
+    /// year of a period at once. The block's name is never translated.
+    /// </summary>
+    public static string BlockDay((PeriodKind Block, int Day) day) =>
+        day.Block.IsExtraWeekly() ? day.Block.Name() : $"{day.Day} {day.Block.Name()}";
+
+    /// <summary>"Sepa, Oka i Naŭa": the last two joined by the language's own word for it.</summary>
+    public static string List(IReadOnlyList<string> items) => items.Count switch
+    {
+        0 => string.Empty,
+        1 => items[0],
+        _ => string.Format(Culture, AppStrings.ListAnd,
+                           string.Join(", ", items.Take(items.Count - 1)), items[^1])
+    };
+
     public static string SeasonName(Season season) => season switch
     {
         Season.First => AppStrings.Season1,

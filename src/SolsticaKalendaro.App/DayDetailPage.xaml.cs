@@ -15,12 +15,16 @@ public partial class DayDetailPage : ContentPage
 
     private readonly SolsticaCalendar _calendar;
 
+    /// <summary>The period this day belongs to, for the way in at the foot of the page.</summary>
+    private readonly ValidityPeriod _period;
+
     public DayDetailPage(SolsticaCalendar calendar, SolsticaDate date)
     {
         InitializeComponent();
         _calendar = calendar;
 
         var detail = calendar.Describe(date);
+        _period = detail.Period;
         var palette = Palette();
         var today = DateOnly.FromDateTime(DateTime.Now);
         bool isToday = detail.Gregorian == today;
@@ -59,9 +63,17 @@ public partial class DayDetailPage : ContentPage
 
         FooterLabel.Text = string.Format(Language.Culture, AppStrings.PeriodFooter,
             detail.Period.FirstYear, detail.Period.LastYear, detail.Period.Allocation);
+        SemanticProperties.SetHint(FooterLabel, AppStrings.HintOpenPeriod);
     }
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
+
+    /// <summary>
+    /// The foot names the period this day belongs to; touching it is how a reader finds out
+    /// what that means. The line ends in a "›" so that it reads as somewhere to go.
+    /// </summary>
+    private void OnPeriodTapped(object? sender, TappedEventArgs e) =>
+        Navigation.PushAsync(new PeriodPage(_period));
 
     /// <summary>
     /// Said only where there is something to say. A Jarfino or a Supertago gets the other half
