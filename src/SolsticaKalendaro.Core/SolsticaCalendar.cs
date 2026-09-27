@@ -24,6 +24,14 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
     /// </summary>
     public const string SpecificationVersion = "2.1";
 
+    /// <summary>
+    /// Where that version of the document is. The <i>version</i> DOI, not the concept one:
+    /// anyone checking this code against the proposal needs the document it was built against,
+    /// not whichever is newest. It changes in the same commit as
+    /// <see cref="SpecificationVersion"/>, and for the same reason.
+    /// </summary>
+    public const string SpecificationUrl = "https://doi.org/10.5281/zenodo.22755480";
+
     public SolsticaEpoch Epoch { get; } = epoch;
 
     public static bool IsLeapYear(int year) =>

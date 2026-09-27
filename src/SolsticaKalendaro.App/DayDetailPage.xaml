@@ -84,8 +84,14 @@
 
             <BoxView Color="{StaticResource Hairline}" HeightRequest="1" Margin="0,22,0,12" />
 
+            <!-- The line that names the period is the way to it. -->
             <Label x:Name="FooterLabel" FontFamily="Plex" FontSize="10.5"
-                   TextColor="{StaticResource Muted}" />
+                   TextColor="{StaticResource Muted}" Padding="0,14"
+                   MinimumHeightRequest="44">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPeriodTapped" />
+                </Label.GestureRecognizers>
+            </Label>
 
         </VerticalStackLayout>
     </ScrollView>

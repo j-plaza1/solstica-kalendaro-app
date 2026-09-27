@@ -189,7 +189,7 @@ public partial class MainPage : ContentPage
     }
 
     private void OnPeriodClicked(object? sender, EventArgs e) =>
-        Navigation.PushAsync(new PlaceholderPage(AppStrings.TabPeriod));
+        Navigation.PushAsync(new PeriodPage(SolsticaCalendar.PeriodFor(_shownYear)));
 
     // ---------- the menu ----------
 

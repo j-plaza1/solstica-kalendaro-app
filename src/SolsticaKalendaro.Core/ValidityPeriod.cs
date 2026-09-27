@@ -64,6 +64,27 @@ public sealed record SeasonAllocation(int First, int Second, int Third, int Four
 }
 
 /// <summary>
+/// What is different about a year once a validity period has begun, against the period before
+/// it. Derived from the two rows of the table, never written down: recalibration is semantic in
+/// a common year (section 9.4), so most of this is a change of meaning rather than of dates —
+/// except where the blocks are rearranged, which moves months, and that happens once.
+/// </summary>
+/// <param name="Seasons">Seasons whose length changes, in season order.</param>
+/// <param name="Blocks">Transition blocks whose width changes, in the order they come.</param>
+/// <param name="MonthsMoved">
+/// Months whose first day falls on a different day of the year, in the order they come, with
+/// the shift in days. Negative means earlier, which is the only direction the table takes.
+/// </param>
+/// <param name="SupertagoFrom">Where the Supertago used to fall, or null if it does not move.</param>
+/// <param name="SupertagoTo">Where it falls now, or null if it does not move.</param>
+public sealed record PeriodChanges(
+    IReadOnlyList<(Season Season, int From, int To)> Seasons,
+    IReadOnlyList<(PeriodKind Block, int From, int To)> Blocks,
+    IReadOnlyList<(PeriodKind Month, int Days)> MonthsMoved,
+    (PeriodKind Block, int Day)? SupertagoFrom,
+    (PeriodKind Block, int Day)? SupertagoTo);
+
+/// <summary>
 /// One row of the table of section 9.3. A validity period fixes the seasonal allocation, the
 /// transition-block arrangement and the seam at which the Supertago falls. Conversion must know
 /// which period it is working in, but <b>only for leap years</b>: in common years every period
@@ -118,6 +139,62 @@ public sealed record ValidityPeriod(
 
     /// <summary>Ordinal occupied by the Supertago in a leap year.</summary>
     public int SupertagoOrdinal => SupertagoSeam + 1;
+
+    /// <summary>
+    /// The day the Supertago follows: the last day before the intercalation, named. In nine of
+    /// the eleven periods that is the closing day of a block and in two it is a day inside one.
+    /// </summary>
+    public (PeriodKind Block, int Day) SupertagoFollows => Layout.FromCommonOrdinal(SupertagoSeam);
+
+    private int Index => IndexIn(Table);
+
+    private int IndexIn(IReadOnlyList<ValidityPeriod> table)
+    {
+        for (int i = 0; i < table.Count; i++)
+            if (table[i].FirstYear == FirstYear) return i;
+        return -1;
+    }
+
+    /// <summary>The period before this one in the table, and the one after. Null at the ends.</summary>
+    public ValidityPeriod? Previous => Index > 0 ? Table[Index - 1] : null;
+
+    public ValidityPeriod? Next => Index >= 0 && Index < Table.Count - 1 ? Table[Index + 1] : null;
+
+    /// <summary>
+    /// What changes on entering this period, against the one before it. Null for the first,
+    /// which begins nothing: there is no period before it to differ from.
+    /// </summary>
+    public PeriodChanges? ChangesOnEntering
+    {
+        get
+        {
+            if (Previous is not { } before) return null;
+
+            var seasons = Enum.GetValues<Season>()
+                .Where(s => before.Allocation[s] != Allocation[s])
+                .Select(s => (Season: s, From: before.Allocation[s], To: Allocation[s]))
+                .ToList();
+
+            var widths = new[] { PeriodKind.EkvinoksoI, PeriodKind.Jarmezo, PeriodKind.EkvinoksoII }
+                .Where(b => before.Blocks.Width(b) != Blocks.Width(b))
+                .Select(b => (Block: b, From: before.Blocks.Width(b), To: Blocks.Width(b)))
+                .ToList();
+
+            // A month moves only when a transition block before it changes width, so this is
+            // empty everywhere but the one structural reform.
+            var months = YearLayout.Sequence
+                .Where(p => p.IsMonth())
+                .Select(m => (Month: m, Days: Layout.Start(m) - before.Layout.Start(m)))
+                .Where(m => m.Days != 0)
+                .ToList();
+
+            bool moved = before.SupertagoFollows != SupertagoFollows;
+
+            return new PeriodChanges(seasons, widths, months,
+                moved ? before.SupertagoFollows : null,
+                moved ? SupertagoFollows : null);
+        }
+    }
 
     /// <summary>The deficient season the Supertago is assigned to.</summary>
     public Season SupertagoSeason => Allocation.SeasonOf(SupertagoOrdinal);

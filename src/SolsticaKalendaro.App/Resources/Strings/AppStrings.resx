@@ -209,7 +209,7 @@
     <comment>{0} a day and its month, {1} the year. Catalan joins them with 'del'.</comment>
   </data>
   <data name="PeriodFooter" xml:space="preserve">
-    <value>Període {0}–{1} · {2}</value>
+    <value>Període {0}–{1} · {2} ›</value>
     <comment>{0} first year, {1} last year, {2} the seasonal allocation.</comment>
   </data>
   <data name="Month1" xml:space="preserve">
@@ -324,5 +324,52 @@
   <data name="BeforeCalendarBegins" xml:space="preserve">
     <value>Aquesta data és anterior al començament del calendari, el {0}.</value>
     <comment>The answer to a Gregorian date the calendar does not reach. {0} is the day it begins.</comment>
+  </data>
+  <data name="SeasonDays" xml:space="preserve">
+    <value>Dies de cada estació</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>{0} dies</value>
+  </data>
+  <data name="LeapSeason" xml:space="preserve">
+    <value>En anys de traspàs, la {0} en té {1}: el Supertago hi va després del {2}.</value>
+    <comment>{0} the season, {1} its days in a leap year, {2} the day the Supertago follows.</comment>
+  </data>
+  <data name="TransitionBlocks" xml:space="preserve">
+    <value>Blocs de transició</value>
+  </data>
+  <data name="ChangesOnEntering" xml:space="preserve">
+    <value>En començar aquest període, el {0}</value>
+  </data>
+  <data name="BlockChanged" xml:space="preserve">
+    <value>{0} passa de {1} a {2} dies.</value>
+  </data>
+  <data name="MonthsEarlier" xml:space="preserve">
+    <value>{0} comencen {1} dies abans; la resta de l'any no es mou.</value>
+  </data>
+  <data name="SeasonChanged" xml:space="preserve">
+    <value>La {0} passa de {1} a {2} dies.</value>
+  </data>
+  <data name="SupertagoMoved" xml:space="preserve">
+    <value>El Supertago, que anava després del {0}, passa a anar després del {1}.</value>
+  </data>
+  <data name="ListAnd" xml:space="preserve">
+    <value>{0} i {1}</value>
+    <comment>Joins the last two items of a list.</comment>
+  </data>
+  <data name="ArticleVersion" xml:space="preserve">
+    <value>Aquesta app segueix la versió {0} de l'article.</value>
+  </data>
+  <data name="ReadArticle" xml:space="preserve">
+    <value>Llegeix l'article ›</value>
+  </data>
+  <data name="HintPreviousPeriod" xml:space="preserve">
+    <value>Període anterior</value>
+  </data>
+  <data name="HintNextPeriod" xml:space="preserve">
+    <value>Període següent</value>
+  </data>
+  <data name="HintOpenPeriod" xml:space="preserve">
+    <value>Obre el període</value>
   </data>
 </root>
