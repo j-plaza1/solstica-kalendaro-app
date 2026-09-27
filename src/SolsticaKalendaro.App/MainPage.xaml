@@ -58,6 +58,13 @@
                             <!-- The season of the day, at its foot. It can change mid-row. -->
                             <BoxView Grid.Row="1" Color="{Binding Season}" />
 
+                            <!-- The day just gone to. An outline, because today is a fill and
+                                 one day can be both; drawn inside the cell, so it takes none
+                                 of the fixed height away from anything. -->
+                            <Border Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsMarked}"
+                                    InputTransparent="True" BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Accent}" StrokeThickness="1.5" />
+
                             <BoxView Grid.Row="0" Color="{StaticResource CellEdge}"
                                      WidthRequest="1" HorizontalOptions="End" />
                         </Grid>
@@ -88,6 +95,12 @@
                            TextColor="{StaticResource Ink}" VerticalOptions="Center" />
                 </Grid>
                 <BoxView Grid.Column="2" Color="{Binding Season}" />
+
+                <!-- A Jarfino or a Supertago is a band, not a cell, so the mark goes round
+                     the whole of it. -->
+                <Border Grid.ColumnSpan="3" IsVisible="{Binding IsMarked}"
+                        InputTransparent="True" BackgroundColor="Transparent"
+                        Stroke="{StaticResource Accent}" StrokeThickness="1.5" />
             </Grid>
         </DataTemplate>
 

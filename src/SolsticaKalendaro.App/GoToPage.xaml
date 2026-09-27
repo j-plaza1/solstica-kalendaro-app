@@ -36,9 +36,7 @@
                 <Entry x:Name="YearEntry" Keyboard="Numeric" MaxLength="5"
                        FontFamily="Plex" FontSize="28" TextColor="{StaticResource Ink}"
                        BackgroundColor="Transparent" WidthRequest="170"
-                       HorizontalOptions="Start" MinimumHeightRequest="44"
-                       Focused="OnYearFocused" TextChanged="OnYearChanged"
-                       Completed="OnYearCompleted" />
+                       HorizontalOptions="Start" MinimumHeightRequest="44" />
                 <Label x:Name="YearRangeLabel" FontFamily="Plex" FontSize="11"
                        TextColor="{StaticResource Muted}" Margin="2,6,0,0" />
                 <Button x:Name="GoButton" Clicked="OnGoClicked"
@@ -54,8 +52,63 @@
                 <VerticalStackLayout x:Name="Periods" Spacing="0" Margin="0,8,8,24" />
             </ScrollView>
 
-            <!-- The third tab, for #16. -->
-            <ContentView x:Name="DatePanel" IsVisible="False" />
+            <!-- A day, named in whichever calendar the reader is thinking in. One day
+                 underneath: switching sides converts it rather than starting again. -->
+            <ScrollView x:Name="DatePanel" IsVisible="False">
+                <VerticalStackLayout Spacing="0" Margin="0,20,0,24">
+
+                    <Grid ColumnDefinitions="Auto,Auto">
+                        <Button x:Name="GregorianButton" Clicked="OnCalendarClicked" />
+                        <Button x:Name="SolsticaButton" Grid.Column="1" Clicked="OnCalendarClicked" />
+                    </Grid>
+
+                    <VerticalStackLayout x:Name="GregorianSide" Spacing="0" Margin="0,16,0,0">
+                        <DatePicker x:Name="Picker" Format="D" DateSelected="OnGregorianPicked"
+                                    FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
+                                    MinimumHeightRequest="44" HorizontalOptions="Start" />
+
+                        <!-- In the last year the Gregorian calendar runs out before the
+                             Solstica one does, and there is no date to pick. -->
+                        <Label x:Name="NoGregorianLabel" IsVisible="False" FontFamily="Plex"
+                               FontSize="17" TextColor="{StaticResource Ink}" />
+
+                        <!-- The answer to a date the calendar does not reach: a sentence,
+                             not a refusal. -->
+                        <Label x:Name="BeforeStartLabel" IsVisible="False" FontFamily="Plex"
+                               FontSize="11.5" TextColor="{StaticResource Muted}"
+                               Margin="0,12,0,0" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout x:Name="SolsticaSide" IsVisible="False" Spacing="0"
+                                         Margin="0,16,0,0">
+                        <Entry x:Name="DateYearEntry" Keyboard="Numeric" MaxLength="5"
+                               FontFamily="Plex" FontSize="28" TextColor="{StaticResource Ink}"
+                               BackgroundColor="Transparent" WidthRequest="170"
+                               HorizontalOptions="Start" MinimumHeightRequest="44" />
+                        <Label x:Name="DateYearRangeLabel" FontFamily="Plex" FontSize="11"
+                               TextColor="{StaticResource Muted}" Margin="2,6,0,0" />
+
+                        <!-- Only the blocks this year has, and only the days that block has.
+                             The day picker goes where there is only one day to pick. -->
+                        <Grid ColumnDefinitions="*,120" ColumnSpacing="14" Margin="0,18,0,0">
+                            <Picker x:Name="BlockPicker" SelectedIndexChanged="OnBlockPicked"
+                                    FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
+                                    MinimumHeightRequest="44" />
+                            <Picker x:Name="DayPicker" Grid.Column="1" SelectedIndexChanged="OnDayPicked"
+                                    FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
+                                    MinimumHeightRequest="44" />
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <Button x:Name="DateGoButton" Clicked="OnGoDateClicked"
+                            FontFamily="PlexMedium" FontSize="13"
+                            MinimumHeightRequest="44" Padding="20,9" CornerRadius="22"
+                            BorderWidth="1" BorderColor="{StaticResource Rule}"
+                            BackgroundColor="Transparent" TextColor="{StaticResource Ink}"
+                            HorizontalOptions="Start" Margin="0,26,0,0" />
+
+                </VerticalStackLayout>
+            </ScrollView>
 
         </Grid>
 

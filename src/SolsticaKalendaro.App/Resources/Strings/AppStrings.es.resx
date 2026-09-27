@@ -289,4 +289,13 @@
   <data name="GregorianUpTo" xml:space="preserve">
     <value>Fechas gregorianas hasta 9999</value>
   </data>
+  <data name="CalendarGregorian" xml:space="preserve">
+    <value>Gregoriano</value>
+  </data>
+  <data name="CalendarSolstica" xml:space="preserve">
+    <value>Solsticio</value>
+  </data>
+  <data name="BeforeCalendarBegins" xml:space="preserve">
+    <value>Esta fecha es anterior al comienzo del calendario, el {0}.</value>
+  </data>
 </root>

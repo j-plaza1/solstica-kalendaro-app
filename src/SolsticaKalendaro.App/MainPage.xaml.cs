@@ -98,7 +98,9 @@ public partial class MainPage : ContentPage
         Rows.ItemsSource = _rows;
 
         // A new source starts at the top, and the row we were on belonged to the old year.
-        // Whatever scrolls next — Today, or the reader — says so through Scrolled.
+        // Whatever scrolls next — Today, or the reader — says so through Scrolled. The rows
+        // are new objects, so a day marked in the year before is not marked here: the mark
+        // belongs to the day the reader asked for, not to a position in the grid.
         _firstVisibleRow = 0;
 
         (_todayRow, _highlighted) = YearView.Locate(_rows, today);
@@ -155,7 +157,7 @@ public partial class MainPage : ContentPage
     private void OnNextYear(object? sender, EventArgs e) => ShowYear(_shownYear + 1);
 
     private void OnYearClicked(object? sender, EventArgs e) =>
-        Navigation.PushAsync(new GoToPage(_shownYear, GoToYear));
+        Navigation.PushAsync(new GoToPage(_shownYear, GoToYear, GoToDate));
 
     /// <summary>
     /// Where the panel sends the reader. A year arrived at deliberately opens at its beginning:
@@ -165,6 +167,25 @@ public partial class MainPage : ContentPage
     {
         ShowYear(year);
         Rows.ScrollTo(0, position: ScrollToPosition.Start, animate: false);
+    }
+
+    /// <summary>
+    /// A single day, asked for by name in one calendar or the other. The year opens on it and
+    /// it is marked, because a day reached by naming it is one the reader is looking for and
+    /// would otherwise have to find again among six hundred numbers. Located by Solstica date:
+    /// the last year has days with no Gregorian date, and they can be asked for like any other.
+    /// </summary>
+    private void GoToDate(SolsticaDate date)
+    {
+        ShowYear(date.Year);
+
+        var (row, cell, band) = YearView.Locate(_rows, date);
+        if (row < 0) return;
+
+        if (cell is not null) cell.IsMarked = true;
+        if (band is not null) band.IsMarked = true;
+
+        Rows.ScrollTo(row, position: ScrollToPosition.Center, animate: false);
     }
 
     private void OnPeriodClicked(object? sender, EventArgs e) =>

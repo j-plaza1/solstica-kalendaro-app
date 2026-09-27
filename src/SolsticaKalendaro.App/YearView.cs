@@ -22,12 +22,30 @@ public sealed record WeekView(IReadOnlyList<DayView> Days) : RowView;
 /// <param name="Note">What a day outside the week is, said under its name.</param>
 public sealed record BandView(
     string Name, string Note, string Gregorian, Color Season, DateOnly? Date, SolsticaDate Solstica)
-    : RowView;
+    : RowView, INotifyPropertyChanged
+{
+    private bool _isMarked;
+
+    /// <summary>The day the reader has just gone to, when it is this one. See <see cref="DayView"/>.</summary>
+    public bool IsMarked
+    {
+        get => _isMarked;
+        set
+        {
+            if (_isMarked == value) return;
+            _isMarked = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMarked)));
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+}
 
 /// <summary>
 /// One day cell. Everything about it is fixed once built except <see cref="IsToday"/>, which
-/// moves when the app is resumed on a later day. It notifies rather than being replaced, so
-/// the highlight can move without rebuilding the list and throwing away the reader's place.
+/// moves when the app is resumed on a later day, and <see cref="IsMarked"/>, which follows the
+/// day the reader has just gone to. Both notify rather than being replaced, so they can move
+/// without rebuilding the list and throwing away the reader's place.
 /// </summary>
 public sealed class DayView(
     int column, string number, string gregorian, Color season, DateOnly? date, SolsticaDate solstica)
@@ -54,6 +72,23 @@ public sealed class DayView(
             if (_isToday == value) return;
             _isToday = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsToday)));
+        }
+    }
+
+    private bool _isMarked;
+
+    /// <summary>
+    /// The day the reader asked for, on arriving from the Go to panel. Drawn as an outline
+    /// rather than a fill, because today is the fill and one day can be both.
+    /// </summary>
+    public bool IsMarked
+    {
+        get => _isMarked;
+        set
+        {
+            if (_isMarked == value) return;
+            _isMarked = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMarked)));
         }
     }
 
@@ -123,6 +158,28 @@ public static class YearView
             }
 
         return (-1, null);
+    }
+
+    /// <summary>
+    /// The same, for a day named in the Solstica calendar. Asked for by day rather than by
+    /// Gregorian date because the last year has days with no Gregorian date at all, and they
+    /// can be gone to like any other.
+    /// </summary>
+    public static (int Row, DayView? Cell, BandView? Band) Locate(IReadOnlyList<RowView> rows, SolsticaDate date)
+    {
+        for (int i = 0; i < rows.Count; i++)
+            switch (rows[i])
+            {
+                case WeekView week:
+                    foreach (var day in week.Days)
+                        if (day.Solstica == date) return (i, day, null);
+                    break;
+
+                case BandView band when band.Solstica == date:
+                    return (i, null, band);
+            }
+
+        return (-1, null, null);
     }
 
     private static RowView Project(WeekRow week, DateOnly today, YearPalette palette)

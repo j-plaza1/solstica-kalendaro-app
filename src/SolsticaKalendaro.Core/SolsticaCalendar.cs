@@ -67,6 +67,32 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
         return new SolsticaDate(year, block, day);
     }
 
+    /// <summary>
+    /// The blocks of a year in the order they occur, and how many days each has. In a leap year
+    /// the Supertago is one of them, a block of a single day; where it falls among the rest
+    /// depends on the validity period (section 9.3), and in two of the eleven — the current one
+    /// among them — it interrupts a block rather than sitting between two.
+    ///
+    /// Ordered by the day of the year each block opens on, which is what
+    /// <see cref="DayOfYear"/> already decides, so an interface offering these offers exactly
+    /// the days the year has.
+    /// </summary>
+    public static IReadOnlyList<(PeriodKind Kind, int Days)> Blocks(int year)
+    {
+        var layout = ValidityPeriod.For(year).Layout;
+
+        var blocks = YearLayout.Sequence
+            .Select(kind => (Kind: kind,
+                             Days: layout.Length(kind),
+                             Opens: DayOfYear(new SolsticaDate(year, kind, 1))))
+            .ToList();
+
+        if (IsLeapYear(year))
+            blocks.Add((PeriodKind.Supertago, 1, DayOfYear(SolsticaDate.Supertago(year))));
+
+        return [.. blocks.OrderBy(b => b.Opens).Select(b => (b.Kind, b.Days))];
+    }
+
     // ---------- Gregorian <-> Solstica ----------
 
     public DateOnly ToGregorian(SolsticaDate date)
