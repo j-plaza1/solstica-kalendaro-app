@@ -24,12 +24,12 @@
                            IndicatorSize="7" Margin="0,0,0,4" />
 
             <Grid ColumnDefinitions="Auto,*,Auto">
-                <Button x:Name="SkipButton" Clicked="OnSkip"
+                <Button x:Name="SkipButton" LineBreakMode="WordWrap" Clicked="OnSkip"
                         FontFamily="PlexMedium" FontSize="14" TextColor="{StaticResource Muted}"
                         BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                         MinimumHeightRequest="44" MinimumWidthRequest="44"
                         HorizontalOptions="Start" />
-                <Button x:Name="NextButton" Grid.Column="2" Clicked="OnNext"
+                <Button x:Name="NextButton" LineBreakMode="WordWrap" Grid.Column="2" Clicked="OnNext"
                         FontFamily="PlexSemiBold" FontSize="14" TextColor="{StaticResource Accent}"
                         BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                         MinimumHeightRequest="44" MinimumWidthRequest="44"

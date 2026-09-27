@@ -392,6 +392,7 @@ public partial class GoToPage : ContentPage
         tab.BackgroundColor = Colors.Transparent;
         tab.BorderWidth = 0;
         tab.MinimumHeightRequest = 44;
+        tab.Padding = new Thickness(2, 6);
         tab.TextColor = (Color)Application.Current!.Resources["Muted"];
     }
 }

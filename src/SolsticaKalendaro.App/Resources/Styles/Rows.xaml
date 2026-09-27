@@ -8,26 +8,34 @@
 
 
     <!-- Each template declares a fixed height. Rows that never change size make
-         scrolling by index exact, which is what going to today depends on. -->
+         scrolling by index exact, which is what going to today depends on. The heights and
+         the sizes come from the application's resources, where TextScale has already scaled
+         them by the system's font setting; the text itself does not scale again, which is
+         what FontAutoScalingEnabled="False" says everywhere below. -->
 
     <DataTemplate x:Key="SectionTemplate">
-        <HorizontalStackLayout Padding="20,15,20,7" Spacing="8" HeightRequest="44">
+        <HorizontalStackLayout Padding="20,15,20,7" Spacing="8"
+                               HeightRequest="{StaticResource RowSectionHeight}">
             <Ellipse Fill="{Binding Dot}" WidthRequest="8" HeightRequest="8"
                      VerticalOptions="Center" />
-            <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="16"
+            <Label Text="{Binding Name}" FontFamily="SpectralSemiBold"
+                   FontSize="{StaticResource SizeSectionName}" FontAutoScalingEnabled="False"
                    TextColor="{StaticResource Ink}" VerticalOptions="Center" />
             <Label Text="{Binding Label}" IsVisible="{Binding HasLabel}"
-                   FontFamily="Plex" FontSize="11"
+                   FontFamily="Plex" FontSize="{StaticResource SizeSectionLabel}"
+                   FontAutoScalingEnabled="False"
                    TextColor="{StaticResource Muted}" VerticalOptions="Center" />
         </HorizontalStackLayout>
     </DataTemplate>
 
     <DataTemplate x:Key="WeekTemplate">
-        <Grid Padding="12,0" ColumnDefinitions="*,*,*,*,*,*,*" HeightRequest="58"
+        <Grid Padding="12,0" ColumnDefinitions="*,*,*,*,*,*,*"
+              HeightRequest="{StaticResource RowWeekHeight}"
               BindableLayout.ItemsSource="{Binding Days}">
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
-                    <Grid Grid.Column="{Binding Column}" RowDefinitions="*,4" HeightRequest="58">
+                    <Grid Grid.Column="{Binding Column}" RowDefinitions="*,4"
+                          HeightRequest="{StaticResource RowWeekHeight}">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainPage}}, Path=OpenDay}"
@@ -44,12 +52,18 @@
 
                         <VerticalStackLayout VerticalOptions="Center" Spacing="2">
 
-                            <!-- Fixed at 28, so that neither the circle nor the weight of a
-                                 free day's number can push the row past its 58. -->
-                            <Grid HeightRequest="28" WidthRequest="28" HorizontalOptions="Center">
-                                <Ellipse Fill="{StaticResource Ink}" WidthRequest="28" HeightRequest="28"
+                            <!-- A fixed square, so that neither the circle nor the weight of
+                                 a free day's number can push the row past its height. -->
+                            <Grid HeightRequest="{StaticResource TodayCircleSize}"
+                                  WidthRequest="{StaticResource TodayCircleSize}"
+                                  HorizontalOptions="Center">
+                                <Ellipse Fill="{StaticResource Ink}"
+                                         WidthRequest="{StaticResource TodayCircleSize}"
+                                         HeightRequest="{StaticResource TodayCircleSize}"
                                          IsVisible="{Binding IsToday}" />
-                                <Label Text="{Binding Number}" FontFamily="Plex" FontSize="19"
+                                <Label Text="{Binding Number}" FontFamily="Plex"
+                                       FontSize="{StaticResource SizeDayNumber}"
+                                       FontAutoScalingEnabled="False"
                                        HorizontalOptions="Center" VerticalOptions="Center"
                                        TextColor="{StaticResource Ink}">
                                     <Label.Triggers>
@@ -65,7 +79,9 @@
                                 </Label>
                             </Grid>
 
-                            <Label Text="{Binding Gregorian}" FontFamily="Plex" FontSize="10"
+                            <Label Text="{Binding Gregorian}" FontFamily="Plex"
+                                   FontSize="{StaticResource SizeDayGregorian}"
+                                   FontAutoScalingEnabled="False"
                                    HorizontalOptions="Center" TextColor="{StaticResource Faint}" />
                         </VerticalStackLayout>
 
@@ -90,7 +106,8 @@
     <!-- Extra-weekly days are not cells: they cross all seven columns, because that is
          what they are. Outside the week, between the blocks. -->
     <DataTemplate x:Key="BandTemplate">
-        <Grid Margin="12,6" ColumnDefinitions="4,*,4" HeightRequest="66">
+        <Grid Margin="12,6" ColumnDefinitions="4,*,4"
+              HeightRequest="{StaticResource RowBandHeight}">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainPage}}, Path=OpenDay}"
@@ -102,12 +119,15 @@
             <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
                   BackgroundColor="{StaticResource DayOffShade}">
                 <VerticalStackLayout Spacing="3">
-                    <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="17"
+                    <Label Text="{Binding Name}" FontFamily="SpectralSemiBold"
+                           FontSize="{StaticResource SizeBandName}" FontAutoScalingEnabled="False"
                            TextColor="{StaticResource DayOffRed}" />
-                    <Label Text="{Binding Note}" FontFamily="Plex" FontSize="11"
+                    <Label Text="{Binding Note}" FontFamily="Plex"
+                           FontSize="{StaticResource SizeBandNote}" FontAutoScalingEnabled="False"
                            TextColor="{StaticResource Muted}" />
                 </VerticalStackLayout>
-                <Label Grid.Column="1" Text="{Binding Gregorian}" FontFamily="Plex" FontSize="12.5"
+                <Label Grid.Column="1" Text="{Binding Gregorian}" FontFamily="Plex"
+                       FontSize="{StaticResource SizeBandDate}" FontAutoScalingEnabled="False"
                        TextColor="{StaticResource Ink}" VerticalOptions="Center" />
             </Grid>
             <BoxView Grid.Column="2" Color="{Binding Season}" />

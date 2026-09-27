@@ -272,9 +272,19 @@ public partial class MainPage : ContentPage
     /// The app may have sat in the background across midnight. Move the highlight to the new
     /// day, but leave the scroll alone: the reader was looking at some part of the year, and
     /// it is not for us to decide they meant to stop.
+    ///
+    /// It may also have sat there while the reader changed the system's font size, and the
+    /// rows' heights were settled before that. Those cannot change under a live page, so the
+    /// pages are built again — keeping the place, as a change of language does.
     /// </summary>
     private void OnResumed(object? sender, EventArgs e)
     {
+        if (TextScale.HasChanged)
+        {
+            RebuildForTextSize();
+            return;
+        }
+
         var today = Today();
         if (_highlighted?.Date == today) return;
 
@@ -296,12 +306,42 @@ public partial class MainPage : ContentPage
         TodayButton.Opacity = 1;
     }
 
+    /// <summary>
+    /// Everything on screen was measured at the old text size, so it is all built again from a
+    /// fresh set of sizes. The reader keeps the year and the row they were on.
+    /// </summary>
+    private void RebuildForTextSize()
+    {
+        if (Window is not null) Window.Resumed -= OnResumed;
+
+        TextScale.Apply(Application.Current!.Resources);
+
+        var navigation = new NavigationPage(new MainPage(Place));
+        Application.Current!.Windows[0].Page = navigation;
+    }
+
     // ---------- appearance ----------
 
+    /// <summary>
+    /// The header is part of the grid, not of the text: it has to keep fitting on one row at
+    /// the narrowest phone, so it follows the grid's scale and stops where the grid stops.
+    /// </summary>
     private void StyleYearControls()
     {
+        double scale = TextScale.Grid;
+
+        foreach (var text in new[] { YearButton, PreviousYearButton, NextYearButton, TodayButton,
+                                     MenuButton, PeriodButton })
+            text.FontAutoScalingEnabled = false;
+
+        PrefixLabel.FontAutoScalingEnabled = false;
+        PrefixLabel.FontSize = 12 * scale;
+        PeriodButton.FontSize = 12 * scale;
+        TodayButton.FontSize = 12 * scale;
+        MenuButton.FontSize = 20 * scale;
+
         YearButton.FontFamily = "SpectralSemiBold";
-        YearButton.FontSize = 23;
+        YearButton.FontSize = 23 * scale;
         YearButton.TextColor = (Color)Application.Current!.Resources["Ink"];
         YearButton.BackgroundColor = Colors.Transparent;
         YearButton.BorderWidth = 0;
@@ -311,7 +351,7 @@ public partial class MainPage : ContentPage
         foreach (var arrow in new[] { PreviousYearButton, NextYearButton })
         {
             arrow.FontFamily = "Plex";
-            arrow.FontSize = 22;
+            arrow.FontSize = 22 * scale;
             arrow.TextColor = (Color)Application.Current!.Resources["Muted"];
             arrow.BackgroundColor = Colors.Transparent;
             arrow.BorderWidth = 0;
@@ -319,9 +359,10 @@ public partial class MainPage : ContentPage
             arrow.MinimumHeightRequest = 44;
 
             // Equal widths, so the year sits between equal gaps rather than nearer one arrow.
-            arrow.WidthRequest = 38;
+            arrow.WidthRequest = Math.Round(38 * scale);
         }
 
+        // The menu is a list of words, not part of the grid, so it grows with the text.
         foreach (var item in new[] { OptionsItem, HowToReadItem, AboutItem }) StyleMenuItem(item);
     }
 
@@ -336,6 +377,7 @@ public partial class MainPage : ContentPage
         item.Padding = new Thickness(16, 10);
         item.MinimumHeightRequest = 44;
         item.HorizontalOptions = LayoutOptions.Start;
+        item.LineBreakMode = LineBreakMode.WordWrap;
     }
 
     /// <summary>

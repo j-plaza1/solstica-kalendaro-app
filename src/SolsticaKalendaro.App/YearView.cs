@@ -208,8 +208,10 @@ public static class YearView
                 c,
                 day.Date.Day.ToString(Culture),
                 // The month is worth repeating where the eye needs it: at the start of a row,
-                // and wherever a Gregorian month turns over mid-row.
-                ShortDate(day.Gregorian, withMonth: c == 0 || day.Gregorian?.Day == 1),
+                // and wherever a Gregorian month turns over mid-row. Past a text size the cell
+                // has room for the day and nothing else, and the month is in the day detail.
+                ShortDate(day.Gregorian, withMonth: TextScale.GridShowsMonth
+                                                    && (c == 0 || day.Gregorian?.Day == 1)),
                 palette[day.Season],
                 day.Gregorian,
                 day.Date,

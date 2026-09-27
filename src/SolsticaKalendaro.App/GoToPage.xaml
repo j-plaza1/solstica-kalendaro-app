@@ -19,9 +19,9 @@
 
         <!-- Three tabs, one panel: Year and Period below, Date still to come (#16). -->
         <Grid x:Name="Tabs" Grid.Row="1" ColumnDefinitions="*,*,*" Margin="0,16,0,0">
-            <Button x:Name="YearTab" Clicked="OnTabClicked" />
-            <Button x:Name="PeriodTab" Grid.Column="1" Clicked="OnTabClicked" />
-            <Button x:Name="DateTab" Grid.Column="2" Clicked="OnTabClicked" />
+            <Button x:Name="YearTab" LineBreakMode="WordWrap" Clicked="OnTabClicked" />
+            <Button x:Name="PeriodTab" LineBreakMode="WordWrap" Grid.Column="1" Clicked="OnTabClicked" />
+            <Button x:Name="DateTab" LineBreakMode="WordWrap" Grid.Column="2" Clicked="OnTabClicked" />
             <BoxView Grid.ColumnSpan="3" Color="{StaticResource Hairline}" HeightRequest="1"
                      VerticalOptions="End" />
             <BoxView x:Name="TabUnderline" Color="{StaticResource Accent}" HeightRequest="2"
@@ -35,11 +35,11 @@
             <VerticalStackLayout x:Name="YearPanel" Spacing="0" Margin="0,28,0,0">
                 <Entry x:Name="YearEntry" Keyboard="Numeric" MaxLength="5"
                        FontFamily="Plex" FontSize="28" TextColor="{StaticResource Ink}"
-                       BackgroundColor="Transparent" WidthRequest="170"
+                       BackgroundColor="Transparent" MinimumWidthRequest="170"
                        HorizontalOptions="Start" MinimumHeightRequest="44" />
                 <Label x:Name="YearRangeLabel" FontFamily="Plex" FontSize="11"
                        TextColor="{StaticResource Muted}" Margin="2,6,0,0" />
-                <Button x:Name="GoButton" Clicked="OnGoClicked"
+                <Button x:Name="GoButton" LineBreakMode="WordWrap" Clicked="OnGoClicked"
                         FontFamily="PlexMedium" FontSize="13"
                         MinimumHeightRequest="44" Padding="20,9" CornerRadius="22"
                         BorderWidth="1" BorderColor="{StaticResource Rule}"
@@ -57,9 +57,9 @@
             <ScrollView x:Name="DatePanel" IsVisible="False">
                 <VerticalStackLayout Spacing="0" Margin="0,20,0,24">
 
-                    <Grid ColumnDefinitions="Auto,Auto">
-                        <Button x:Name="GregorianButton" Clicked="OnCalendarClicked" />
-                        <Button x:Name="SolsticaButton" Grid.Column="1" Clicked="OnCalendarClicked" />
+                    <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="16">
+                        <Button x:Name="GregorianButton" LineBreakMode="WordWrap" Clicked="OnCalendarClicked" />
+                        <Button x:Name="SolsticaButton" LineBreakMode="WordWrap" Grid.Column="1" Clicked="OnCalendarClicked" />
                     </Grid>
 
                     <VerticalStackLayout x:Name="GregorianSide" Spacing="0" Margin="0,16,0,0">
@@ -83,24 +83,24 @@
                                          Margin="0,16,0,0">
                         <Entry x:Name="DateYearEntry" Keyboard="Numeric" MaxLength="5"
                                FontFamily="Plex" FontSize="28" TextColor="{StaticResource Ink}"
-                               BackgroundColor="Transparent" WidthRequest="170"
+                               BackgroundColor="Transparent" MinimumWidthRequest="170"
                                HorizontalOptions="Start" MinimumHeightRequest="44" />
                         <Label x:Name="DateYearRangeLabel" FontFamily="Plex" FontSize="11"
                                TextColor="{StaticResource Muted}" Margin="2,6,0,0" />
 
                         <!-- Only the blocks this year has, and only the days that block has.
                              The day picker goes where there is only one day to pick. -->
-                        <Grid ColumnDefinitions="*,120" ColumnSpacing="14" Margin="0,18,0,0">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14" Margin="0,18,0,0">
                             <Picker x:Name="BlockPicker" SelectedIndexChanged="OnBlockPicked"
                                     FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
                                     MinimumHeightRequest="44" />
                             <Picker x:Name="DayPicker" Grid.Column="1" SelectedIndexChanged="OnDayPicked"
                                     FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
-                                    MinimumHeightRequest="44" />
+                                    MinimumHeightRequest="44" MinimumWidthRequest="90" />
                         </Grid>
                     </VerticalStackLayout>
 
-                    <Button x:Name="DateGoButton" Clicked="OnGoDateClicked"
+                    <Button x:Name="DateGoButton" LineBreakMode="WordWrap" Clicked="OnGoDateClicked"
                             FontFamily="PlexMedium" FontSize="13"
                             MinimumHeightRequest="44" Padding="20,9" CornerRadius="22"
                             BorderWidth="1" BorderColor="{StaticResource Rule}"

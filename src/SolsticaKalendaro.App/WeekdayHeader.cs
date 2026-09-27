@@ -31,7 +31,11 @@ public static class WeekdayHeader
             {
                 Text = names[i],
                 FontFamily = "PlexSemiBold",
-                FontSize = 10.5,
+
+                // The grid's own scale, and no scaling again on top of it: these heads have
+                // to line up with the columns under them at every size.
+                FontSize = Size("SizeWeekdayInitial"),
+                FontAutoScalingEnabled = false,
                 CharacterSpacing = 0.6,
                 HorizontalTextAlignment = TextAlignment.Center,
                 TextColor = Resource(off ? "DayOffRed" : "Muted")
@@ -56,4 +60,6 @@ public static class WeekdayHeader
     }
 
     private static Color Resource(string key) => (Color)Application.Current!.Resources[key];
+
+    private static double Size(string key) => (double)Application.Current!.Resources[key];
 }
