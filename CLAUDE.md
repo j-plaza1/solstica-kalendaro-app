@@ -109,12 +109,14 @@ this repo.
 of any MAUI/UI reference so it remains usable from a CLI, web build or test harness.
 
 `src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
-view, the detail of one day, the "Go to" panel — a year typed or a period chosen, with the Date
-tab still to come (#16) — and Options. Everything is pushed on top of the year rather than
-replacing it, so coming back finds it where the reader left it. A year asked for by name is the
-exception: it opens at its top, because that is what was asked for. `ChoiceRow` draws one line
-of a list to choose from, and Options and the panel share it so that the second list a reader
-meets reads like the first.
+view, the detail of one day, the "Go to" panel — a year typed, a period chosen, or a day named
+in either calendar — and Options. Everything is pushed on top of the year rather than replacing
+it, so coming back finds it where the reader left it. A year asked for by name is the exception:
+it opens at its top, and a day asked for opens centred and **marked** (`IsMarked` on the cell or
+the band, an outline because today is a fill and one day can be both). The mark survives
+scrolling, the day detail and Today; it goes whenever `ShowYear` builds the rows again.
+`ChoiceRow` draws one line of a list to choose from and `YearField` a year typed into one, and
+both are shared, so the second list — or field — a reader meets reads like the first.
 
 It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
 from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree
@@ -144,7 +146,11 @@ The conversion is built in four layers, each answering one question:
 - **`YearLayout`** — *where does each block sit?* Start ordinal and length per block for a
   given `BlockWidths`, cached per arrangement. Ordinals here are **common-year ordinals**:
   the Supertago is not accounted for at this layer.
-- **`SolsticaCalendar`** — the conversion itself, plus `WeekDay`, `SeasonOf`, `YearFraction`.
+- **`SolsticaCalendar`** — the conversion itself, plus `WeekDay`, `SeasonOf`, `YearFraction`,
+  and `Blocks(year)`: the blocks of a year in the order they occur, with the days in each.
+  The Supertago is one of them in a leap year, placed by the day of the year it opens on, which
+  is where the period puts it — inside a block in two of the eleven periods, between two in the
+  rest. An interface offering a day to pick has to offer exactly these.
 
 `YearOutline.cs` sits on top of those four. `SolsticaCalendar.Outline(year)` returns a year
 as the rows an interface paints from top to bottom: a `SectionHeader` per month and

@@ -314,4 +314,15 @@
     <value>Dates gregorianes fins al 9999</value>
     <comment>In the last year, where the Gregorian dates run out before the Solstica ones do.</comment>
   </data>
+  <data name="CalendarGregorian" xml:space="preserve">
+    <value>Gregorià</value>
+    <comment>The two ways of naming a day, as buttons on the Date tab.</comment>
+  </data>
+  <data name="CalendarSolstica" xml:space="preserve">
+    <value>Solstici</value>
+  </data>
+  <data name="BeforeCalendarBegins" xml:space="preserve">
+    <value>Aquesta data és anterior al començament del calendari, el {0}.</value>
+    <comment>The answer to a Gregorian date the calendar does not reach. {0} is the day it begins.</comment>
+  </data>
 </root>
