@@ -121,6 +121,14 @@ December, so switching between them only removes or adds the years before the fi
 2031 window anchors on 22 December, and that is the only choice that moves a date: every
 Gregorian date one day later, for ever. `EpochChoiceTests` states both halves.
 
+**Rest days are days of the Solstica week.** Once the calendar is adopted everything lives
+in it, so the days a reader rests on are Monday-to-Sunday in this calendar and not in the
+Gregorian one — and after the first Jarfino those are different physical days, which is the
+whole practical consequence of the proposal. The reader chooses them (Saturday and Sunday by
+default); `SolsticaCalendar.IsDayOff` answers whether a day is free, counting the calendar's own
+festivities, and the grid marks every free day the same way whatever makes it one. The reasons
+are told apart on the day itself, not in the grid.
+
 **Conversion is period-aware, but only for leap years.** Section 9 of the document
 recalibrates the seasonal allocation eleven times between 2000 and 10000, and moves the
 *Supertago* to a different seam when the deficient season changes. Reallocation moves no

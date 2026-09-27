@@ -183,6 +183,19 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
         return (DayOfWeek)((weekly % 7 + 1) % 7);
     }
 
+    /// <summary>
+    /// Whether a day is a day off: a festivity of the calendar, or a day of the week the reader
+    /// rests on. The rest days are days of the <i>Solstica</i> week — after the first Jarfino
+    /// those are not the Gregorian ones, which is the whole practical consequence of the
+    /// proposal — and the extra-weekly days do not consult them at all: a Jarfino and a
+    /// Supertago belong to no weekday and are days off because they are festivities.
+    ///
+    /// The reasons are not distinguished here. A screen that wants to say why asks the day
+    /// itself; the grid only wants to know which days are free.
+    /// </summary>
+    public static bool IsDayOff(SolsticaDate date, IReadOnlySet<DayOfWeek> restDays) =>
+        date.IsFestivity || (WeekDay(date) is { } weekDay && restDays.Contains(weekDay));
+
     // ---------- seasons ----------
 
     public static Season SeasonOf(SolsticaDate date)

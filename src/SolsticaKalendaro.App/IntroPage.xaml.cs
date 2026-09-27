@@ -130,33 +130,9 @@ public partial class IntroPage : ContentPage
             InputTransparent = true,
             CascadeInputTransparent = true
         };
-        example.Add(WeekdayHeader());
+        example.Add(WeekdayHeader.Build(withRule: false));
         example.Add(days);
         return example;
-    }
-
-    /// <summary>Monday to Sunday, as the year view heads its own columns.</summary>
-    private static View WeekdayHeader()
-    {
-        var header = new Grid
-        {
-            ColumnDefinitions = [.. Enumerable.Range(0, 7).Select(_ => new ColumnDefinition(GridLength.Star))],
-            Padding = new Thickness(12, 0, 12, 6)
-        };
-
-        string[] names = Text.WeekdayInitials();
-        for (int i = 0; i < names.Length; i++)
-            header.Add(new Label
-            {
-                Text = names[i],
-                FontFamily = "PlexSemiBold",
-                FontSize = 10.5,
-                CharacterSpacing = 0.6,
-                HorizontalTextAlignment = TextAlignment.Center,
-                TextColor = Resource("Muted")
-            }, i);
-
-        return header;
     }
 
     // ---------- what the names mean ----------

@@ -474,4 +474,14 @@
   <data name="IntroAgain" xml:space="preserve">
     <value>Torna a veure l'explicació ›</value>
   </data>
+  <data name="RestDaysHeading" xml:space="preserve">
+    <value>Dies de descans</value>
+  </data>
+  <data name="DetailRestDay" xml:space="preserve">
+    <value>Dia de descans</value>
+    <comment>Why a day is free, said on the day detail. More than one line can appear.</comment>
+  </data>
+  <data name="DetailCalendarFestivity" xml:space="preserve">
+    <value>Festa del calendari</value>
+  </data>
 </root>

@@ -20,8 +20,13 @@ public sealed record SectionView(string Name, string Label, Color Dot) : RowView
 public sealed record WeekView(IReadOnlyList<DayView> Days) : RowView;
 
 /// <param name="Note">What a day outside the week is, said under its name.</param>
+/// <param name="IsDayOff">
+/// Always true, as it happens — a Jarfino and a Supertago are festivities — but asked of the
+/// calendar like every other day rather than assumed here.
+/// </param>
 public sealed record BandView(
-    string Name, string Note, string Gregorian, Color Season, DateOnly? Date, SolsticaDate Solstica)
+    string Name, string Note, string Gregorian, Color Season, DateOnly? Date, SolsticaDate Solstica,
+    bool IsDayOff)
     : RowView, INotifyPropertyChanged
 {
     private bool _isMarked;
@@ -48,7 +53,8 @@ public sealed record BandView(
 /// without rebuilding the list and throwing away the reader's place.
 /// </summary>
 public sealed class DayView(
-    int column, string number, string gregorian, Color season, DateOnly? date, SolsticaDate solstica)
+    int column, string number, string gregorian, Color season, DateOnly? date, SolsticaDate solstica,
+    bool isDayOff)
     : INotifyPropertyChanged
 {
     /// <summary>Its place in the seven-column grid; the outline guarantees the order.</summary>
@@ -61,6 +67,13 @@ public sealed class DayView(
 
     /// <summary>The day itself, for the detail screen. Gregorian dates run out; this one does not.</summary>
     public SolsticaDate Solstica { get; } = solstica;
+
+    /// <summary>
+    /// A free day, for whatever reason: a rest day of the Solstica week or a festivity of the
+    /// calendar. One marking serves them all, because what a reader wants from the grid is
+    /// which days are free; why belongs to the day detail.
+    /// </summary>
+    public bool IsDayOff { get; } = isDayOff;
 
     private bool _isToday;
 
@@ -107,6 +120,7 @@ public static class YearView
     public static IReadOnlyList<RowView> Build(IReadOnlyList<OutlineRow> outline, DateOnly today, YearPalette palette)
     {
         var rows = new List<RowView>(outline.Count);
+        var rest = RestDays.Chosen;
 
         for (int i = 0; i < outline.Count; i++)
         {
@@ -115,12 +129,12 @@ public static class YearView
                 case SectionHeader header:
                     // The header carries no day, so its colour comes from the block it opens:
                     // the first day of the week that follows it.
-                    var opens = ((WeekView)Project((WeekRow)outline[i + 1], today, palette)).Days[0];
+                    var opens = ((WeekView)Project((WeekRow)outline[i + 1], today, palette, rest)).Days[0];
                     rows.Add(new SectionView(header.Block.Name(), LabelFor(header.Block), opens.Season));
                     break;
 
                 case WeekRow week:
-                    rows.Add(Project(week, today, palette));
+                    rows.Add(Project(week, today, palette, rest));
                     break;
 
                 case ExtraWeeklyRow band:
@@ -130,7 +144,8 @@ public static class YearView
                         LongDate(band.Day.Gregorian),
                         palette[band.Day.Season],
                         band.Day.Gregorian,
-                        band.Day.Date));
+                        band.Day.Date,
+                        SolsticaCalendar.IsDayOff(band.Day.Date, rest)));
                     break;
             }
         }
@@ -182,7 +197,8 @@ public static class YearView
         return (-1, null, null);
     }
 
-    private static RowView Project(WeekRow week, DateOnly today, YearPalette palette)
+    private static RowView Project(WeekRow week, DateOnly today, YearPalette palette,
+                                   IReadOnlySet<DayOfWeek> rest)
     {
         var days = new DayView[week.Days.Count];
         for (int c = 0; c < week.Days.Count; c++)
@@ -196,7 +212,8 @@ public static class YearView
                 ShortDate(day.Gregorian, withMonth: c == 0 || day.Gregorian?.Day == 1),
                 palette[day.Season],
                 day.Gregorian,
-                day.Date)
+                day.Date,
+                SolsticaCalendar.IsDayOff(day.Date, rest))
             {
                 IsToday = day.Gregorian == today
             };

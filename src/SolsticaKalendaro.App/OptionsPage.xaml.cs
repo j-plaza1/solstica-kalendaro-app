@@ -31,26 +31,32 @@ public partial class OptionsPage : ContentPage
         LanguageHeading.Text = AppStrings.Language.ToUpper(Language.Culture);
         CalendarBeginsHeading.Text = AppStrings.CalendarBegins.ToUpper(Language.Culture);
         CalendarBeginsNote.Text = AppStrings.CalendarBeginsNote;
+        RestDaysHeading.Text = AppStrings.RestDaysHeading.ToUpper(Language.Culture);
 
         ShowLanguages();
         ShowStarts();
+        ShowRestDays();
 
         // Loaded comes too early: the page exists but nothing has been measured, and a scroll
-        // to a position the content does not yet reach is clamped to the top. The first size
-        // the ScrollView is given is the moment there is something to scroll within.
-        if (_resumeScroll > 0) Scroller.SizeChanged += RestoreScrollOnce;
+        // to a position the content does not yet reach is clamped to the top. The content's
+        // own height is what decides, and it arrives in more than one pass as the lists are
+        // measured, so the place is followed until the content is tall enough to hold it.
+        if (_resumeScroll > 0) Column.SizeChanged += RestoreScroll;
     }
 
     /// <summary>
-    /// Restored once. Detached at the first attempt, so that every later layout — a rotation,
-    /// a keyboard — leaves the scrolling to the reader, whose it is by then.
+    /// Back to where the reader was. Called again while the content is still growing — a
+    /// position beyond what has been measured is clamped to the bottom of it — and let go of as
+    /// soon as the content can hold the place, after which the scrolling is the reader's.
     /// </summary>
-    private void RestoreScrollOnce(object? sender, EventArgs e)
+    private void RestoreScroll(object? sender, EventArgs e)
     {
-        if (Scroller.Height <= 0) return;
+        if (Scroller.Height <= 0 || Column.Height <= 0) return;
 
-        Scroller.SizeChanged -= RestoreScrollOnce;
-        Scroller.ScrollToAsync(0, _resumeScroll, animated: false);
+        double furthest = Math.Max(0, Column.Height - Scroller.Height);
+        if (furthest >= _resumeScroll) Column.SizeChanged -= RestoreScroll;
+
+        Scroller.ScrollToAsync(0, Math.Min(_resumeScroll, furthest), animated: false);
     }
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
@@ -73,6 +79,28 @@ public partial class OptionsPage : ContentPage
                 // the reader is choosing rather than afterwards when every date has moved.
                 epoch.IsOffAnchor ? AppStrings.SolsticeOn22 : null,
                 () => ChooseStart(epoch)));
+    }
+
+    /// <summary>
+    /// The seven days of the Solstica week, Monday first. Unlike the lists above this is not a
+    /// choice of one: every day chosen carries a tick, and choosing none is allowed.
+    /// </summary>
+    private void ShowRestDays()
+    {
+        var chosen = RestDays.Chosen;
+
+        for (int i = 0; i < 7; i++)
+        {
+            var day = (DayOfWeek)(((int)DayOfWeek.Monday + i) % 7);
+            Rests.Add(ChoiceRow.Build(Text.WeekDayTitle(day), chosen.Contains(day), null,
+                                      () => ChooseRestDay(day)));
+        }
+    }
+
+    private void ChooseRestDay(DayOfWeek day)
+    {
+        RestDays.Toggle(day);
+        Rebuild();
     }
 
     private void ChooseLanguage(string code)

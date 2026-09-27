@@ -51,13 +51,20 @@ public static class Text
         date is { } d ? string.Format(Culture, AppStrings.ShiftName, d.Period.Name(), d.Year) : string.Empty;
 
     /// <summary>
+    /// A weekday's name where a line begins with it. Some languages write their weekdays in
+    /// lower case and some in upper, and the capital at the head of a line belongs to the
+    /// language rather than to us.
+    /// </summary>
+    public static string WeekDayTitle(DayOfWeek day) => Capitalised(WeekDay(day));
+
+    /// <summary>
     /// A season's name where a line begins with it. The strings themselves are lower case,
     /// being written to sit inside a sentence, and the capital belongs to the language.
     /// </summary>
-    public static string SeasonTitle(Season season) =>
-        SeasonName(season) is var name && name.Length > 0
-            ? char.ToUpper(name[0], Culture) + name[1..]
-            : name;
+    public static string SeasonTitle(Season season) => Capitalised(SeasonName(season));
+
+    private static string Capitalised(string name) =>
+        name.Length > 0 ? char.ToUpper(name[0], Culture) + name[1..] : name;
 
     /// <summary>
     /// "7 Jarmezo": a day named by its block, with no year, for a screen that speaks of every

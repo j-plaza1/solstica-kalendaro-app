@@ -439,4 +439,13 @@
   <data name="IntroAgain" xml:space="preserve">
     <value>Revidi la klarigon ›</value>
   </data>
+  <data name="RestDaysHeading" xml:space="preserve">
+    <value>Ripoztagoj</value>
+  </data>
+  <data name="DetailRestDay" xml:space="preserve">
+    <value>Ripoztago</value>
+  </data>
+  <data name="DetailCalendarFestivity" xml:space="preserve">
+    <value>Festo de la kalendaro</value>
+  </data>
 </root>

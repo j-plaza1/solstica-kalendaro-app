@@ -45,6 +45,8 @@ public partial class DayDetailPage : ContentPage
             FestivityLabel.IsVisible = true;
         }
 
+        ShowWhyItIsFree(detail);
+
         WeekDayLabel.Text = detail.WeekDay is { } weekDay
             ? Text.WeekDay(weekDay)
             : AppStrings.NoWeekday;
@@ -64,6 +66,32 @@ public partial class DayDetailPage : ContentPage
         FooterLabel.Text = string.Format(Language.Culture, AppStrings.PeriodFooter,
             detail.Period.FirstYear, detail.Period.LastYear, detail.Period.Allocation);
         SemanticProperties.SetHint(FooterLabel, AppStrings.HintOpenPeriod);
+    }
+
+    /// <summary>
+    /// Why this day is free, if it is: a rest day of the Solstica week, a festivity of the
+    /// calendar, or both. The grid shows only that a day is free, because telling the reasons
+    /// apart there would take a legend; here there is room to say them.
+    /// </summary>
+    private void ShowWhyItIsFree(DayDetail detail)
+    {
+        var reasons = new List<string>();
+
+        if (detail.WeekDay is { } weekDay && RestDays.Chosen.Contains(weekDay))
+            reasons.Add(AppStrings.DetailRestDay);
+
+        if (detail.Date.IsFestivity) reasons.Add(AppStrings.DetailCalendarFestivity);
+
+        foreach (string reason in reasons)
+            DayOffReasons.Add(new Label
+            {
+                Text = reason,
+                FontFamily = "Plex",
+                FontSize = 13,
+                TextColor = Resource("DayOffRed")
+            });
+
+        DayOffReasons.IsVisible = reasons.Count > 0;
     }
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
