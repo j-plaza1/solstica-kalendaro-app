@@ -90,7 +90,8 @@ again whenever the document is revised.
 
 An `O` of zero means preliminary: `2.1.0.1` is an early build against document 2.1, and
 `2.1.1.0` is the first one meant for daily use. GitHub marks the preliminary ones as
-pre-releases.
+pre-releases, and so does the app: its About screen reads the same rule from
+`ReleaseVersion.IsPreview` and says "(preview)" beside the version.
 
 ## Repository layout
 

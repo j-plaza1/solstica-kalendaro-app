@@ -206,7 +206,11 @@ public partial class MainPage : ContentPage
     private void OnHowToReadClicked(object? sender, EventArgs e) =>
         OpenFromMenu(AppStrings.MenuHowToRead);
 
-    private void OnAboutClicked(object? sender, EventArgs e) => OpenFromMenu(AppStrings.MenuAbout);
+    private void OnAboutClicked(object? sender, EventArgs e)
+    {
+        MenuOverlay.IsVisible = false;
+        Navigation.PushAsync(new AboutPage());
+    }
 
     private void OpenFromMenu(string title)
     {

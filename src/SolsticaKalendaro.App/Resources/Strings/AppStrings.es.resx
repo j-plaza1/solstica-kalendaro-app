@@ -343,4 +343,34 @@
   <data name="HintOpenPeriod" xml:space="preserve">
     <value>Abre el período</value>
   </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Propuesta de calendario solar perpetuo</value>
+  </data>
+  <data name="AboutAuthor" xml:space="preserve">
+    <value>De Javier Plaza Alonso</value>
+  </data>
+  <data name="SectionApp" xml:space="preserve">
+    <value>App</value>
+  </data>
+  <data name="SectionArticle" xml:space="preserve">
+    <value>Artículo</value>
+  </data>
+  <data name="SectionLicences" xml:space="preserve">
+    <value>Licencias</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>Versión {0}</value>
+  </data>
+  <data name="PreviewSuffix" xml:space="preserve">
+    <value>{0} (preliminar)</value>
+  </data>
+  <data name="NewVersions" xml:space="preserve">
+    <value>Versiones nuevas ›</value>
+  </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Código fuente ›</value>
+  </data>
+  <data name="Licences" xml:space="preserve">
+    <value>Código: MIT. Artículo: CC BY 4.0. Tipografías Spectral e IBM Plex Sans: SIL Open Font License 1.1.</value>
+  </data>
 </root>
