@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- The rows of a year, drawn the same wherever a year is drawn: the view itself, and the
+     example inside the introduction, which has to look exactly like what it explains. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:local="clr-namespace:SolsticaKalendaro.App">
+
+
+    <!-- Each template declares a fixed height. Rows that never change size make
+         scrolling by index exact, which is what going to today depends on. -->
+
+    <DataTemplate x:Key="SectionTemplate">
+        <HorizontalStackLayout Padding="20,15,20,7" Spacing="8" HeightRequest="44">
+            <Ellipse Fill="{Binding Dot}" WidthRequest="8" HeightRequest="8"
+                     VerticalOptions="Center" />
+            <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="16"
+                   TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+            <Label Text="{Binding Label}" IsVisible="{Binding HasLabel}"
+                   FontFamily="Plex" FontSize="11"
+                   TextColor="{StaticResource Muted}" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+    </DataTemplate>
+
+    <DataTemplate x:Key="WeekTemplate">
+        <Grid Padding="12,0" ColumnDefinitions="*,*,*,*,*,*,*" HeightRequest="58"
+              BindableLayout.ItemsSource="{Binding Days}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Grid Grid.Column="{Binding Column}" RowDefinitions="*,4" HeightRequest="58">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainPage}}, Path=OpenDay}"
+                                CommandParameter="{Binding Solstica}" />
+                        </Grid.GestureRecognizers>
+                        <Grid.Triggers>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsToday}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Highlight}" />
+                            </DataTrigger>
+                        </Grid.Triggers>
+
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                            <Label Text="{Binding Number}" FontFamily="Plex" FontSize="19"
+                                   HorizontalOptions="Center" TextColor="{StaticResource Ink}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsToday}" Value="True">
+                                        <Setter Property="TextColor" Value="{StaticResource Accent}" />
+                                        <Setter Property="FontFamily" Value="PlexSemiBold" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label Text="{Binding Gregorian}" FontFamily="Plex" FontSize="10"
+                                   HorizontalOptions="Center" TextColor="{StaticResource Faint}" />
+                        </VerticalStackLayout>
+
+                        <!-- The season of the day, at its foot. It can change mid-row. -->
+                        <BoxView Grid.Row="1" Color="{Binding Season}" />
+
+                        <!-- The day just gone to. An outline, because today is a fill and
+                             one day can be both; drawn inside the cell, so it takes none
+                             of the fixed height away from anything. -->
+                        <Border Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsMarked}"
+                                InputTransparent="True" BackgroundColor="Transparent"
+                                Stroke="{StaticResource Accent}" StrokeThickness="1.5" />
+
+                        <BoxView Grid.Row="0" Color="{StaticResource CellEdge}"
+                                 WidthRequest="1" HorizontalOptions="End" />
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Extra-weekly days are not cells: they cross all seven columns, because that is
+         what they are. Outside the week, between the blocks. -->
+    <DataTemplate x:Key="BandTemplate">
+        <Grid Margin="12,6" ColumnDefinitions="4,*,4" HeightRequest="66">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainPage}}, Path=OpenDay}"
+                    CommandParameter="{Binding Solstica}" />
+            </Grid.GestureRecognizers>
+            <BoxView Color="{Binding Season}" />
+            <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
+                  BackgroundColor="{StaticResource Highlight}">
+                <VerticalStackLayout Spacing="3">
+                    <Label Text="{Binding Name}" FontFamily="SpectralSemiBold" FontSize="17"
+                           TextColor="{StaticResource Accent}" />
+                    <Label Text="{Binding Note}" FontFamily="Plex" FontSize="11"
+                           TextColor="{StaticResource Muted}" />
+                </VerticalStackLayout>
+                <Label Grid.Column="1" Text="{Binding Gregorian}" FontFamily="Plex" FontSize="12.5"
+                       TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+            </Grid>
+            <BoxView Grid.Column="2" Color="{Binding Season}" />
+
+            <!-- A Jarfino or a Supertago is a band, not a cell, so the mark goes round
+                 the whole of it. -->
+            <Border Grid.ColumnSpan="3" IsVisible="{Binding IsMarked}"
+                    InputTransparent="True" BackgroundColor="Transparent"
+                    Stroke="{StaticResource Accent}" StrokeThickness="1.5" />
+        </Grid>
+    </DataTemplate>
+
+    <local:RowTemplateSelector x:Key="RowSelector"
+                               Section="{StaticResource SectionTemplate}"
+                               Week="{StaticResource WeekTemplate}"
+                               Band="{StaticResource BandTemplate}" />
+</ResourceDictionary>

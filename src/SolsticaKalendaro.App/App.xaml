@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Rows.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- The four seasons. Numbered, never named after a hemisphere (section 8.1). -->

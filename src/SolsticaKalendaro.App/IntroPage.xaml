@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolsticaKalendaro.App.IntroPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Paper}">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <CarouselView x:Name="Screens" Loop="False" IsBounceEnabled="False"
+                      IndicatorView="Dots" PositionChanged="OnScreenChanged">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView Content="{Binding .}" />
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+        <VerticalStackLayout Grid.Row="1" Padding="20,0,20,14" Spacing="0">
+
+            <IndicatorView x:Name="Dots" Count="3" HorizontalOptions="Center"
+                           IndicatorColor="{StaticResource Hairline}"
+                           SelectedIndicatorColor="{StaticResource Accent}"
+                           IndicatorSize="7" Margin="0,0,0,4" />
+
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button x:Name="SkipButton" Clicked="OnSkip"
+                        FontFamily="PlexMedium" FontSize="14" TextColor="{StaticResource Muted}"
+                        BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                        MinimumHeightRequest="44" MinimumWidthRequest="44"
+                        HorizontalOptions="Start" />
+                <Button x:Name="NextButton" Grid.Column="2" Clicked="OnNext"
+                        FontFamily="PlexSemiBold" FontSize="14" TextColor="{StaticResource Accent}"
+                        BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                        MinimumHeightRequest="44" MinimumWidthRequest="44"
+                        HorizontalOptions="End" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>
