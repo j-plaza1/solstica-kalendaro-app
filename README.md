@@ -121,6 +121,13 @@ December, so switching between them only removes or adds the years before the fi
 2031 window anchors on 22 December, and that is the only choice that moves a date: every
 Gregorian date one day later, for ever. `EpochChoiceTests` states both halves.
 
+**Large text is the system's business, not the app's.** The app follows the font size already
+set on the device. The text screens grow without limit and scroll; the year view grows with
+them up to 160 %, because seven columns cannot get wider than the screen, and past 130 % a
+cell shows the day of the Gregorian month without its name. The rows keep fixed heights —
+scrolled to by index, which is how Today and Go to land on the exact day — so they are scaled
+once at launch rather than measured per row.
+
 **Rest days are days of the Solstica week.** Once the calendar is adopted everything lives
 in it, so the days a reader rests on are Monday-to-Sunday in this calendar and not in the
 Gregorian one — and after the first Jarfino those are different physical days, which is the

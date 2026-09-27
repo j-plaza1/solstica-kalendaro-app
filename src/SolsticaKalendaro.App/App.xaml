@@ -34,6 +34,24 @@
             <!-- The day a reader has just gone to. Not red, which now means a day off. -->
             <Color x:Key="Mark">#6A4C9C</Color>
             <Color x:Key="Rule">#C9C0B0</Color>
+
+            <!-- The year view's own sizes, at the ordinary text size. TextScale.Apply
+                 multiplies them by the system's font setting before any page is built, up to
+                 the limit the seven columns allow, and the heights stay whole numbers: every
+                 row declares one, and scrolling to a day by index depends on that. -->
+            <x:Double x:Key="RowSectionHeight">44</x:Double>
+            <x:Double x:Key="RowWeekHeight">58</x:Double>
+            <x:Double x:Key="RowBandHeight">66</x:Double>
+            <x:Double x:Key="TodayCircleSize">28</x:Double>
+
+            <x:Double x:Key="SizeSectionName">16</x:Double>
+            <x:Double x:Key="SizeSectionLabel">11</x:Double>
+            <x:Double x:Key="SizeDayNumber">19</x:Double>
+            <x:Double x:Key="SizeDayGregorian">10</x:Double>
+            <x:Double x:Key="SizeBandName">17</x:Double>
+            <x:Double x:Key="SizeBandNote">11</x:Double>
+            <x:Double x:Key="SizeBandDate">12.5</x:Double>
+            <x:Double x:Key="SizeWeekdayInitial">10.5</x:Double>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

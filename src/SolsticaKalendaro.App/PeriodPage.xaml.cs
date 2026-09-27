@@ -221,7 +221,9 @@ public partial class PeriodPage : ContentPage
         arrow.BorderWidth = 0;
         arrow.Padding = new Thickness(0);
         arrow.MinimumHeightRequest = 44;
-        arrow.WidthRequest = 38;
+
+        // A minimum, not a width: at a large text size the glyph itself is wider than 38.
+        arrow.MinimumWidthRequest = 38;
     }
 
     private static Color Resource(string key) => (Color)Application.Current!.Resources[key];

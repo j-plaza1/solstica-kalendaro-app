@@ -147,6 +147,18 @@ and what changed when the period began — with arrows that walk the table on th
 never move the year behind it. It is reached from the period line in the header and from the
 foot of the day detail, and it is where the app names the document it implements and links to it.
 
+**The app follows the system's font size and has no setting of its own.** `TextScale` reads it —
+**the one place in the app with per-platform code**, because MAUI exposes no cross-platform way
+to ask, and an app cannot follow what it cannot read. Text screens simply grow and scroll. The
+year view cannot: seven columns would be wider than the screen, so `TextScale.Grid` stops at
+160 %, and above 130 % (`GridShowsMonth`) a cell's Gregorian line is the day alone — the month
+is in the day detail. The grid's row heights and font sizes are application resources scaled
+once, before any page is built, and the heights stay whole numbers: **every row declares one and
+scrolling to a day by index depends on it**, so the grid sets `FontAutoScalingEnabled="False"`
+everywhere and scales itself. The setting can change while the app is in the background, and
+row heights cannot change under a live page, so `MainPage` rebuilds the pages on resume when
+`TextScale.HasChanged`, keeping the reader's place as a change of language does.
+
 **One marking for every day off, whatever the reason.** A rest day, a festivity of the calendar
 and later a local holiday (#25) all look the same in the grid: the cell shaded `DayOffShade` and
 the number `DayOffRed` and semibold, the bands the same with their name in red, and the rest

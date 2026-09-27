@@ -49,7 +49,7 @@
 
             <Label x:Name="ArticleLabel" FontFamily="Plex" FontSize="11.5"
                    TextColor="{StaticResource Muted}" />
-            <Button x:Name="ArticleButton" Clicked="OnReadArticle"
+            <Button x:Name="ArticleButton" LineBreakMode="WordWrap" Clicked="OnReadArticle"
                     FontFamily="PlexMedium" FontSize="13" TextColor="{StaticResource Accent}"
                     BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                     MinimumHeightRequest="44" HorizontalOptions="Start" />
