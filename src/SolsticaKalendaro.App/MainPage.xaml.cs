@@ -315,9 +315,7 @@ public partial class MainPage : ContentPage
         if (Window is not null) Window.Resumed -= OnResumed;
 
         TextScale.Apply(Application.Current!.Resources);
-
-        var navigation = new NavigationPage(new MainPage(Place));
-        Application.Current!.Windows[0].Page = navigation;
+        Rebuild.WhereTheReaderStands();
     }
 
     // ---------- appearance ----------

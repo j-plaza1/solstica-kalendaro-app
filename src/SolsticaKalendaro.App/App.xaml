@@ -6,34 +6,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Rows.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- The four seasons. Numbered, never named after a hemisphere (section 8.1). -->
-            <Color x:Key="SeasonFirst">#4A6FA5</Color>
-            <Color x:Key="SeasonSecond">#4F7A4A</Color>
-            <Color x:Key="SeasonThird">#C1762E</Color>
-            <Color x:Key="SeasonFourth">#B05A78</Color>
-
-            <Color x:Key="Paper">#FAF7F0</Color>
-            <Color x:Key="Ink">#1C1A17</Color>
-            <Color x:Key="Muted">#6B6459</Color>
-            <Color x:Key="Faint">#837A6C</Color>
-            <Color x:Key="Hairline">#E3DCCE</Color>
-            <Color x:Key="CellEdge">#EDE7DA</Color>
-            <Color x:Key="Accent">#A8543C</Color>
-
-            <!-- One shade and one red for every day off, whatever makes it one: a rest day, a
-                 festivity of the calendar, and later a local holiday all read the same in the
-                 grid. Which reason it is belongs to the day detail, not to a legend. -->
-            <Color x:Key="DayOffShade">#EFE6D6</Color>
-            <Color x:Key="DayOffRed">#B0352B</Color>
-
-            <!-- The day a reader has just gone to. Not red, which now means a day off. -->
-            <Color x:Key="Mark">#6A4C9C</Color>
-            <Color x:Key="Rule">#C9C0B0</Color>
 
             <!-- The year view's own sizes, at the ordinary text size. TextScale.Apply
                  multiplies them by the system's font setting before any page is built, up to

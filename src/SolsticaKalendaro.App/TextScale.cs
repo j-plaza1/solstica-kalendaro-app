@@ -11,9 +11,9 @@ namespace SolsticaKalendaro.App;
 /// grow past the width of the screen, so <see cref="Grid"/> stops at 160 % and the cells drop
 /// the Gregorian month above 130 %, where there is no longer room for it.
 ///
-/// **This is the one place in the app with per-platform code**, because MAUI exposes no
-/// cross-platform way to read the setting: each system keeps it in its own place, and the app
-/// cannot follow what it cannot read.
+/// **Read per platform**, because MAUI exposes no cross-platform way to ask: each system keeps
+/// the setting in its own place, and the app cannot follow what it cannot read. The only other
+/// per-platform code is the one that paints the system bars, for the same reason.
 /// </summary>
 public static class TextScale
 {

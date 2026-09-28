@@ -121,6 +121,13 @@ December, so switching between them only removes or adds the years before the fi
 2031 window anchors on 22 December, and that is the only choice that moves a date: every
 Gregorian date one day later, for ever. `EpochChoiceTests` states both halves.
 
+**So is light or dark.** Every colour is a light/dark pair, chosen together — the seasonal
+stripe is read by comparing four colours with each other — and the app writes the active half
+of each pair into its resources at startup and again whenever the system's theme changes,
+rebuilding the pages where the reader stands. The dark values meet 4.5:1 for text and 3:1 for
+the stripes on both the dark paper and the day-off shade; the light `Faint` was darkened for
+the same reason, since the small Gregorian dates under each day did not reach 4.5:1 on either.
+
 **Large text is the system's business, not the app's.** The app follows the font size already
 set on the device. The text screens grow without limit and scroll; the year view grows with
 them up to 160 %, because seven columns cannot get wider than the screen, and past 130 % a

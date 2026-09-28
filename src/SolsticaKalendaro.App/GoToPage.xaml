@@ -3,18 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SolsticaKalendaro.App.GoToPage"
              NavigationPage.HasNavigationBar="False"
-             BackgroundColor="{StaticResource Paper}">
+             BackgroundColor="{DynamicResource Paper}">
 
     <Grid RowDefinitions="Auto,Auto,*" Padding="20,10,20,0">
 
         <Grid ColumnDefinitions="Auto,*">
             <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
-                    FontFamily="Plex" FontSize="18" TextColor="{StaticResource Muted}"
+                    FontFamily="Plex" FontSize="18" TextColor="{DynamicResource Muted}"
                     BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                     MinimumHeightRequest="44" MinimumWidthRequest="44"
                     HorizontalOptions="Start" />
             <Label x:Name="TitleLabel" Grid.Column="1" FontFamily="SpectralSemiBold" FontSize="22"
-                   TextColor="{StaticResource Ink}" VerticalOptions="Center" Margin="4,0,0,0" />
+                   TextColor="{DynamicResource Ink}" VerticalOptions="Center" Margin="4,0,0,0" />
         </Grid>
 
         <!-- Three tabs, one panel: Year and Period below, Date still to come (#16). -->
@@ -22,9 +22,9 @@
             <Button x:Name="YearTab" LineBreakMode="WordWrap" Clicked="OnTabClicked" />
             <Button x:Name="PeriodTab" LineBreakMode="WordWrap" Grid.Column="1" Clicked="OnTabClicked" />
             <Button x:Name="DateTab" LineBreakMode="WordWrap" Grid.Column="2" Clicked="OnTabClicked" />
-            <BoxView Grid.ColumnSpan="3" Color="{StaticResource Hairline}" HeightRequest="1"
+            <BoxView Grid.ColumnSpan="3" Color="{DynamicResource Hairline}" HeightRequest="1"
                      VerticalOptions="End" />
-            <BoxView x:Name="TabUnderline" Color="{StaticResource Accent}" HeightRequest="2"
+            <BoxView x:Name="TabUnderline" Color="{DynamicResource Accent}" HeightRequest="2"
                      VerticalOptions="End" />
         </Grid>
 
@@ -34,16 +34,16 @@
                  which is otherwise only discoverable by trying one. -->
             <VerticalStackLayout x:Name="YearPanel" Spacing="0" Margin="0,28,0,0">
                 <Entry x:Name="YearEntry" Keyboard="Numeric" MaxLength="5"
-                       FontFamily="Plex" FontSize="28" TextColor="{StaticResource Ink}"
+                       FontFamily="Plex" FontSize="28" TextColor="{DynamicResource Ink}"
                        BackgroundColor="Transparent" MinimumWidthRequest="170"
                        HorizontalOptions="Start" MinimumHeightRequest="44" />
                 <Label x:Name="YearRangeLabel" FontFamily="Plex" FontSize="11"
-                       TextColor="{StaticResource Muted}" Margin="2,6,0,0" />
+                       TextColor="{DynamicResource Muted}" Margin="2,6,0,0" />
                 <Button x:Name="GoButton" LineBreakMode="WordWrap" Clicked="OnGoClicked"
                         FontFamily="PlexMedium" FontSize="13"
                         MinimumHeightRequest="44" Padding="20,9" CornerRadius="22"
-                        BorderWidth="1" BorderColor="{StaticResource Rule}"
-                        BackgroundColor="Transparent" TextColor="{StaticResource Ink}"
+                        BorderWidth="1" BorderColor="{DynamicResource Rule}"
+                        BackgroundColor="Transparent" TextColor="{DynamicResource Ink}"
                         HorizontalOptions="Start" Margin="0,26,0,0" />
             </VerticalStackLayout>
 
@@ -64,38 +64,38 @@
 
                     <VerticalStackLayout x:Name="GregorianSide" Spacing="0" Margin="0,16,0,0">
                         <DatePicker x:Name="Picker" Format="D" DateSelected="OnGregorianPicked"
-                                    FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
+                                    FontFamily="Plex" FontSize="17" TextColor="{DynamicResource Ink}"
                                     MinimumHeightRequest="44" HorizontalOptions="Start" />
 
                         <!-- In the last year the Gregorian calendar runs out before the
                              Solstica one does, and there is no date to pick. -->
                         <Label x:Name="NoGregorianLabel" IsVisible="False" FontFamily="Plex"
-                               FontSize="17" TextColor="{StaticResource Ink}" />
+                               FontSize="17" TextColor="{DynamicResource Ink}" />
 
                         <!-- The answer to a date the calendar does not reach: a sentence,
                              not a refusal. -->
                         <Label x:Name="BeforeStartLabel" IsVisible="False" FontFamily="Plex"
-                               FontSize="11.5" TextColor="{StaticResource Muted}"
+                               FontSize="11.5" TextColor="{DynamicResource Muted}"
                                Margin="0,12,0,0" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout x:Name="SolsticaSide" IsVisible="False" Spacing="0"
                                          Margin="0,16,0,0">
                         <Entry x:Name="DateYearEntry" Keyboard="Numeric" MaxLength="5"
-                               FontFamily="Plex" FontSize="28" TextColor="{StaticResource Ink}"
+                               FontFamily="Plex" FontSize="28" TextColor="{DynamicResource Ink}"
                                BackgroundColor="Transparent" MinimumWidthRequest="170"
                                HorizontalOptions="Start" MinimumHeightRequest="44" />
                         <Label x:Name="DateYearRangeLabel" FontFamily="Plex" FontSize="11"
-                               TextColor="{StaticResource Muted}" Margin="2,6,0,0" />
+                               TextColor="{DynamicResource Muted}" Margin="2,6,0,0" />
 
                         <!-- Only the blocks this year has, and only the days that block has.
                              The day picker goes where there is only one day to pick. -->
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14" Margin="0,18,0,0">
                             <Picker x:Name="BlockPicker" SelectedIndexChanged="OnBlockPicked"
-                                    FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
+                                    FontFamily="Plex" FontSize="17" TextColor="{DynamicResource Ink}"
                                     MinimumHeightRequest="44" />
                             <Picker x:Name="DayPicker" Grid.Column="1" SelectedIndexChanged="OnDayPicked"
-                                    FontFamily="Plex" FontSize="17" TextColor="{StaticResource Ink}"
+                                    FontFamily="Plex" FontSize="17" TextColor="{DynamicResource Ink}"
                                     MinimumHeightRequest="44" MinimumWidthRequest="90" />
                         </Grid>
                     </VerticalStackLayout>
@@ -103,8 +103,8 @@
                     <Button x:Name="DateGoButton" LineBreakMode="WordWrap" Clicked="OnGoDateClicked"
                             FontFamily="PlexMedium" FontSize="13"
                             MinimumHeightRequest="44" Padding="20,9" CornerRadius="22"
-                            BorderWidth="1" BorderColor="{StaticResource Rule}"
-                            BackgroundColor="Transparent" TextColor="{StaticResource Ink}"
+                            BorderWidth="1" BorderColor="{DynamicResource Rule}"
+                            BackgroundColor="Transparent" TextColor="{DynamicResource Ink}"
                             HorizontalOptions="Start" Margin="0,26,0,0" />
 
                 </VerticalStackLayout>
