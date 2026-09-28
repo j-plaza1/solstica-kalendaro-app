@@ -55,13 +55,14 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!-- The dark paper behind the figure, and the figure at its own size: its coordinates
+		     already sit inside the safe circle of an adaptive icon. -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="1" Color="#1A1815" />
 
 		<!-- Splash Screen -->
-		<!-- One colour, whatever the theme: a splash screen is a static resource and there is
-		     no cross-platform way to give it a dark half. The light paper, which is what the
-		     app opens as on a light device and a moment of light on a dark one. -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FAF7F0" BaseSize="128,128" />
+		<!-- The same figure as the icon, on the same dark paper: opening the app is then the
+		     launcher's icon growing into the splash rather than a white flash. -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1A1815" BaseSize="192,192" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />

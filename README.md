@@ -93,6 +93,16 @@ An `O` of zero means preliminary: `2.1.0.1` is an early build against document 2
 pre-releases, and so does the app: its About screen reads the same rule from
 `ReleaseVersion.IsPreview` and says "(preview)" beside the version.
 
+## The icon
+
+The Earth at the December solstice, where the year begins: its axis leaning away from the Sun —
+that lean is what makes it a solstice rather than a picture of a planet — on an orbit drawn as
+four equal arcs in the season colours, because each season is 90° of ecliptic longitude and the
+seasons differ in days only because the Earth moves at different speeds. There is a monochrome
+variant for Android's themed icons, with the arcs parted and the Sun smaller so that nothing
+touches when there is no colour to tell the shapes apart, and the splash screen is the same
+figure on the same dark paper.
+
 ## Repository layout
 
 ```

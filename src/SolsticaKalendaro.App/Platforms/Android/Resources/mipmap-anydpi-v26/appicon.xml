@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Resizetizer writes this file too, and points the monochrome layer at the colour
+     foreground, where the Earth touches the orbit and the Sun's glow is a disc. This one
+     replaces it: the two layers it generates, and a monochrome drawn for the purpose. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/appicon_background" />
+    <foreground android:drawable="@mipmap/appicon_foreground" />
+    <monochrome android:drawable="@drawable/appiconmono" />
+</adaptive-icon>
