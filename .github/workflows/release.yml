@@ -42,6 +42,12 @@ jobs:
       # The rules themselves are in the core, beside the document version they are checked
       # against, and CI runs this same tool on every pull request. They were a shell block
       # here, running only while publishing, which is where two real defects hid.
+
+      # Built here, so that the run below prints the tool's three lines and nothing else:
+      # restoring and building write to standard output too, and that output is read.
+      - name: Build the version tool
+        run: dotnet build tools/ReleaseVersion -c Release
+
       - name: Work out the version
         id: version
         run: |
@@ -49,13 +55,25 @@ jobs:
 
           # Assigned, not piped: a tool whose output goes into a pipe has its exit code
           # thrown away, and a version that could not be worked out has to end the step.
-          version=$(dotnet run --project tools/ReleaseVersion -c Release -- "$GITHUB_REF_TYPE" "$GITHUB_REF_NAME")
+          version=$(dotnet run --project tools/ReleaseVersion -c Release --no-build -- "$GITHUB_REF_TYPE" "$GITHUB_REF_NAME")
+
+          # What is about to become the workflow's outputs, read line by line before it is
+          # believed: three lines, and the three keys the rest of this file asks for.
+          mapfile -t lines <<< "$version"
+          if [ "${#lines[@]}" -ne 3 ] ||
+             [[ ${lines[0]} != display=* ]] ||
+             [[ ${lines[1]} != code=* ]] ||
+             [[ ${lines[2]} != prerelease=* ]]; then
+            echo "::error::The version tool printed something other than the three expected lines:"
+            printf '%s\n' "$version"
+            exit 1
+          fi
 
           printf '%s\n' "$version" >> "$GITHUB_OUTPUT"
 
-          display=$(printf '%s\n' "$version" | sed -n 's/^display=//p')
-          code=$(printf '%s\n' "$version" | sed -n 's/^code=//p')
-          prerelease=$(printf '%s\n' "$version" | sed -n 's/^prerelease=//p')
+          display=${lines[0]#display=}
+          code=${lines[1]#code=}
+          prerelease=${lines[2]#prerelease=}
           echo "version $display, internal $code, prerelease $prerelease"
 
       # Outside the workspace, so it cannot be committed, packed into the app or picked up

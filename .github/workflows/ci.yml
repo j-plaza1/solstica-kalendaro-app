@@ -35,10 +35,25 @@ jobs:
       - name: Release versions
         run: |
           set -euo pipefail
-          tool="dotnet run --project tools/ReleaseVersion -c Release --"
+
+          # Built once, and every run below is --no-build: what a run prints is then the
+          # tool's own output and nothing else, which is what the release reads.
+          dotnet build tools/ReleaseVersion -c Release
+          tool="dotnet run --project tools/ReleaseVersion -c Release --no-build --"
 
           says() {
             got=$($tool "$1" "$2") || { echo "::error::$1 $2 was refused"; exit 1; }
+
+            mapfile -t lines <<< "$got"
+            if [ "${#lines[@]}" -ne 3 ] ||
+               [[ ${lines[0]} != display=* ]] ||
+               [[ ${lines[1]} != code=* ]] ||
+               [[ ${lines[2]} != prerelease=* ]]; then
+              echo "::error::$1 $2 printed something other than the three expected lines:"
+              printf '%s\n' "$got"
+              exit 1
+            fi
+
             printf '%s\n' "$got" | grep -qx "$3" || {
               echo "::error::$1 $2: expected $3, and got:"
               printf '%s\n' "$got"
