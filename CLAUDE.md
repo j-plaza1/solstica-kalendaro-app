@@ -52,6 +52,23 @@ period screen prints both, so a raised version with a stale link says so on scre
   release against a document is `vN.M.1.0`. `ReleaseVersion.IsPreview` states that rule once, in
   the core, so the About screen marks a build exactly where the workflow would; anything that is
   not four numbers is not a release version and is shown unmarked rather than throwing.
+
+**The whole convention lives in `ReleaseVersion`, not in the workflow.** `ReleaseVersion.Of`
+answers what a run is building — the display version, the code and whether it is a prerelease —
+or says why a tag is not one, without throwing: a workflow wants a message to print. It is in
+the core because the document's version is, so the check reads `SpecificationVersion` itself
+rather than grepping the source for it. `tools/ReleaseVersion` is a console tool over it,
+printing `display=`, `code=` and `prerelease=` for `$GITHUB_OUTPUT`:
+
+```bash
+dotnet run --project tools/ReleaseVersion -c Release -- tag v2.1.1.0
+dotnet run --project tools/ReleaseVersion -c Release -- branch main    # a rehearsal, N.M.0.0
+```
+
+`release.yml` calls it, and **CI runs it on every pull request** — a production tag, a
+preliminary one, a rehearsal, and two tags that must be refused — so the path no release has
+taken yet is taken before the first one takes it. The rules were a shell block that ran only
+while publishing, and two real defects hid there until it was pulled out and run.
 - A `workflow_dispatch` run builds `N.M.0.0` from `SpecificationVersion`. That version is never
   published: its shape says it is a rehearsal.
 

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- What the release workflow asks for the version of the run it is building. Over the core,
+       and nothing else: no MAUI, so it builds on a runner with no workloads installed. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>releaseversion</AssemblyName>
+    <RootNamespace>SolsticaKalendaro.Tools.ReleaseVersion</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SolsticaKalendaro.Core\SolsticaKalendaro.Core.csproj" />
+  </ItemGroup>
+
+</Project>

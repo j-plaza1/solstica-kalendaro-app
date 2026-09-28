@@ -103,6 +103,17 @@ variant for Android's themed icons, with the arcs parted and the Sun smaller so 
 touches when there is no colour to tell the shapes apart, and the splash screen is the same
 figure on the same dark paper.
 
+The rules behind those numbers live in the core, in `ReleaseVersion`, and
+`tools/ReleaseVersion` is a small console tool over them:
+
+```bash
+dotnet run --project tools/ReleaseVersion -c Release -- tag v2.1.1.0
+```
+
+The release workflow asks it what version it is building, and CI runs it on every pull request
+— valid tags, a rehearsal and tags that must be refused — so a mistake in it is a red pull
+request rather than a surprise at the moment of publishing.
+
 ## Repository layout
 
 ```
@@ -110,6 +121,7 @@ src/SolsticaKalendaro.Core        conversion library — no UI dependencies
 src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view, day detail, panel,
                                   period, options, about and the introduction
 tests/SolsticaKalendaro.Core.Tests
+tools/ReleaseVersion               what version a release run is building
 ```
 
 `SolsticaKalendaro.Core` is deliberately free of any MAUI reference. It is the executable

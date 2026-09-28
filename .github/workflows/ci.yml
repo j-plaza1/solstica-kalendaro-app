@@ -29,6 +29,39 @@ jobs:
       - name: Test
         run: dotnet test tests/SolsticaKalendaro.Core.Tests --no-build --configuration Release --verbosity normal
 
+      # The version a release would be given, worked out here on every pull request rather
+      # than for the first time while publishing. A production tag is among them: that path
+      # has never been taken by a release, and it is taken here before it is taken there.
+      - name: Release versions
+        run: |
+          set -euo pipefail
+          tool="dotnet run --project tools/ReleaseVersion -c Release --"
+
+          says() {
+            got=$($tool "$1" "$2") || { echo "::error::$1 $2 was refused"; exit 1; }
+            printf '%s\n' "$got" | grep -qx "$3" || {
+              echo "::error::$1 $2: expected $3, and got:"
+              printf '%s\n' "$got"
+              exit 1
+            }
+          }
+
+          refuses() {
+            if $tool "$1" "$2" > /dev/null 2>&1; then
+              echo "::error::$1 $2 was accepted, and should not have been"
+              exit 1
+            fi
+          }
+
+          says tag v2.1.1.0 'display=2.1.1.0'
+          says tag v2.1.1.0 'code=2010100'
+          says tag v2.1.1.0 'prerelease=false'
+          says tag v2.1.0.1 'prerelease=true'
+          says branch main 'display=2.1.0.0'
+
+          refuses tag v2.1.100.0
+          refuses tag v9.9.1.0
+
   android:
     name: Android app
     runs-on: ubuntu-latest
