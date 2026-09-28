@@ -58,7 +58,10 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<!-- One colour, whatever the theme: a splash screen is a static resource and there is
+		     no cross-platform way to give it a dark half. The light paper, which is what the
+		     app opens as on a light device and a moment of light on a dark one. -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FAF7F0" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />

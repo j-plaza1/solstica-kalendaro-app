@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:SolsticaKalendaro.App"
              x:Class="SolsticaKalendaro.App.MainPage"
              NavigationPage.HasNavigationBar="False"
-             BackgroundColor="{StaticResource Paper}">
+             BackgroundColor="{DynamicResource Paper}">
 
     <Grid RowDefinitions="Auto,Auto,*">
 
@@ -17,7 +17,7 @@
 
                 <Grid Grid.Column="1">
                     <Button x:Name="YearButton" Clicked="OnYearClicked" />
-                    <Path Data="M 0,0 L 5,4.5 L 10,0" Stroke="#1C1A17"
+                    <Path Data="M 0,0 L 5,4.5 L 10,0" Stroke="{DynamicResource Ink}"
                           StrokeThickness="1.5" StrokeLineCap="Round" StrokeLineJoin="Round"
                           WidthRequest="10" HeightRequest="5"
                           HorizontalOptions="End" VerticalOptions="Center"
@@ -29,10 +29,10 @@
                 <Button x:Name="TodayButton" LineBreakMode="WordWrap" Grid.Column="4" Clicked="OnTodayClicked"
                         FontFamily="PlexMedium" FontSize="12"
                         MinimumHeightRequest="44" Padding="14,9" CornerRadius="22"
-                        BorderWidth="1" BorderColor="{StaticResource Rule}"
-                        BackgroundColor="Transparent" TextColor="{StaticResource Muted}" />
+                        BorderWidth="1" BorderColor="{DynamicResource Rule}"
+                        BackgroundColor="Transparent" TextColor="{DynamicResource Muted}" />
                 <Button x:Name="MenuButton" Grid.Column="5" Text="&#8942;" Clicked="OnMenuClicked"
-                        FontFamily="Plex" FontSize="20" TextColor="{StaticResource Muted}"
+                        FontFamily="Plex" FontSize="20" TextColor="{DynamicResource Muted}"
                         BackgroundColor="Transparent" BorderWidth="0" Padding="0"
                         MinimumHeightRequest="44" MinimumWidthRequest="44" />
             </Grid>
@@ -41,9 +41,9 @@
                  calendar begins there is no period to speak of, so it carries the wait. -->
             <HorizontalStackLayout Spacing="0" Margin="6,0,0,0">
                 <Label x:Name="PrefixLabel" FontFamily="Plex" FontSize="12" IsVisible="False"
-                       TextColor="{StaticResource Muted}" VerticalOptions="Center" />
+                       TextColor="{DynamicResource Muted}" VerticalOptions="Center" />
                 <Button x:Name="PeriodButton" Clicked="OnPeriodClicked"
-                        FontFamily="Plex" FontSize="12" TextColor="{StaticResource Muted}"
+                        FontFamily="Plex" FontSize="12" TextColor="{DynamicResource Muted}"
                         BackgroundColor="Transparent" BorderWidth="0" Padding="0,6"
                         MinimumHeightRequest="32" />
             </HorizontalStackLayout>
@@ -66,8 +66,8 @@
 
             <Border HorizontalOptions="End" VerticalOptions="Start" Margin="0,56,12,0"
                     WidthRequest="210" Padding="0,6"
-                    BackgroundColor="{StaticResource Paper}"
-                    Stroke="{StaticResource Rule}" StrokeThickness="1"
+                    BackgroundColor="{DynamicResource Paper}"
+                    Stroke="{DynamicResource Rule}" StrokeThickness="1"
                     StrokeShape="RoundRectangle 10">
                 <VerticalStackLayout>
                     <Button x:Name="OptionsItem" Clicked="OnOptionsClicked" />

@@ -59,6 +59,9 @@ public partial class OptionsPage : ContentPage
         Scroller.ScrollToAsync(0, Math.Min(_resumeScroll, furthest), animated: false);
     }
 
+    /// <summary>How far down the reader has come, for a page that replaces this one.</summary>
+    public double Scroll => Scroller.ScrollY;
+
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
 
     private void ShowLanguages()

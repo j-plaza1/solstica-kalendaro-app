@@ -115,6 +115,12 @@ this repo.
 `src/SolsticaKalendaro.Core` is the executable form of the specification and must stay free
 of any MAUI/UI reference so it remains usable from a CLI, web build or test harness.
 
+Two things need per-platform code, for the same reason — MAUI exposes no cross-platform way to
+ask or to say: `TextScale`, which reads the system's font size, and `MainActivity.PaintSystemBars`,
+which paints the status and navigation bars in the theme's paper with icons to match. Android's
+own `colors.xml` (and `values-night/colors.xml`) carry the same two papers and accents, because
+the window behind the app and the date picker's dialog are drawn by the system, not by MAUI.
+
 `src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
 view, the detail of one day, the "Go to" panel — a year typed, a period chosen, or a day named
 in either calendar — Options, About, the period, and the introduction. Everything is pushed on top of the year rather than replacing
@@ -147,9 +153,20 @@ and what changed when the period began — with arrows that walk the table on th
 never move the year behind it. It is reached from the period line in the header and from the
 foot of the day detail, and it is where the app names the document it implements and links to it.
 
-**The app follows the system's font size and has no setting of its own.** `TextScale` reads it —
-**the one place in the app with per-platform code**, because MAUI exposes no cross-platform way
-to ask, and an app cannot follow what it cannot read. Text screens simply grow and scroll. The
+**The app follows the system's theme and has no setting of its own either.** `Palette` holds
+every colour as a light/dark pair and writes the active half into the application's resources
+under the names the rest of the app already used (`Paper`, `Ink`, …), so nothing else knows
+which theme is in force. The XAML asks for them with **`DynamicResource`**, so a page on screen
+follows at once; the views built in code read their colour once, so `Application.RequestedThemeChanged`
+applies the palette and calls `Rebuild.WhereTheReaderStands()` — the same thing a change of
+language, of start date or of text size does. No colour is written anywhere else: a hex outside
+`Palette` is a colour that cannot have a dark half. The light `Faint` was darkened to `#6E665A`
+because the small Gregorian dates reached only 3.95:1 on the paper and 3.42:1 on the day-off
+shade; it is 5.29:1 and 4.57:1 now.
+
+**The app follows the system's font size and has no setting of its own.** `TextScale` reads it
+per platform, as above, because MAUI exposes no cross-platform way to ask, and an app cannot
+follow what it cannot read. Text screens simply grow and scroll. The
 year view cannot: seven columns would be wider than the screen, so `TextScale.Grid` stops at
 160 %, and above 130 % (`GridShowsMonth`) a cell's Gregorian line is the day alone — the month
 is in the day detail. The grid's row heights and font sizes are application resources scaled

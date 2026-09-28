@@ -20,11 +20,11 @@
                      VerticalOptions="Center" />
             <Label Text="{Binding Name}" FontFamily="SpectralSemiBold"
                    FontSize="{StaticResource SizeSectionName}" FontAutoScalingEnabled="False"
-                   TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+                   TextColor="{DynamicResource Ink}" VerticalOptions="Center" />
             <Label Text="{Binding Label}" IsVisible="{Binding HasLabel}"
                    FontFamily="Plex" FontSize="{StaticResource SizeSectionLabel}"
                    FontAutoScalingEnabled="False"
-                   TextColor="{StaticResource Muted}" VerticalOptions="Center" />
+                   TextColor="{DynamicResource Muted}" VerticalOptions="Center" />
         </HorizontalStackLayout>
     </DataTemplate>
 
@@ -46,7 +46,7 @@
                              the circle below, so that a day can be both at once. -->
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid" Binding="{Binding IsDayOff}" Value="True">
-                                <Setter Property="BackgroundColor" Value="{StaticResource DayOffShade}" />
+                                <Setter Property="BackgroundColor" Value="{DynamicResource DayOffShade}" />
                             </DataTrigger>
                         </Grid.Triggers>
 
@@ -57,7 +57,7 @@
                             <Grid HeightRequest="{StaticResource TodayCircleSize}"
                                   WidthRequest="{StaticResource TodayCircleSize}"
                                   HorizontalOptions="Center">
-                                <Ellipse Fill="{StaticResource Ink}"
+                                <Ellipse Fill="{DynamicResource Ink}"
                                          WidthRequest="{StaticResource TodayCircleSize}"
                                          HeightRequest="{StaticResource TodayCircleSize}"
                                          IsVisible="{Binding IsToday}" />
@@ -65,14 +65,14 @@
                                        FontSize="{StaticResource SizeDayNumber}"
                                        FontAutoScalingEnabled="False"
                                        HorizontalOptions="Center" VerticalOptions="Center"
-                                       TextColor="{StaticResource Ink}">
+                                       TextColor="{DynamicResource Ink}">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsDayOff}" Value="True">
-                                            <Setter Property="TextColor" Value="{StaticResource DayOffRed}" />
+                                            <Setter Property="TextColor" Value="{DynamicResource DayOffRed}" />
                                             <Setter Property="FontFamily" Value="PlexSemiBold" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsToday}" Value="True">
-                                            <Setter Property="TextColor" Value="{StaticResource Paper}" />
+                                            <Setter Property="TextColor" Value="{DynamicResource Paper}" />
                                             <Setter Property="FontFamily" Value="PlexSemiBold" />
                                         </DataTrigger>
                                     </Label.Triggers>
@@ -82,7 +82,7 @@
                             <Label Text="{Binding Gregorian}" FontFamily="Plex"
                                    FontSize="{StaticResource SizeDayGregorian}"
                                    FontAutoScalingEnabled="False"
-                                   HorizontalOptions="Center" TextColor="{StaticResource Faint}" />
+                                   HorizontalOptions="Center" TextColor="{DynamicResource Faint}" />
                         </VerticalStackLayout>
 
                         <!-- The season of the day, at its foot. It can change mid-row. -->
@@ -93,9 +93,9 @@
                              of the fixed height away from anything. -->
                         <Border Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsMarked}"
                                 InputTransparent="True" BackgroundColor="Transparent"
-                                Stroke="{StaticResource Mark}" StrokeThickness="2" />
+                                Stroke="{DynamicResource Mark}" StrokeThickness="2" />
 
-                        <BoxView Grid.Row="0" Color="{StaticResource CellEdge}"
+                        <BoxView Grid.Row="0" Color="{DynamicResource CellEdge}"
                                  WidthRequest="1" HorizontalOptions="End" />
                     </Grid>
                 </DataTemplate>
@@ -117,18 +117,18 @@
             <!-- A day outside the week is a festivity, so the band is shaded and named in
                  the same red as a free day's number. -->
             <Grid Grid.Column="1" ColumnDefinitions="*,Auto" Padding="14,13"
-                  BackgroundColor="{StaticResource DayOffShade}">
+                  BackgroundColor="{DynamicResource DayOffShade}">
                 <VerticalStackLayout Spacing="3">
                     <Label Text="{Binding Name}" FontFamily="SpectralSemiBold"
                            FontSize="{StaticResource SizeBandName}" FontAutoScalingEnabled="False"
-                           TextColor="{StaticResource DayOffRed}" />
+                           TextColor="{DynamicResource DayOffRed}" />
                     <Label Text="{Binding Note}" FontFamily="Plex"
                            FontSize="{StaticResource SizeBandNote}" FontAutoScalingEnabled="False"
-                           TextColor="{StaticResource Muted}" />
+                           TextColor="{DynamicResource Muted}" />
                 </VerticalStackLayout>
                 <Label Grid.Column="1" Text="{Binding Gregorian}" FontFamily="Plex"
                        FontSize="{StaticResource SizeBandDate}" FontAutoScalingEnabled="False"
-                       TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+                       TextColor="{DynamicResource Ink}" VerticalOptions="Center" />
             </Grid>
             <BoxView Grid.Column="2" Color="{Binding Season}" />
 
@@ -136,7 +136,7 @@
                  the whole of it. -->
             <Border Grid.ColumnSpan="3" IsVisible="{Binding IsMarked}"
                     InputTransparent="True" BackgroundColor="Transparent"
-                    Stroke="{StaticResource Mark}" StrokeThickness="2" />
+                    Stroke="{DynamicResource Mark}" StrokeThickness="2" />
         </Grid>
     </DataTemplate>
 

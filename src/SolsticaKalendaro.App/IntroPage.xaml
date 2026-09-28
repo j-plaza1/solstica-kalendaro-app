@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SolsticaKalendaro.App.IntroPage"
              NavigationPage.HasNavigationBar="False"
-             BackgroundColor="{StaticResource Paper}">
+             BackgroundColor="{DynamicResource Paper}">
 
     <Grid RowDefinitions="*,Auto">
 
@@ -19,18 +19,18 @@
         <VerticalStackLayout Grid.Row="1" Padding="20,0,20,14" Spacing="0">
 
             <IndicatorView x:Name="Dots" Count="3" HorizontalOptions="Center"
-                           IndicatorColor="{StaticResource Hairline}"
-                           SelectedIndicatorColor="{StaticResource Accent}"
+                           IndicatorColor="{DynamicResource Hairline}"
+                           SelectedIndicatorColor="{DynamicResource Accent}"
                            IndicatorSize="7" Margin="0,0,0,4" />
 
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <Button x:Name="SkipButton" LineBreakMode="WordWrap" Clicked="OnSkip"
-                        FontFamily="PlexMedium" FontSize="14" TextColor="{StaticResource Muted}"
+                        FontFamily="PlexMedium" FontSize="14" TextColor="{DynamicResource Muted}"
                         BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                         MinimumHeightRequest="44" MinimumWidthRequest="44"
                         HorizontalOptions="Start" />
                 <Button x:Name="NextButton" LineBreakMode="WordWrap" Grid.Column="2" Clicked="OnNext"
-                        FontFamily="PlexSemiBold" FontSize="14" TextColor="{StaticResource Accent}"
+                        FontFamily="PlexSemiBold" FontSize="14" TextColor="{DynamicResource Accent}"
                         BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
                         MinimumHeightRequest="44" MinimumWidthRequest="44"
                         HorizontalOptions="End" />

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The dark half of the palette. Android picks this file itself when the system is dark. -->
+<resources>
+    <color name="colorPrimary">#1A1815</color>
+    <color name="colorPrimaryDark">#1A1815</color>
+    <color name="colorAccent">#D98A6E</color>
+</resources>
