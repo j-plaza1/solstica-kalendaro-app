@@ -121,6 +121,16 @@ which paints the status and navigation bars in the theme's paper with icons to m
 own `colors.xml` (and `values-night/colors.xml`) carry the same two papers and accents, because
 the window behind the app and the date picker's dialog are drawn by the system, not by MAUI.
 
+A third: the **icon**. `Resources/AppIcon` holds the dark paper (`appicon.svg`), the figure
+(`appiconfg.svg`) and the monochrome variant (`appiconmono.svg`) — the Earth at the December
+solstice, its axis leaning away from the Sun, on an orbit of four equal arcs in the dark theme's
+season colours. Resizetizer builds the adaptive icon from the first two but points the
+monochrome layer at the colour foreground, where the Earth touches the orbit and the Sun carries
+a glow; so `Platforms/Android/Resources/mipmap-anydpi-v26/appicon.xml` and `appicon_round.xml`
+replace what it generates, naming `drawable/appiconmono.xml` — the same figure hand-carried into
+a vector drawable, with the arcs parted and the Sun smaller, since a themed icon is one colour
+and shapes that touch become one shape. The splash screen is the same figure on the same paper.
+
 `src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
 view, the detail of one day, the "Go to" panel — a year typed, a period chosen, or a day named
 in either calendar — Options, About, the period, and the introduction. Everything is pushed on top of the year rather than replacing

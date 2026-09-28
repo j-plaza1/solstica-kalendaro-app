@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The monochrome layer of the adaptive icon, for themed icons (Android 13 and later). The
+     same figure as Resources/AppIcon/appiconmono.svg, hand-carried into a vector drawable
+     because Resizetizer has no way to be given one: the arcs are parted around the Earth and
+     the Sun is smaller, so that nothing touches when there is no colour to tell shapes apart.
+     Android tints all of it, so the colour here only has to be opaque. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="108dp"
+        android:height="108dp"
+        android:viewportWidth="432"
+        android:viewportHeight="432">
+
+    <path android:pathData="M137.9,187.7A102,44 0 0 1 207.1,172.2"
+          android:strokeColor="#000000" android:strokeWidth="18" android:strokeLineCap="round" />
+    <path android:pathData="M224.9,172.2A102,44 0 0 1 317.6,212.2"
+          android:strokeColor="#000000" android:strokeWidth="18" android:strokeLineCap="round" />
+    <path android:pathData="M317.6,219.8A102,44 0 0 1 224.9,259.8"
+          android:strokeColor="#000000" android:strokeWidth="18" android:strokeLineCap="round" />
+    <path android:pathData="M207.1,259.8A102,44 0 0 1 137.9,244.3"
+          android:strokeColor="#000000" android:strokeWidth="18" android:strokeLineCap="round" />
+
+    <!-- The Sun -->
+    <path android:pathData="M216,186a30,30 0 1,0 0.1,0z" android:fillColor="#000000" />
+
+    <!-- The Earth: its outline, its lit half, and the axis leaning away from the Sun -->
+    <path android:pathData="M114,192.5a23.5,23.5 0 1,0 0.1,0z"
+          android:strokeColor="#000000" android:strokeWidth="7" />
+    <path android:pathData="M114,189A27,27 0 0 0 114,243Z" android:fillColor="#000000" />
+    <path android:pathData="M130.3,253.6L97.7,178.4"
+          android:strokeColor="#000000" android:strokeWidth="5" android:strokeLineCap="round" />
+</vector>
