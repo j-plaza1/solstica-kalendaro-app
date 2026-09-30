@@ -43,7 +43,12 @@ public static class Palette
         ("CardFill",     "#F3EEE3", "#24211B"),
         ("CardEdge",     "#DED5C4", "#3A352E"),
         ("CardText",     "#575044", "#C2BAAB"),
-        ("Body",         "#4A4437", "#CFC8BA")
+        ("Body",         "#4A4437", "#CFC8BA"),
+
+        // What a message lays over the page it covers, at four tenths. Dark in both halves,
+        // unlike every other pair: the ink of the dark theme is a light colour, and a layer
+        // that lightens the page does not read as one that is out of reach.
+        ("Scrim",        "#1C1A17", "#000000")
     ];
 
     /// <summary>The theme the resources were written for.</summary>

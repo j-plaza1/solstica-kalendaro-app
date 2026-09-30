@@ -46,6 +46,15 @@ public sealed class YearField
             ? year
             : null;
 
+    /// <summary>
+    /// What is typed is a year, and one this calendar does not reach: it is before the day the
+    /// reader has said the calendar begins. That is a different answer from a field holding
+    /// nothing, or holding something that is not a number.
+    /// </summary>
+    public bool IsBeforeStart =>
+        int.TryParse(_entry.Text, NumberStyles.None, CultureInfo.InvariantCulture, out int year)
+        && year < First;
+
     public void Show(int year) => _entry.Text = year.ToString(Language.Culture);
 
     public Task DismissKeyboard() => _entry.HideSoftInputAsync(CancellationToken.None);

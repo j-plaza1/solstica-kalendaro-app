@@ -295,9 +295,6 @@
   <data name="CalendarSolstica" xml:space="preserve">
     <value>Solstica</value>
   </data>
-  <data name="BeforeCalendarBegins" xml:space="preserve">
-    <value>This date is before the calendar begins, on {0}.</value>
-  </data>
   <data name="SeasonDays" xml:space="preserve">
     <value>Days in each season</value>
   </data>
@@ -383,7 +380,7 @@
     <value>It has twelve months of exactly four weeks, three transition blocks around the equinoxes and the June solstice, and one day that belongs to no day of the week to close the year (two in leap years).</value>
   </data>
   <data name="IntroWhat3" xml:space="preserve">
-    <value>Since it is a proposal, you can choose the date it begins in {0}.</value>
+    <value>Since it is a proposal, it has no fixed start date. By default the app starts it on 21 December 2026, but you can choose another in {0}. They are all days on which the December solstice falls on a Monday, so that the first day of the year is both the day of the solstice and the first day of the week.</value>
   </data>
   <data name="IntroRead1" xml:space="preserve">
     <value>Each row is a week, Monday to Sunday. The large number is the day in the Solstica calendar, and the small one the Gregorian date of the same day. The coloured strip underneath shows the season.</value>
@@ -447,5 +444,23 @@
   </data>
   <data name="DetailCalendarFestivity" xml:space="preserve">
     <value>Calendar festivity</value>
+  </data>
+  <data name="WhyTheseDates" xml:space="preserve">
+    <value>Why these dates ›</value>
+  </data>
+  <data name="TodayNotStarted" xml:space="preserve">
+    <value>Today comes before the calendar begins. It can only begin on particular dates, and it is now set to begin on {0}.</value>
+  </data>
+  <data name="DateBeforeStart" xml:space="preserve">
+    <value>You cannot go to this date because it comes before the calendar begins. It can only begin on particular dates, and it is now set to begin on {0}.</value>
+  </data>
+  <data name="YearBeforeStart" xml:space="preserve">
+    <value>You cannot go to this year because it comes before the calendar begins. It can only begin on particular dates, and it is now set to begin on {0}.</value>
+  </data>
+  <data name="YearInvalid" xml:space="preserve">
+    <value>Type a year from {0} to {1}.</value>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>More information ›</value>
   </data>
 </root>

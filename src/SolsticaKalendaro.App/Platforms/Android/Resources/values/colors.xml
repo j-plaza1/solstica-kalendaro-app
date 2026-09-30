@@ -6,4 +6,13 @@
     <color name="colorPrimary">#FAF7F0</color>
     <color name="colorPrimaryDark">#FAF7F0</color>
     <color name="colorAccent">#A8543C</color>
+
+    <!-- The paper of the date picker's dialog. -->
+    <color name="dialogPaper">#FAF7F0</color>
+
+    <!-- The date picker's header. It is the accent, and the platform writes the date on it in
+         white in both themes: the dark accent is a light colour, so white on it is 2.7:1 and
+         the deeper half of the pair is used in both, where white is 5.3:1. -->
+    <color name="datePickerHeader">#A8543C</color>
+    <color name="datePickerHeaderText">#FFFFFF</color>
 </resources>

@@ -295,9 +295,6 @@
   <data name="CalendarSolstica" xml:space="preserve">
     <value>Solsticio</value>
   </data>
-  <data name="BeforeCalendarBegins" xml:space="preserve">
-    <value>Esta fecha es anterior al comienzo del calendario, el {0}.</value>
-  </data>
   <data name="SeasonDays" xml:space="preserve">
     <value>Días de cada estación</value>
   </data>
@@ -383,7 +380,7 @@
     <value>Tiene doce meses de cuatro semanas justas, tres bloques de transición en torno a los equinoccios y al solsticio de junio, y un día que no pertenece a ningún día de la semana para cerrar el año (dos, en los años bisiestos).</value>
   </data>
   <data name="IntroWhat3" xml:space="preserve">
-    <value>Como es una propuesta, la fecha en que empieza la puedes elegir en {0}.</value>
+    <value>Como es una propuesta, no tiene fecha de inicio fijada. Por defecto, la app lo hace empezar el 21 de diciembre de 2026, pero en {0} puedes elegir otra. Todas son días en que el solsticio de diciembre cae en lunes, para que el primer día del año sea a la vez el del solsticio y el primero de la semana.</value>
   </data>
   <data name="IntroRead1" xml:space="preserve">
     <value>Cada fila es una semana, de lunes a domingo. El número grande es el día del calendario solsticio, y el pequeño, la fecha gregoriana del mismo día. La franja de color de debajo indica la estación.</value>
@@ -447,5 +444,23 @@
   </data>
   <data name="DetailCalendarFestivity" xml:space="preserve">
     <value>Fiesta del calendario</value>
+  </data>
+  <data name="WhyTheseDates" xml:space="preserve">
+    <value>Por qué estas fechas ›</value>
+  </data>
+  <data name="TodayNotStarted" xml:space="preserve">
+    <value>Hoy el calendario aún no ha empezado. Solo puede empezar en fechas concretas, y ahora está configurado para que empiece el {0}.</value>
+  </data>
+  <data name="DateBeforeStart" xml:space="preserve">
+    <value>No se puede ir a esta fecha porque es anterior al inicio del calendario. Solo puede empezar en fechas concretas, y ahora está configurado para que empiece el {0}.</value>
+  </data>
+  <data name="YearBeforeStart" xml:space="preserve">
+    <value>No se puede ir a este año porque es anterior al inicio del calendario. Solo puede empezar en fechas concretas, y ahora está configurado para que empiece el {0}.</value>
+  </data>
+  <data name="YearInvalid" xml:space="preserve">
+    <value>Escribe un año del {0} al {1}.</value>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>Más información ›</value>
   </data>
 </root>

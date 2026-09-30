@@ -321,10 +321,6 @@
   <data name="CalendarSolstica" xml:space="preserve">
     <value>Solstici</value>
   </data>
-  <data name="BeforeCalendarBegins" xml:space="preserve">
-    <value>Aquesta data és anterior al començament del calendari, el {0}.</value>
-    <comment>The answer to a Gregorian date the calendar does not reach. {0} is the day it begins.</comment>
-  </data>
   <data name="SeasonDays" xml:space="preserve">
     <value>Dies de cada estació</value>
   </data>
@@ -414,7 +410,7 @@
     <value>Té dotze mesos de quatre setmanes justes, tres blocs de transició al voltant dels equinoccis i del solstici de juny, i un dia que no pertany a cap dia de la setmana per tancar l'any (dos, els anys de traspàs).</value>
   </data>
   <data name="IntroWhat3" xml:space="preserve">
-    <value>Com que és una proposta, la data en què comença la pots triar a {0}.</value>
+    <value>Com que és una proposta, no té cap data d'inici fixada. Per defecte, l'app el fa començar el 21 de desembre de 2026, però a {0} en pots triar una altra. Totes són dies en què el solstici de desembre cau en dilluns, perquè el primer dia de l'any sigui alhora el del solstici i el primer de la setmana.</value>
     <comment>{0} is the name of the Options screen.</comment>
   </data>
   <data name="IntroRead1" xml:space="preserve">
@@ -483,5 +479,29 @@
   </data>
   <data name="DetailCalendarFestivity" xml:space="preserve">
     <value>Festa del calendari</value>
+  </data>
+  <data name="WhyTheseDates" xml:space="preserve">
+    <value>Per què aquestes dates ›</value>
+    <comment>Options, under the note about the start dates: the way to the introduction, which says why they are these.</comment>
+  </data>
+  <data name="TodayNotStarted" xml:space="preserve">
+    <value>Avui el calendari encara no ha començat. Només pot començar en dates concretes, i ara està configurat perquè comenci el {0}.</value>
+    <comment>What Today says when today is before the calendar begins. {0} is the day it begins.</comment>
+  </data>
+  <data name="DateBeforeStart" xml:space="preserve">
+    <value>No es pot anar a aquesta data perquè és anterior a l'inici del calendari. Només pot començar en dates concretes, i ara està configurat perquè comenci el {0}.</value>
+    <comment>A Gregorian date the calendar does not reach. {0} is the day it begins.</comment>
+  </data>
+  <data name="YearBeforeStart" xml:space="preserve">
+    <value>No es pot anar a aquest any perquè és anterior a l'inici del calendari. Només pot començar en dates concretes, i ara està configurat perquè comenci el {0}.</value>
+    <comment>A year before the calendar begins. {0} is the day it begins.</comment>
+  </data>
+  <data name="YearInvalid" xml:space="preserve">
+    <value>Escriu un any del {0} al {1}.</value>
+    <comment>Nothing typed, or not a year. {0} and {1} are the first and the last year there are.</comment>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>Més informació ›</value>
+    <comment>On a message, the way to the introduction.</comment>
   </data>
 </root>

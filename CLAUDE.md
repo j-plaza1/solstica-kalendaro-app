@@ -148,6 +148,16 @@ replace what it generates, naming `drawable/appiconmono.xml` — the same figure
 a vector drawable, with the arcs parted and the Sun smaller, since a themed icon is one colour
 and shapes that touch become one shape. The splash screen is the same figure on the same paper.
 
+A fourth: the **date picker's dialog**, which Android draws and MAUI only asks for.
+`Platforms/Android/Resources/values/styles.xml` names the app's own theme again with one line
+added, `android:datePickerDialogTheme`, because that attribute of the running theme is where
+`DatePickerDialog` reads its colours from; the dialog style it points at states the accent, the
+dialog's paper and the colour of Cancel and OK. Without it those two buttons inherited colours
+meant for the app's surfaces and came out white on white in the light theme and dark on dark in
+the dark one. The header is `datePickerHeader`, **the same deeper accent in both themes**,
+because the platform writes the date on it in white either way and white on the dark accent is
+2.7:1; on this one it is 5.3:1. The dark half of the rest is in `values-night`.
+
 `src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
 view, the detail of one day, the "Go to" panel — a year typed, a period chosen, or a day named
 in either calendar — Options, About, the period, and the introduction. Everything is pushed on top of the year rather than replacing
@@ -215,6 +225,18 @@ reader's choice (Saturday and Sunday by default, none allowed), as `Language` an
 Because red and shading now mean "day off", **today is an ink circle behind the number** — a day
 can be both — and the go-to mark is violet (`Mark`), not red. All of it is drawn inside the rows'
 fixed heights: 44, 58 and 66 are what `ScrollTo` by index depends on.
+
+**A button says why rather than going grey.** `MessageOverlay` lays a message over the page that
+asked for it: a scrim, a card carrying the sentence, an optional "Més informació ›" that opens
+`IntroPage` at its first screen, and a button to close it. Tapping outside it and the system's
+back button close it as well, and `Rebuild` closes it because the page underneath is about to be
+replaced. So **Today and Go are never disabled**: today before the calendar begins, a date or a
+year before it, or a year that is not one, each gets a sentence where the reader asked. A
+disabled button leaves the reader to work out why, and "the calendar has not started yet, and
+starts on this day" is not something anybody guesses — which is also why the same explanation is
+one tap further on, on the introduction's first screen, and why Options links to it from under
+the dates. `Scrim` is the one pair in `Palette` that is dark in both halves: the dark theme's ink
+is a light colour, and a layer that lightens the page does not read as one that is out of reach.
 
 It holds no calendar arithmetic of its own — every date, weekday and season it shows comes
 from `Core`. Keep it that way; a rule reimplemented in the UI is a rule that can disagree

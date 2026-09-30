@@ -31,6 +31,7 @@ public partial class OptionsPage : ContentPage
         LanguageHeading.Text = AppStrings.Language.ToUpper(Language.Culture);
         CalendarBeginsHeading.Text = AppStrings.CalendarBegins.ToUpper(Language.Culture);
         CalendarBeginsNote.Text = AppStrings.CalendarBeginsNote;
+        WhyButton.Text = AppStrings.WhyTheseDates;
         RestDaysHeading.Text = AppStrings.RestDaysHeading.ToUpper(Language.Culture);
 
         ShowLanguages();
@@ -63,6 +64,13 @@ public partial class OptionsPage : ContentPage
     public double Scroll => Scroller.ScrollY;
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
+
+    /// <summary>
+    /// The introduction, on the screen that says why the calendar can only begin on these days.
+    /// Asked for rather than met on the way in, so the last button closes it.
+    /// </summary>
+    private void OnWhyTheseDates(object? sender, EventArgs e) =>
+        Navigation.PushModalAsync(new IntroPage(firstTime: false, screen: 0));
 
     private void ShowLanguages()
     {

@@ -115,11 +115,6 @@ public partial class MainPage : ContentPage
         _firstVisibleRow = 0;
 
         (_todayRow, _highlighted) = YearView.Locate(_rows, today);
-
-        // No today to go to in a year that does not contain it.
-        bool reachable = YearOf(today) is not null;
-        TodayButton.IsEnabled = reachable;
-        TodayButton.Opacity = reachable ? 1 : 0.4;
     }
 
     /// <summary>
@@ -246,14 +241,32 @@ public partial class MainPage : ContentPage
         Rows.ScrollTo(_resumeRow, position: ScrollToPosition.Start, animate: false);
     }
 
-    /// <summary>Today is in some year, which may not be the one on screen.</summary>
+    /// <summary>
+    /// Today is in some year, which may not be the one on screen — and, before the calendar
+    /// begins, is in none of them. The button stays live either way: a button that has gone
+    /// grey leaves the reader to work out why, and "the calendar has not started yet, and
+    /// starts on this day" is not something anyone guesses.
+    /// </summary>
     private void OnTodayClicked(object? sender, EventArgs e)
     {
-        if (YearOf(Today()) is not { } year) return;
+        if (YearOf(Today()) is not { } year)
+        {
+            MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.TodayNotStarted,
+                                                    Text.LongDate(Cal.Epoch.AdoptionDate)),
+                                moreInfo: true);
+            return;
+        }
 
         if (year != _shownYear) ShowYear(year);
         GoToToday(animate: true);
     }
+
+    /// <summary>
+    /// The system's back button closes the message first: it is the topmost thing on screen,
+    /// and leaving the year view is not what closing it means.
+    /// </summary>
+    protected override bool OnBackButtonPressed() =>
+        MessageOverlay.Dismiss() || base.OnBackButtonPressed();
 
     private void GoToToday(bool animate)
     {
@@ -302,8 +315,6 @@ public partial class MainPage : ContentPage
 
         _todayRow = row;
         _highlighted = cell;
-        TodayButton.IsEnabled = true;
-        TodayButton.Opacity = 1;
     }
 
     /// <summary>

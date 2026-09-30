@@ -21,13 +21,19 @@ public partial class IntroPage : ContentPage
     /// True on the first launch, where the last button starts the app and skipping is offered.
     /// False when the introduction was asked for, where the last button simply closes it.
     /// </param>
-    public IntroPage(bool firstTime)
+    /// <param name="screen">
+    /// Which of the three to open on. A message that offers "more information" is answering a
+    /// question the first screen answers, and opening on the third would leave the reader to
+    /// find it.
+    /// </param>
+    public IntroPage(bool firstTime, int screen = 0)
     {
         _firstTime = firstTime;
 
         InitializeComponent();
 
         Screens.ItemsSource = new List<View> { WhatScreen(), ReadScreen(), NamesScreen() };
+        Screens.Position = Math.Clamp(screen, 0, Screens_ - 1);
         ShowButtons();
     }
 
