@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The date picker is drawn by Android, not by MAUI, so its colours are asked for here. Its
+     dialog reads android:datePickerDialogTheme from the theme the activity is running under,
+     which is why the app's theme is named again with that one line added to it.
+
+     Without it the dialog inherited colours meant for the app's own surfaces and its two
+     buttons came out white on white in the light theme and dark on dark in the dark one.
+     The dark half of all of this is in values-night. -->
+<resources>
+
+    <style name="Maui.MainTheme" parent="Maui.MainTheme.Base">
+        <item name="android:datePickerDialogTheme">@style/Solstica.DatePickerDialog</item>
+    </style>
+
+    <style name="Solstica.DatePickerDialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackgroundFloating">@color/dialogPaper</item>
+        <item name="android:colorBackground">@color/dialogPaper</item>
+        <item name="android:datePickerStyle">@style/Solstica.DatePicker</item>
+
+        <!-- The header's own text. It asks the theme, not the widget style, which is why it
+             is here: a colour named in a widget's style is not a theme attribute. The dark
+             theme writes it from textColorPrimary instead, which is white there too, and the
+             header is the colour it is so that white reads on it. -->
+        <item name="android:textColorPrimaryInverse">@color/datePickerHeaderText</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Solstica.DialogButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Solstica.DialogButton</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/Solstica.DialogButton</item>
+    </style>
+
+    <!-- The header the picker paints behind the chosen date. -->
+    <style name="Solstica.DatePicker" parent="android:Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/datePickerHeader</item>
+    </style>
+
+    <!-- Cancel and OK: the accent, on the dialog's own paper. -->
+    <style name="Solstica.DialogButton" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+</resources>

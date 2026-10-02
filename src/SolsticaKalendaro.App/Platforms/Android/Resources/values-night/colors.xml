@@ -5,4 +5,10 @@
     <color name="colorPrimary">#1A1815</color>
     <color name="colorPrimaryDark">#1A1815</color>
     <color name="colorAccent">#D98A6E</color>
+
+    <!-- The dialog's own paper, a shade above the dark paper so the dialog reads as a card.
+         The header is the same in both themes; see values/colors.xml. -->
+    <color name="dialogPaper">#24211B</color>
+    <color name="datePickerHeader">#A8543C</color>
+    <color name="datePickerHeaderText">#FFFFFF</color>
 </resources>

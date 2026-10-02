@@ -32,6 +32,13 @@
             <Label x:Name="CalendarBeginsNote" FontFamily="Plex" FontSize="11"
                    TextColor="{DynamicResource Muted}" Margin="0,14,0,0" />
 
+            <!-- Why they are these dates and not others, which is the introduction's first
+                 screen rather than a second copy of it here. -->
+            <Button x:Name="WhyButton" LineBreakMode="WordWrap" Clicked="OnWhyTheseDates"
+                    FontFamily="PlexMedium" FontSize="13" TextColor="{DynamicResource Accent}"
+                    BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
+                    MinimumHeightRequest="44" HorizontalOptions="Start" />
+
             <Label x:Name="RestDaysHeading" FontFamily="PlexSemiBold" FontSize="10"
                    CharacterSpacing="0.9" TextColor="{DynamicResource Faint}" Margin="0,28,0,4" />
 

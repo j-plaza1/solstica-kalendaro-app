@@ -5,9 +5,11 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="{DynamicResource Paper}">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="20,10,20,0">
+    <!-- The margin is on the rows rather than on the Grid: a message shown over this page is
+         a child of the Grid, and has to reach the edges of it. -->
+    <Grid RowDefinitions="Auto,Auto,*">
 
-        <Grid ColumnDefinitions="Auto,*">
+        <Grid ColumnDefinitions="Auto,*" Margin="20,10,20,0">
             <Button x:Name="BackButton" Clicked="OnBackClicked" Text="‹"
                     FontFamily="Plex" FontSize="18" TextColor="{DynamicResource Muted}"
                     BackgroundColor="Transparent" BorderWidth="0" Padding="0,10"
@@ -17,8 +19,8 @@
                    TextColor="{DynamicResource Ink}" VerticalOptions="Center" Margin="4,0,0,0" />
         </Grid>
 
-        <!-- Three tabs, one panel: Year and Period below, Date still to come (#16). -->
-        <Grid x:Name="Tabs" Grid.Row="1" ColumnDefinitions="*,*,*" Margin="0,16,0,0">
+        <!-- Three tabs, one panel: a year, a period, or a day named in either calendar. -->
+        <Grid x:Name="Tabs" Grid.Row="1" ColumnDefinitions="*,*,*" Margin="20,16,20,0">
             <Button x:Name="YearTab" LineBreakMode="WordWrap" Clicked="OnTabClicked" />
             <Button x:Name="PeriodTab" LineBreakMode="WordWrap" Grid.Column="1" Clicked="OnTabClicked" />
             <Button x:Name="DateTab" LineBreakMode="WordWrap" Grid.Column="2" Clicked="OnTabClicked" />
@@ -28,7 +30,7 @@
                      VerticalOptions="End" />
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="20,0,20,0">
 
             <!-- A year, typed. The range underneath is the answer to "which years are there",
                  which is otherwise only discoverable by trying one. -->
@@ -71,12 +73,6 @@
                              Solstica one does, and there is no date to pick. -->
                         <Label x:Name="NoGregorianLabel" IsVisible="False" FontFamily="Plex"
                                FontSize="17" TextColor="{DynamicResource Ink}" />
-
-                        <!-- The answer to a date the calendar does not reach: a sentence,
-                             not a refusal. -->
-                        <Label x:Name="BeforeStartLabel" IsVisible="False" FontFamily="Plex"
-                               FontSize="11.5" TextColor="{DynamicResource Muted}"
-                               Margin="0,12,0,0" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout x:Name="SolsticaSide" IsVisible="False" Spacing="0"

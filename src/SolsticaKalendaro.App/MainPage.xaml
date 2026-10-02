@@ -64,11 +64,23 @@
                 <TapGestureRecognizer Tapped="OnDismissMenu" />
             </Grid.GestureRecognizers>
 
+            <!-- Opaque, and saying so: the paper as a brush rather than as a background
+                 colour, which a Border with a shape of its own does not paint. A menu the
+                 grid shows through is a menu that cannot be read. -->
             <Border HorizontalOptions="End" VerticalOptions="Start" Margin="0,56,12,0"
                     WidthRequest="210" Padding="0,6"
-                    BackgroundColor="{DynamicResource Paper}"
-                    Stroke="{DynamicResource Rule}" StrokeThickness="1"
+                    Stroke="{DynamicResource CardEdge}" StrokeThickness="1"
                     StrokeShape="RoundRectangle 10">
+                <Border.Background>
+                    <SolidColorBrush Color="{DynamicResource Paper}" />
+                </Border.Background>
+                <Border.Shadow>
+                    <Shadow Opacity="0.3" Radius="12" Offset="0,3">
+                        <Shadow.Brush>
+                            <SolidColorBrush Color="{DynamicResource Ink}" />
+                        </Shadow.Brush>
+                    </Shadow>
+                </Border.Shadow>
                 <VerticalStackLayout>
                     <Button x:Name="OptionsItem" Clicked="OnOptionsClicked" />
                     <Button x:Name="HowToReadItem" Clicked="OnHowToReadClicked" />

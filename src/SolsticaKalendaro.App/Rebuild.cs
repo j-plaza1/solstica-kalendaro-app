@@ -17,6 +17,9 @@ public static class Rebuild
     {
         if (Application.Current is not { } app || app.Windows.Count == 0) return;
 
+        // A message belongs to the page it covers, and that page is about to be gone.
+        MessageOverlay.Dismiss();
+
         var window = app.Windows[0];
         var stack = window.Page is NavigationPage open
             ? open.Navigation.NavigationStack

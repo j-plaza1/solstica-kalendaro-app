@@ -295,9 +295,6 @@
   <data name="CalendarSolstica" xml:space="preserve">
     <value>Solstica</value>
   </data>
-  <data name="BeforeCalendarBegins" xml:space="preserve">
-    <value>Ĉi tiu dato estas antaŭ la komenciĝo de la kalendaro, la {0}.</value>
-  </data>
   <data name="SeasonDays" xml:space="preserve">
     <value>Tagoj de ĉiu sezono</value>
   </data>
@@ -376,14 +373,17 @@
   <data name="IntroTitle1" xml:space="preserve">
     <value>Kalendaro, kiu ripetiĝas ĉiujare</value>
   </data>
-  <data name="IntroWhat1" xml:space="preserve">
-    <value>Solstica Kalendaro estas propono de suna kalendaro. La jaro komenciĝas je la decembra solstico, kaj ĉiu dato ĉiujare falas en la saman tagon de la semajno: naskiĝtago, kiu hodiaŭ falas marde, ĉiam falos marde.</value>
+  <data name="IntroWhat1a" xml:space="preserve">
+    <value>Solstica Kalendaro estas propono de suna kalendaro. La propono, kreita de Javier Plaza Alonso, estas difinita en la artikolo:</value>
+  </data>
+  <data name="IntroWhat1b" xml:space="preserve">
+    <value>La jaro komenciĝas je la decembra solstico, kaj ĉiu dato ĉiujare falas en la saman tagon de la semajno: naskiĝtago, kiu hodiaŭ falas marde, ĉiam falos marde.</value>
   </data>
   <data name="IntroWhat2" xml:space="preserve">
     <value>Ĝi havas dek du monatojn de ĝuste kvar semajnoj, tri transirajn blokojn ĉirkaŭ la ekvinoksoj kaj la junia solstico, kaj unu tagon, kiu apartenas al neniu tago de la semajno, por fermi la jaron (du en superjaroj).</value>
   </data>
   <data name="IntroWhat3" xml:space="preserve">
-    <value>Ĉar ĝi estas propono, vi povas elekti la daton, kiam ĝi komenciĝas, en {0}.</value>
+    <value>Ĉar ĝi estas propono, ĝi ne havas fiksitan komencan daton. Defaŭlte la aplikaĵo komencas ĝin la 21-an de decembro 2026, sed en {0} vi povas elekti alian. Ĉiuj estas tagoj, en kiuj la decembra solstico okazas lunde, por ke la unua tago de la jaro estu samtempe la tago de la solstico kaj la unua de la semajno.</value>
   </data>
   <data name="IntroRead1" xml:space="preserve">
     <value>Ĉiu vico estas semajno, de lundo ĝis dimanĉo. La granda nombro estas la tago en la Solstica kalendaro, kaj la malgranda, la gregoria dato de la sama tago. La kolora strio sube montras la sezonon.</value>
@@ -447,5 +447,23 @@
   </data>
   <data name="DetailCalendarFestivity" xml:space="preserve">
     <value>Festo de la kalendaro</value>
+  </data>
+  <data name="WhyTheseDates" xml:space="preserve">
+    <value>Kial ĉi tiuj datoj ›</value>
+  </data>
+  <data name="TodayNotStarted" xml:space="preserve">
+    <value>Hodiaŭ la kalendaro ankoraŭ ne komenciĝis. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas agordita por komenciĝi la {0}.</value>
+  </data>
+  <data name="DateBeforeStart" xml:space="preserve">
+    <value>Oni ne povas iri al ĉi tiu dato, ĉar ĝi estas antaŭ la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas agordita por komenciĝi la {0}.</value>
+  </data>
+  <data name="YearBeforeStart" xml:space="preserve">
+    <value>Oni ne povas iri al ĉi tiu jaro, ĉar ĝi estas antaŭ la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas agordita por komenciĝi la {0}.</value>
+  </data>
+  <data name="YearInvalid" xml:space="preserve">
+    <value>Tajpu jaron de {0} ĝis {1}.</value>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>Pliaj informoj ›</value>
   </data>
 </root>

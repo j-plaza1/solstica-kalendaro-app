@@ -29,7 +29,7 @@ public partial class GoToPage : ContentPage
     /// <summary>
     /// A Gregorian date was picked from before the calendar begins. It names no Solstica day,
     /// so <see cref="_chosen"/> still holds the last one that did; what this changes is that
-    /// there is nowhere to go, and a sentence saying why.
+    /// asking to go there is answered with why, rather than with nothing happening.
     /// </summary>
     private bool _beforeStart;
 
@@ -66,7 +66,6 @@ public partial class GoToPage : ContentPage
         SolsticaButton.Text = AppStrings.CalendarSolstica;
 
         _year = new YearField(YearEntry, YearRangeLabel);
-        _year.Changed += (_, _) => ShowWhetherYearExists();
         _year.Entered += (_, _) => GoToTyped();
         _year.Show(_shownYear);
 
@@ -95,19 +94,35 @@ public partial class GoToPage : ContentPage
 
     private void OnBackClicked(object? sender, EventArgs e) => Navigation.PopAsync();
 
-    // ---------- the year ----------
+    /// <summary>The message first, and only then the panel it was shown over.</summary>
+    protected override bool OnBackButtonPressed() =>
+        MessageOverlay.Dismiss() || base.OnBackButtonPressed();
 
-    private void ShowWhetherYearExists()
-    {
-        GoButton.IsEnabled = _year.Year is not null;
-        GoButton.Opacity = GoButton.IsEnabled ? 1 : 0.4;
-    }
+    // ---------- the year ----------
 
     private void OnGoClicked(object? sender, EventArgs e) => GoToTyped();
 
     private void GoToTyped()
     {
         if (_year.Year is { } year) Go(() => _goToYear(year));
+        else SayWhyNotAYear(_year);
+    }
+
+    /// <summary>
+    /// Why what is typed is not a year to go to. A year before the calendar begins is a year
+    /// that exists and that this calendar does not reach, which is a different answer from a
+    /// field holding nothing, or holding something that is not a number at all.
+    /// </summary>
+    private void SayWhyNotAYear(YearField field)
+    {
+        if (field.IsBeforeStart)
+            MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.YearBeforeStart,
+                                                    Text.LongDate(Cal.Epoch.AdoptionDate)),
+                                moreInfo: true);
+        else
+            MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.YearInvalid,
+                                                    YearField.First, YearField.Last),
+                                moreInfo: false);
     }
 
     // ---------- the periods ----------
@@ -186,7 +201,6 @@ public partial class GoToPage : ContentPage
         ShowBlocks();
 
         _filling = false;
-        ShowWhetherDateExists();
     }
 
     /// <summary>
@@ -244,8 +258,6 @@ public partial class GoToPage : ContentPage
             ShowBlocks();
             _filling = false;
         }
-
-        ShowWhetherDateExists();
     }
 
     /// <summary>
@@ -257,11 +269,7 @@ public partial class GoToPage : ContentPage
     {
         if (_filling) return;
 
-        if (_dateYear.Year is not { } year)
-        {
-            ShowWhetherDateExists();
-            return;
-        }
+        if (_dateYear.Year is not { } year) return;
 
         var blocks = SolsticaCalendar.Blocks(year);
         var kept = blocks.FirstOrDefault(b => b.Kind == _chosen.Period);
@@ -274,8 +282,6 @@ public partial class GoToPage : ContentPage
         ShowBlocks();
         ShowGregorianOf(_chosen);
         _filling = false;
-
-        ShowWhetherDateExists();
     }
 
     private void OnBlockPicked(object? sender, EventArgs e)
@@ -289,8 +295,6 @@ public partial class GoToPage : ContentPage
         ShowBlocks();
         ShowGregorianOf(_chosen);
         _filling = false;
-
-        ShowWhetherDateExists();
     }
 
     private void OnDayPicked(object? sender, EventArgs e)
@@ -302,34 +306,35 @@ public partial class GoToPage : ContentPage
         _filling = true;
         ShowGregorianOf(_chosen);
         _filling = false;
-
-        ShowWhetherDateExists();
-    }
-
-    /// <summary>
-    /// Whether there is a day to go to. A year half-typed on the Solstica side is not one yet,
-    /// and a Gregorian date from before the calendar begins is answered with a sentence rather
-    /// than with nothing happening.
-    /// </summary>
-    private void ShowWhetherDateExists()
-    {
-        BeforeStartLabel.IsVisible = _beforeStart;
-        if (_beforeStart)
-            BeforeStartLabel.Text = string.Format(Language.Culture, AppStrings.BeforeCalendarBegins,
-                                                  Text.LongDate(Cal.Epoch.AdoptionDate));
-
-        bool reachable = !_beforeStart && _chosen.IsValid && Cal.IsInRange(_chosen.Year)
-                         && (_calendar == GregorianButton || _dateYear.Year == _chosen.Year);
-
-        DateGoButton.IsEnabled = reachable;
-        DateGoButton.Opacity = reachable ? 1 : 0.4;
     }
 
     private void OnGoDateClicked(object? sender, EventArgs e) => GoToChosen();
 
+    /// <summary>
+    /// The day the two sides are holding, or why there is not one. A Gregorian date from
+    /// before the calendar begins names no day of it, and a year half-typed on the Solstica
+    /// side is not a year yet; both are answered where the reader asked rather than by a
+    /// button that has quietly gone grey.
+    /// </summary>
     private void GoToChosen()
     {
-        if (DateGoButton.IsEnabled) Go(() => _goToDate(_chosen));
+        if (_calendar == GregorianButton)
+        {
+            if (_beforeStart)
+            {
+                MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.DateBeforeStart,
+                                                        Text.LongDate(Cal.Epoch.AdoptionDate)),
+                                    moreInfo: true);
+                return;
+            }
+        }
+        else if (_dateYear.Year != _chosen.Year)
+        {
+            SayWhyNotAYear(_dateYear);
+            return;
+        }
+
+        if (_chosen.IsValid && Cal.IsInRange(_chosen.Year)) Go(() => _goToDate(_chosen));
     }
 
     // ---------- leaving ----------
@@ -372,11 +377,8 @@ public partial class GoToPage : ContentPage
         DatePanel.IsVisible = tab == DateTab;
 
         // A keyboard left standing over a list of periods belongs to nothing on screen.
-        if (YearPanel.IsVisible) ShowWhetherYearExists();
-        else _year.LetGo();
-
-        if (DatePanel.IsVisible) ShowWhetherDateExists();
-        else _dateYear.LetGo();
+        if (!YearPanel.IsVisible) _year.LetGo();
+        if (!DatePanel.IsVisible) _dateYear.LetGo();
     }
 
     private static void Paint(Button button, bool chosen)

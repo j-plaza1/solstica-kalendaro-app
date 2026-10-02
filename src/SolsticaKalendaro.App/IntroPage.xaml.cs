@@ -21,13 +21,19 @@ public partial class IntroPage : ContentPage
     /// True on the first launch, where the last button starts the app and skipping is offered.
     /// False when the introduction was asked for, where the last button simply closes it.
     /// </param>
-    public IntroPage(bool firstTime)
+    /// <param name="screen">
+    /// Which of the three to open on. A message that offers "more information" is answering a
+    /// question the first screen answers, and opening on the third would leave the reader to
+    /// find it.
+    /// </param>
+    public IntroPage(bool firstTime, int screen = 0)
     {
         _firstTime = firstTime;
 
         InitializeComponent();
 
         Screens.ItemsSource = new List<View> { WhatScreen(), ReadScreen(), NamesScreen() };
+        Screens.Position = Math.Clamp(screen, 0, Screens_ - 1);
         ShowButtons();
     }
 
@@ -83,13 +89,50 @@ public partial class IntroPage : ContentPage
     private static View WhatScreen()
     {
         var screen = Screen(AppStrings.IntroTitle1);
-        screen.Add(Paragraph(AppStrings.IntroWhat1));
+
+        // Who proposed it and where it is written down, on the first screen rather than only
+        // on About: a reader who skips the other two screens has still been told where the
+        // calendar is defined.
+        screen.Add(Paragraph(AppStrings.IntroWhat1a));
+        screen.Add(Article());
+        screen.Add(Paragraph(AppStrings.IntroWhat1b));
+
         screen.Add(Paragraph(AppStrings.IntroWhat2));
 
         // Where to change it is a place in this app, so it is named as this app names it.
         screen.Add(Paragraph(string.Format(Language.Culture, AppStrings.IntroWhat3,
                                            AppStrings.MenuOptions)));
         return Scrollable(screen);
+    }
+
+    /// <summary>
+    /// The article itself: its own title, which is not translated, and the version of it this
+    /// app implements. It opens the version DOI, not the concept one — the document this code
+    /// was built against is the one worth reading beside it.
+    /// </summary>
+    private static View Article()
+    {
+        // A label rather than a button, which is what the app's other links are: the title is
+        // long enough to take three lines, and a button centres every one of them. A line of
+        // the page has to begin where the paragraphs above and below it begin.
+        var link = new Label
+        {
+            Text = $"{SolsticaCalendar.SpecificationTitle} "
+                   + $"(v{SolsticaCalendar.SpecificationVersion}) ›",
+            FontFamily = "PlexMedium",
+            FontSize = 13,
+            LineHeight = 1.4,
+            TextColor = Resource("Accent"),
+            Padding = new Thickness(0, 10),
+            MinimumHeightRequest = 44,
+            Margin = new Thickness(0, -4, 0, 10)
+        };
+
+        var tap = new TapGestureRecognizer();
+        tap.Tapped += (_, _) => Links.Open(SolsticaCalendar.SpecificationUrl);
+        link.GestureRecognizers.Add(tap);
+
+        return link;
     }
 
     // ---------- how to read the year ----------
