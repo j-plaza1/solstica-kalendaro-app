@@ -403,8 +403,12 @@
   <data name="IntroTitle1" xml:space="preserve">
     <value>Un calendari que es repeteix cada any</value>
   </data>
-  <data name="IntroWhat1" xml:space="preserve">
-    <value>Solstica Kalendaro és una proposta de calendari solar. L'any comença al solstici de desembre, i cada data cau cada any el mateix dia de la setmana: un aniversari que avui cau en dimarts hi caurà sempre.</value>
+  <data name="IntroWhat1a" xml:space="preserve">
+    <value>Solstica Kalendaro és una proposta de calendari solar. La proposta, creada per Javier Plaza Alonso, està definida a l'article:</value>
+    <comment>The first screen of the introduction, in two paragraphs with the article's own title and link between them.</comment>
+  </data>
+  <data name="IntroWhat1b" xml:space="preserve">
+    <value>L'any comença al solstici de desembre, i cada data cau cada any el mateix dia de la setmana: un aniversari que avui cau en dimarts hi caurà sempre.</value>
   </data>
   <data name="IntroWhat2" xml:space="preserve">
     <value>Té dotze mesos de quatre setmanes justes, tres blocs de transició al voltant dels equinoccis i del solstici de juny, i un dia que no pertany a cap dia de la setmana per tancar l'any (dos, els anys de traspàs).</value>

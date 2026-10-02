@@ -42,8 +42,12 @@ whose `N.M` disagrees with it rather than shipping an app that claims the wrong 
 
 `SolsticaCalendar.SpecificationUrl` sits beside it and holds that version's DOI — the version
 one, not the concept one, because an app that names the document it implements has to point at
-that document and not at whichever is newest. The two constants change in the same commit; the
-period screen prints both, so a raised version with a stale link says so on screen.
+that document and not at whichever is newest. `SpecificationTitle` is the third of them: what
+the document is called, untranslated, because that is the name it is published and looked up
+under. **The three are one fact about one document and change in the same commit.** The period
+screen, About and the introduction's first screen all print some of them — the version beside
+the link, the title as the link itself — so a raised version with a stale link or a stale title
+says so on screen.
 
 - `ApplicationDisplayVersion` is `N.M.O.P`. `ApplicationVersion` is
   `N*1000000 + M*10000 + O*100 + P`, so no component may exceed 99; the workflow rejects one
@@ -168,7 +172,10 @@ scrolling, the day detail and Today; it goes whenever `ShowYear` builds the rows
 `ChoiceRow` draws one line of a list to choose from and `YearField` a year typed into one, and
 both are shared, so the second list — or field — a reader meets reads like the first.
 `IntroPage` is the way in for a reader who has not read the proposal: what the calendar is, how
-to read the year, and what the names mean. It is pushed **modally** over the year view on the
+to read the year, and what the names mean. Its first screen names the author and carries the
+article itself — `SpecificationTitle`, the version, and the link — between the two halves of
+its opening paragraph, so a reader who skips the other two screens has still been told where
+the calendar is defined. It is pushed **modally** over the year view on the
 first launch only — `Introduction.Seen`, a preference that skipping, finishing and the system's
 back button all set — and afterwards it is there to be asked for, from "How to read it" on the
 menu and from About. A page rebuilt for a change of language or of start is not a first launch

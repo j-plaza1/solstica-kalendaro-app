@@ -373,8 +373,11 @@
   <data name="IntroTitle1" xml:space="preserve">
     <value>Kalendaro, kiu ripetiĝas ĉiujare</value>
   </data>
-  <data name="IntroWhat1" xml:space="preserve">
-    <value>Solstica Kalendaro estas propono de suna kalendaro. La jaro komenciĝas je la decembra solstico, kaj ĉiu dato ĉiujare falas en la saman tagon de la semajno: naskiĝtago, kiu hodiaŭ falas marde, ĉiam falos marde.</value>
+  <data name="IntroWhat1a" xml:space="preserve">
+    <value>Solstica Kalendaro estas propono de suna kalendaro. La propono, kreita de Javier Plaza Alonso, estas difinita en la artikolo:</value>
+  </data>
+  <data name="IntroWhat1b" xml:space="preserve">
+    <value>La jaro komenciĝas je la decembra solstico, kaj ĉiu dato ĉiujare falas en la saman tagon de la semajno: naskiĝtago, kiu hodiaŭ falas marde, ĉiam falos marde.</value>
   </data>
   <data name="IntroWhat2" xml:space="preserve">
     <value>Ĝi havas dek du monatojn de ĝuste kvar semajnoj, tri transirajn blokojn ĉirkaŭ la ekvinoksoj kaj la junia solstico, kaj unu tagon, kiu apartenas al neniu tago de la semajno, por fermi la jaron (du en superjaroj).</value>

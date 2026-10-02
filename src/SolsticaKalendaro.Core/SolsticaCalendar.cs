@@ -32,6 +32,16 @@ public sealed class SolsticaCalendar(SolsticaEpoch epoch)
     /// </summary>
     public const string SpecificationUrl = "https://doi.org/10.5281/zenodo.22755480";
 
+    /// <summary>
+    /// What that document is called. Not translated: it is the title the article is published
+    /// under, and a reader looking it up needs the name it is filed by. The three of these —
+    /// the version, the link and the title — are one fact about one document, and they change
+    /// together or they disagree.
+    /// </summary>
+    public const string SpecificationTitle =
+        "Solstica Kalendaro: A proposal for a regular, solstice-anchored calendar faithful to "
+        + "the real lengths of the seasons";
+
     public SolsticaEpoch Epoch { get; } = epoch;
 
     public static bool IsLeapYear(int year) =>

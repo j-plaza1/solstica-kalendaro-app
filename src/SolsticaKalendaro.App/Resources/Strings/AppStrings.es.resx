@@ -373,8 +373,11 @@
   <data name="IntroTitle1" xml:space="preserve">
     <value>Un calendario que se repite cada año</value>
   </data>
-  <data name="IntroWhat1" xml:space="preserve">
-    <value>Solstica Kalendaro es una propuesta de calendario solar. El año empieza en el solsticio de diciembre, y cada fecha cae cada año en el mismo día de la semana: un cumpleaños que hoy cae en martes caerá siempre en martes.</value>
+  <data name="IntroWhat1a" xml:space="preserve">
+    <value>Solstica Kalendaro es una propuesta de calendario solar. La propuesta, creada por Javier Plaza Alonso, está definida en el artículo:</value>
+  </data>
+  <data name="IntroWhat1b" xml:space="preserve">
+    <value>El año empieza en el solsticio de diciembre, y cada fecha cae cada año en el mismo día de la semana: un cumpleaños que hoy cae en martes caerá siempre en martes.</value>
   </data>
   <data name="IntroWhat2" xml:space="preserve">
     <value>Tiene doce meses de cuatro semanas justas, tres bloques de transición en torno a los equinoccios y al solsticio de junio, y un día que no pertenece a ningún día de la semana para cerrar el año (dos, en los años bisiestos).</value>

@@ -373,8 +373,11 @@
   <data name="IntroTitle1" xml:space="preserve">
     <value>A calendar that repeats every year</value>
   </data>
-  <data name="IntroWhat1" xml:space="preserve">
-    <value>Solstica Kalendaro is a proposed solar calendar. The year begins at the December solstice, and every date falls on the same day of the week every year: a birthday that falls on a Tuesday today always will.</value>
+  <data name="IntroWhat1a" xml:space="preserve">
+    <value>Solstica Kalendaro is a proposed solar calendar. The proposal, by Javier Plaza Alonso, is set out in the article:</value>
+  </data>
+  <data name="IntroWhat1b" xml:space="preserve">
+    <value>The year begins at the December solstice, and every date falls on the same day of the week every year: a birthday that falls on a Tuesday today always will.</value>
   </data>
   <data name="IntroWhat2" xml:space="preserve">
     <value>It has twelve months of exactly four weeks, three transition blocks around the equinoxes and the June solstice, and one day that belongs to no day of the week to close the year (two in leap years).</value>
