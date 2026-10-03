@@ -85,6 +85,18 @@ has come overall.
 Raising `SpecificationVersion` is part of the change that brings the code in line with a
 revised document, not a separate step afterwards.
 
+**One publish, two packages.** `release.yml` builds an APK and an Android App Bundle in the
+same `dotnet publish` (`AndroidPackageFormats=aab%3Bapk`, the `;` escaped so neither the shell
+nor MSBuild's item syntax splits it), so the two cannot drift apart in version, internal
+version number or key. The APK goes to the draft release, as before; **the AAB does not** —
+it is not installable, and a file on a release page is one somebody will try to install. It is
+kept as an artifact of the run, `solstica-kalendaro-aab-<display>`, and uploaded to Play
+Console by hand; a rehearsal's is named `…-assaig` so that it cannot be mistaken for one.
+Both packages' certificate is read — `apksigner` for the APK, `keytool -printcert -jarfile`
+for the bundle, because `apksigner` does not read a bundle — and compared against
+`EXPECTED_SHA256`, which is the fingerprint the README publishes. Either one disagreeing ends
+the run.
+
 ## The app's words assume a reader who has not read the document
 
 Someone using the app has not read the proposal and should not have to. Every string in the

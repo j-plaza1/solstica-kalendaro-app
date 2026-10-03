@@ -78,8 +78,22 @@ AC:76:EF:7E:5A:6E:65:D3:5C:32:28:41:19:DE:58:91:71:5C:33:F1:35:D8:80:8B:BB:D5:5A
 ```
 
 The two are the same 32 bytes written two ways; which one you see depends on the tool. The
-release workflow prints the first in its *Verify the signature* step, so every build can be
-checked against what is written here.
+release workflow prints both packages' fingerprint in its *Verify the signatures* step, and
+compares each of them against the one written here: a build signed with another key fails
+there rather than being published.
+
+### The bundle for Google Play
+
+The same publish produces a second package, an **Android App Bundle** (`.aab`). Play accepts
+nothing else, and building it beside the APK keeps the two one version, one internal version
+number and one signing key.
+
+It is not attached to the release. An AAB is not installable — it is what Google Play builds
+the installable APKs from — so a file sitting beside the APK on a release page would only be
+downloaded by someone who then could not install it. Instead each tag run keeps it as an
+artifact of the run itself, `solstica-kalendaro-aab-N.M.O.P`, and it is uploaded to Play
+Console by hand from there. A rehearsal run keeps one too, named `…-assaig`, which is how to
+tell at a glance that it is not the one to upload.
 
 ## What the version numbers mean
 
