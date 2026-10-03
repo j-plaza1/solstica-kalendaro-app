@@ -15,6 +15,12 @@ jobs:
     name: Signed Android package
     runs-on: ubuntu-latest
 
+    # The signing certificate, as the README publishes it. Both packages are measured
+    # against this one value, so a run signed with another key fails here rather than
+    # shipping something nobody can verify.
+    env:
+      EXPECTED_SHA256: ac76ef7e5a6e65d35c32284119de5891715c33f135d8808bbbd55a4a34f63476
+
     steps:
       - uses: actions/checkout@v4
 
@@ -94,7 +100,7 @@ jobs:
       #
       # One password for both store and key: the keystore is PKCS12, where they are the same.
       # A keystore with a separate key password would need a secret of its own here.
-      - name: Publish a signed APK
+      - name: Publish the signed packages
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: >
@@ -104,33 +110,88 @@ jobs:
           --framework net10.0-android
           -p:ApplicationDisplayVersion=${{ steps.version.outputs.display }}
           -p:ApplicationVersion=${{ steps.version.outputs.code }}
-          -p:AndroidPackageFormat=apk
+          -p:AndroidPackageFormats=aab%3Bapk
           -p:AndroidKeyStore=true
           -p:AndroidSigningKeyStore=$RUNNER_TEMP/release.keystore
           -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
           -p:AndroidSigningStorePass=env:ANDROID_KEYSTORE_PASSWORD
           -p:AndroidSigningKeyPass=env:ANDROID_KEYSTORE_PASSWORD
 
-      - name: Name the package after its version
+      - name: Name the packages after their version
         id: package
         run: |
           set -euo pipefail
-          built=$(find src/SolsticaKalendaro.App/bin/Release/net10.0-android/publish -name '*-Signed.apk' | head -1)
-          [ -n "$built" ] || { echo "No signed APK was produced."; exit 1; }
 
-          asset="$RUNNER_TEMP/solstica-kalendaro-${{ steps.version.outputs.display }}.apk"
-          cp "$built" "$asset"
-          echo "path=$asset" >> "$GITHUB_OUTPUT"
-          ls -l "$asset"
+          # The publish folder first, which is where both land, and the rest of the build
+          # output as a fallback, so a change in where the SDK puts them is not a silent miss.
+          # -print -quit rather than a pipe into head: find stops at the first match itself,
+          # so there is no half-read pipe for pipefail to turn into a failed step.
+          locate() {
+            local hit
+            hit=$(find src/SolsticaKalendaro.App/bin/Release/net10.0-android/publish \
+                       -name "*-Signed.$1" -print -quit 2>/dev/null)
+            [ -n "$hit" ] || hit=$(find src/SolsticaKalendaro.App/bin/Release/net10.0-android \
+                                        -name "*-Signed.$1" -print -quit)
+            printf '%s' "$hit"
+          }
 
-      # Printed so that anyone can check an APK they downloaded against the fingerprint in
-      # the README, and so that a key swap would be visible here rather than silent.
-      - name: Verify the signature
+          name() {        # $1 the extension, $2 the output to write the path to
+            local built asset
+            built=$(locate "$1")
+            [ -n "$built" ] || {
+              echo "::error::No signed .$1 was produced by the publish."
+              exit 1
+            }
+
+            asset="$RUNNER_TEMP/solstica-kalendaro-${{ steps.version.outputs.display }}.$1"
+            cp "$built" "$asset"
+            echo "$2=$asset" >> "$GITHUB_OUTPUT"
+            ls -l "$asset"
+          }
+
+          name apk path
+          name aab bundle
+
+      # Printed so that anyone can check a package they downloaded against the fingerprint
+      # in the README, and compared here so that a key swap ends the run rather than shipping
+      # quietly. Both packages carry the same certificate and both are checked: one of the two
+      # being signed with something else is exactly the accident worth catching.
+      - name: Verify the signatures
         run: |
           set -euo pipefail
+
+          # One spelling for every fingerprint: lower case, no colons. apksigner prints it
+          # that way already; keytool prints upper case with colons.
+          plain() { printf '%s' "$1" | tr -d ':' | tr 'A-Z' 'a-z'; }
+
+          expected=$(plain "$EXPECTED_SHA256")
+
+          agrees() {      # $1 what was checked, $2 the fingerprint as the tool printed it
+            local got
+            got=$(plain "$2")
+            [ -n "$got" ] || { echo "::error::No certificate was found in the $1."; exit 1; }
+
+            if [ "$got" != "$expected" ]; then
+              echo "::error::The $1 is signed with another key than the one the README names."
+              echo "::error::expected $expected"
+              echo "::error::got      $got"
+              exit 1
+            fi
+          }
+
           apksigner=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
-          "$apksigner" verify --print-certs "${{ steps.package.outputs.path }}" > certs.txt
-          grep -E 'certificate DN:|certificate SHA-256 digest:' certs.txt
+          "$apksigner" verify --print-certs "${{ steps.package.outputs.path }}" > apk-certs.txt
+          grep -E 'certificate DN:|certificate SHA-256 digest:' apk-certs.txt
+
+          # apksigner does not read a bundle — an AAB is not an APK — but a bundle is a signed
+          # jar, which keytool does read.
+          keytool -printcert -jarfile "${{ steps.package.outputs.bundle }}" > aab-certs.txt
+          grep -E '^Owner:|SHA256:' aab-certs.txt
+
+          agrees "APK" "$(sed -n 's/.*certificate SHA-256 digest: *//p' apk-certs.txt | head -1)"
+          agrees "AAB" "$(sed -n 's/.*SHA256: *//p' aab-certs.txt | head -1)"
+
+          echo "Both packages carry the certificate the README names."
 
       - name: Remove the signing key
         if: always()
@@ -145,6 +206,29 @@ jobs:
           name: solstica-kalendaro-apk
           path: ${{ steps.package.outputs.path }}
           if-no-files-found: error
+
+      # The bundle of a rehearsal is a rehearsal too, and its name says so: nothing with
+      # "assaig" in it belongs in Play Console.
+      - name: Keep the rehearsal bundle
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: solstica-kalendaro-aab-${{ steps.version.outputs.display }}-assaig
+          path: ${{ steps.package.outputs.bundle }}
+          if-no-files-found: error
+          retention-days: 90
+
+      # The bundle is what Google Play takes, and it is kept here rather than attached to the
+      # release: an AAB on a release page is something a reader would download and fail to
+      # install. It goes to Play Console by hand, from this run.
+      - name: Keep the bundle for Google Play
+        if: github.ref_type == 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: solstica-kalendaro-aab-${{ steps.version.outputs.display }}
+          path: ${{ steps.package.outputs.bundle }}
+          if-no-files-found: error
+          retention-days: 90
 
       # Draft, never published: the tag says a version is ready, a person says it is out.
       - name: Draft the release
@@ -161,6 +245,7 @@ jobs:
             flags+=(--prerelease)
           fi
 
+          # The APK alone: the bundle is an artifact of this run, not a download.
           gh release create "$GITHUB_REF_NAME" "${{ steps.package.outputs.path }}" \
             "${flags[@]}" \
             --title "Solstica Kalendaro ${{ steps.version.outputs.display }}" \
