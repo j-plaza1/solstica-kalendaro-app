@@ -19,7 +19,9 @@ jobs:
     # against this one value, so a run signed with another key fails here rather than
     # shipping something nobody can verify.
     env:
-      EXPECTED_SHA256: ac76ef7e5a6e65d35c32284119de5891715c33f135d8808bbbd55a4a34f63476
+      # Quoted: a fingerprint is a string, and one that happened to be all digits would be
+      # read as a number and arrive here as something else entirely.
+      EXPECTED_SHA256: "ac76ef7e5a6e65d35c32284119de5891715c33f135d8808bbbd55a4a34f63476"
 
     steps:
       - uses: actions/checkout@v4
