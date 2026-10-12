@@ -95,6 +95,13 @@ artifact of the run itself, `solstica-kalendaro-aab-N.M.O.P`, and it is uploaded
 Console by hand from there. A rehearsal run keeps one too, named `…-assaig`, which is how to
 tell at a glance that it is not the one to upload.
 
+## Privacy
+
+The app collects no data: it makes no network requests of its own, and the only thing it
+keeps — the language, when the calendar starts, the rest days and whether the introduction
+has been seen — stays on the device. [PRIVACY.md](PRIVACY.md) says so in full, and is the
+policy the Google Play listing points at.
+
 ## What the version numbers mean
 
 A release is `N.M.O.P`. The first half is the version of the proposal document the app
