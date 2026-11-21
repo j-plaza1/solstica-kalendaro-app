@@ -1,16 +1,27 @@
 cff-version: 1.2.0
 title: Solstica Kalendaro
 message: >-
-  If you use this software, please cite the proposal document it implements.
+  If you use this software, please cite it using the metadata from this file.
+  To cite the calendar proposal itself, cite the document listed under
+  references.
 type: software
 authors:
   - family-names: Plaza Alonso
     given-names: Javier
     orcid: https://orcid.org/0009-0009-3908-3759
+repository-code: https://github.com/j-plaza1/solstica-kalendaro-app
 abstract: >-
   Android application showing the Gregorian calendar and the Solstica Kalendaro
   side by side, with a bidirectional date converter and the seasonal structure
-  of the proposed calendar.
+  of the proposed calendar. It is an interactive view of the foundations set
+  out in the proposal document listed under references.
+keywords:
+  - calendar
+  - calendar reform
+  - solar calendar
+  - solstice
+  - .NET MAUI
+  - Android
 license: MIT
 references:
   - type: report
