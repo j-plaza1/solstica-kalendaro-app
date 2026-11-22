@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Requires the .NET 10 SDK. `Directory.Build.props` sets `TreatWarningsAsErrors` and
+Requires the .NET 11 SDK. `Directory.Build.props` sets `TreatWarningsAsErrors` and
 `EnforceCodeStyleInBuild` for every project, so a style violation fails the build.
 
 ```bash
 dotnet test tests/SolsticaKalendaro.Core.Tests     # core library + test suite
 dotnet test tests/SolsticaKalendaro.Core.Tests --filter FullyQualifiedName~EveryDayRoundTrips
-dotnet build src/SolsticaKalendaro.App -f net10.0-android -t:Run   # deploy to a device
+dotnet build src/SolsticaKalendaro.App -f net11.0-android -t:Run   # deploy to a device
 ```
 
 Scope build and test commands to a project rather than the solution: a bare
@@ -20,6 +20,19 @@ Android SDK. CI does the same, for the same reason.
 **The Android build fails under a non-ASCII path** with `APT2265` — `aapt2` rejects
 accents and emoji anywhere in the path, and the error names resources, not the path.
 The core library and tests are unaffected.
+
+**The app runs on Android 7.0 (API 24) and upwards, which is .NET 11's floor rather than a
+choice of ours.** CoreCLR is the only runtime .NET 11 gives a MAUI Android app, and it needs
+API 24; `SupportedOSPlatformVersion` says `24.0` and the manifest names no `minSdkVersion` of
+its own, so that one is what the package carries. A device on Android 5 or 6 keeps v2.1.1.0,
+the last release built on .NET 10, and the README says so where it says how to install.
+
+**A Release publish compiles ReadyToRun, and its runtime packs come from the restore.**
+`PublishReadyToRun` is on by default for a Release Android build on CoreCLR, so a plain
+`dotnet restore` followed by `dotnet publish --no-restore` ends in `NETSDK1094`: the publish
+asking to be restored again. `release.yml` tells its restore step the same thing,
+`-p:PublishReadyToRun=true`. A `dotnet build` compiles no ReadyToRun images and needs none of
+this, which is why CI's Android job is untouched by it.
 
 CI (`.github/workflows/ci.yml`) runs on push to `main` and on PRs, in two jobs: one restores,
 builds and tests the core in Release, scoped to the test project; the other installs the
@@ -273,7 +286,7 @@ Catalan, which is the whole of the app's own logic: which Gregorian month to rep
 call a block, how to say "demà". The core writes no sentences, so all of that belongs here.
 
 Its csproj blanks the `TargetFramework` inherited from `Directory.Build.props`, which would
-otherwise win over `TargetFrameworks` and silently build it as plain `net10.0`.
+otherwise win over `TargetFrameworks` and silently build it as plain `net11.0`.
 
 The conversion is built in four layers, each answering one question:
 

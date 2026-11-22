@@ -50,7 +50,8 @@ The app is on Google Play:
 That is the way to install it, because it then updates itself.
 
 Each release also carries the APK, for anyone who would rather not use Google Play. It needs
-Android 5.0 or newer.
+Android 7.0 or newer. Up to 2.1.1.0 it ran on Android 5.0; from 2.1.1.1 the app is built with
+.NET 11, whose runtime begins at Android 7.0, and a device on 5.x or 6.x keeps 2.1.1.0.
 
 1. Open [Releases](https://github.com/j-plaza1/solstica-kalendaro-app/releases) and
    download `solstica-kalendaro-N.M.O.P.apk`.
@@ -222,7 +223,7 @@ was. It is the only such change in the whole tabulated window.
 
 ## Getting started
 
-Requires the .NET 10 SDK.
+Requires the .NET 11 SDK.
 
 ```bash
 dotnet test tests/SolsticaKalendaro.Core.Tests    # the core library and its test suite
@@ -232,7 +233,7 @@ The app targets Android only for now, and needs the MAUI Android workload:
 
 ```bash
 dotnet workload install maui-android
-dotnet build src/SolsticaKalendaro.App -f net10.0-android -t:Run   # deploy to a running device
+dotnet build src/SolsticaKalendaro.App -f net11.0-android -t:Run   # deploy to a running device
 ```
 
 **Clone to a path with no non-ASCII characters.** Android's `aapt2` refuses to compile
