@@ -26,10 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 21, not 17: .NET 11's Android workload asks for a JDK between 21 and 25, and
+      # refuses to build under an older one.
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
 
       - uses: actions/setup-dotnet@v4
         with:
