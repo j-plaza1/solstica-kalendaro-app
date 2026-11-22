@@ -175,6 +175,14 @@ the dark one. The header is `datePickerHeader`, **the same deeper accent in both
 because the platform writes the date on it in white either way and white on the dark accent is
 2.7:1; on this one it is 5.3:1. The dark half of the rest is in `values-night`.
 
+**The manifest declares no permissions.** The app makes no network connections: a tapped link
+goes to the browser through `Launcher.OpenAsync`, which needs none. The one permission in the
+merged Release manifest, `<package>.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, is declared by
+`androidx.core` for the receivers it registers at runtime — signature-level and internal to the
+app — and stays. **Adding one is a decision, not an implementation detail**, `INTERNET` above
+all: it is discussed and decided first, and it means `PRIVACY.md` changes in the same commit and
+Play's Data safety form before the release.
+
 `src/SolsticaKalendaro.App` is the Android app, all of it under one `NavigationPage`: the year
 view, the detail of one day, the "Go to" panel — a year typed, a period chosen, or a day named
 in either calendar — Options, About, the period, and the introduction. Everything is pushed on top of the year rather than replacing
