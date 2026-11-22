@@ -5,12 +5,12 @@
     all of them but the app. A multi-targeting project cannot simply declare
     TargetFrameworks and expect it to take effect: MSBuild honours the singular
     property when it is set, and the plural one is then ignored, so the project
-    builds as plain net10.0 with no error and no warning. Such a project must blank
+    builds as plain net11.0 with no error and no warning. Such a project must blank
     it in its own csproj: <TargetFramework></TargetFramework>. See
     src/SolsticaKalendaro.App/SolsticaKalendaro.App.csproj.
   -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
