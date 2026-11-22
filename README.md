@@ -168,6 +168,8 @@ src/SolsticaKalendaro.App         the Android app: .NET MAUI, year view, day det
                                   period, options, about and the introduction
 tests/SolsticaKalendaro.Core.Tests
 tools/ReleaseVersion               what version a release run is building
+tools/r8-coverage.py               how much of the DEX code R8 covered, and whether
+                                   that clears Google Play's threshold
 ```
 
 `SolsticaKalendaro.Core` is deliberately free of any MAUI reference. It is the executable
@@ -240,6 +242,13 @@ dotnet build src/SolsticaKalendaro.App -f net11.0-android -t:Run   # deploy to a
 resources under one and fails with `APT2265`, which reads as a resource error rather than
 a path error. Accents, emoji and the like in any parent folder are enough. The core
 library and its tests do not care; only the Android build does.
+
+**A Release build runs R8** over the Java side, shrinking it and renaming the members that
+are not reachable from outside their own class or package. That is what makes the shipped
+package small enough and obfuscated enough for Google Play: the DEX goes from 16.8 to
+4.9 MiB and the APK from 27.3 to 23.2, at the cost of a slower Release build.
+A Debug build is untouched. CI reads R8's own account of what it covered and fails if any
+of the three figures Play asks about falls below 25 %.
 
 ## Typefaces
 

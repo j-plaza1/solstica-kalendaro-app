@@ -53,6 +53,29 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 	</PropertyGroup>
 
+	<!-- Java shrinking and obfuscation: Release, Android. From February 2027 Google Play
+	     requires a bundle's DEX code to be at least 25 % optimized, 25 % shrunk and 25 %
+	     obfuscated, and reports a missing deobfuscation file for a build that was never
+	     obfuscated. Without AndroidLinkTool the SDK runs D8 alone — no shrinking, no renaming,
+	     no mapping file. AndroidLinkTool=r8 is the only property that turns R8 on; EnableR8
+	     and AndroidLinkMode=r8 do not.
+
+	     private-members renames the Java members R8 can prove are reachable only from inside
+	     their own class or package, and leaves class names and public and protected members
+	     alone. That is what JNI needs: .NET Android binds Java by name at run time, and a
+	     renamed public class or member is one the binding can no longer find. A stronger mode
+	     would rename exactly those. It is .NET 11's default once R8 is on, and it is written
+	     here anyway — the app's correctness rests on it rather than on a default, and this
+	     default has already changed once, the SDK having forced -dontobfuscate before.
+
+	     Debug is untouched and still builds with D8: an edit-and-run cycle should not pay for
+	     a pass whose only purpose is the shipped package. Trimming, which is the .NET side of
+	     the same idea, is unaffected and stays on. -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<AndroidLinkTool>r8</AndroidLinkTool>
+		<AndroidR8ObfuscationMode>private-members</AndroidR8ObfuscationMode>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<!-- The dark paper behind the figure, and the figure at its own size: its coordinates

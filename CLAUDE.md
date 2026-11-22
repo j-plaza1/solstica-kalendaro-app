@@ -111,6 +111,49 @@ for the bundle, because `apksigner` does not read a bundle — and compared agai
 Google Play's — Play re-signs what it distributes, so only the project's applies here.
 Either one disagreeing ends the run.
 
+**A Release build runs R8, and Debug does not.** `AndroidLinkTool=r8` in the app's csproj
+is what turns it on; `EnableR8` and `AndroidLinkMode=r8` are not properties that do,
+whatever they look like. Without it the SDK runs D8 alone: no Java shrinking, no renaming
+and no mapping file. It is set for Release and Android only, because its only purpose is
+the shipped package and an edit-and-run cycle should not pay for it; trimming, which is the
+.NET side of the same idea, is unaffected.
+
+`AndroidR8ObfuscationMode` is `private-members`, which renames the Java members R8 can
+prove are reachable only from inside their own class or package and leaves class names and
+public and protected members alone. **That is what JNI needs**: .NET Android binds Java by
+name at run time, and a renamed public class or member is one the binding can no longer
+find. A stronger mode would rename exactly those. It is .NET 11's default once R8 is on,
+and it is written down anyway — the app's correctness rests on it rather than on a default,
+and this default has changed once already, the SDK having forced `-dontobfuscate` before.
+
+It needs the **37.x Android SDK of .NET 11** (`Microsoft.Android.Sdk`, 37.2.29 at the time
+of writing, which `dotnet workload list` prints as the `android` manifest version). Before
+it, the SDK passed `-dontobfuscate` to R8 whatever was asked of it, so nothing was renamed
+and Play's figure stayed at 1 %.
+
+**Google Play asks for 25 %.** From February 2027 a bundle's DEX code must be at least 25 %
+optimized, 25 % shrunk and 25 % obfuscated, and a build that was never obfuscated is also
+reported as missing a deobfuscation file. R8 writes what it achieved into `r8.json`:
+`tools/r8-coverage.py` is the one statement of the rule and reads either copy of that file.
+**R8 reports the share it did *not* do**, so each figure is a complement — 25 % done is at
+most 75 % left — which is the easiest thing to get backwards. CI runs it in the Android job,
+on `obj/Release/net11.0-android/r8.json`, which a plain `dotnet build` writes, so every pull
+request sees the figures; `release.yml` runs it again on the bundle it is about to keep,
+beside the signature check, because that is the file Play will read.
+
+**The deobfuscation map goes to Play inside the bundle** — the publish puts it at
+`BUNDLE-METADATA/com.android.tools.build.obfuscation/proguard.map`, and the R8 metadata at
+`BUNDLE-METADATA/com.android.tools/r8.json`. Neither is uploaded by hand and neither is
+attached to the GitHub release; `release.yml` checks the map is there, because a bundle that
+reached Play without one is a crash report nobody can read. A copy of the map is left in the
+publish folder as `mapping.txt`, which is where to look when reading a local stack trace.
+
+**Any keep rule carries the error it prevents.** The app needs none today: the whole of it
+was walked on API 24 and on API 37 with nothing in the logcat. If one becomes necessary it
+goes in a `proguard.cfg` named by `ProguardConfiguration`, one rule at a time, each with a
+comment naming the `NoSuchFieldError`, `NoSuchMethodError` or `ClassNotFoundException` it
+answers — a rule whose reason is not written down is one nobody can ever remove.
+
 ## The app's words assume a reader who has not read the document
 
 Someone using the app has not read the proposal and should not have to. Every string in the
