@@ -43,8 +43,14 @@ the same physical day after the first *Jarfino*. The app shows both and labels t
 
 ## Installing it
 
-The app is not on any store, so each release carries the APK itself. It needs Android 5.0
-or newer.
+The app is on Google Play:
+
+> <https://play.google.com/store/apps/details?id=io.github.j_plaza1.solsticakalendaro>
+
+That is the way to install it, because it then updates itself.
+
+Each release also carries the APK, for anyone who would rather not use Google Play. It needs
+Android 5.0 or newer.
 
 1. Open [Releases](https://github.com/j-plaza1/solstica-kalendaro-app/releases) and
    download `solstica-kalendaro-N.M.O.P.apk`.
@@ -53,12 +59,18 @@ or newer.
    whether you trust the source, not a sign that something is wrong — but it is worth
    turning the permission back off afterwards.
 
-The app installs as `io.github.j_plaza1.solsticakalendaro`.
+The app installs as `io.github.j_plaza1.solsticakalendaro` either way.
+
+**The two routes are signed with different keys.** Google Play signs with a key Google
+manages; the APK on GitHub is signed with the project's own. Android lets neither update the
+other, so moving from one route to the other means uninstalling the app first — and that loses
+the settings: the language, when the calendar begins and the rest days. Choose one of the two
+and stay with it.
 
 ### Checking what you downloaded
 
-Every release is signed with the same key, which is why Android will refuse an "update"
-signed by anybody else. To check a file before installing it:
+Every release on GitHub is signed with the same key, which is why Android will refuse an
+"update" signed by anybody else. To check a file before installing it:
 
 ```bash
 apksigner verify --print-certs solstica-kalendaro-N.M.O.P.apk
@@ -82,6 +94,13 @@ release workflow prints both packages' fingerprint in its *Verify the signatures
 compares each of them against the one written here: a build signed with another key fails
 there rather than being published.
 
+That fingerprint belongs to the APK published here. The copy installed from Google Play is
+signed with Google's key, and its SHA-256 fingerprint is a different one:
+
+```
+8A:9D:D8:3A:DE:D8:5A:55:73:42:92:44:09:DD:1A:91:AB:F3:CA:88:BD:64:E9:A7:63:26:B6:94:AE:52:A7:B0
+```
+
 ### The bundle for Google Play
 
 The same publish produces a second package, an **Android App Bundle** (`.aab`). Play accepts
@@ -94,6 +113,11 @@ downloaded by someone who then could not install it. Instead each tag run keeps 
 artifact of the run itself, `solstica-kalendaro-aab-N.M.O.P`, and it is uploaded to Play
 Console by hand from there. A rehearsal run keeps one too, named `…-assaig`, which is how to
 tell at a glance that it is not the one to upload.
+
+The bundle is uploaded signed with the project's key, like the APK, but Google Play signs the
+packages it builds from it with its own key before distributing them. That is why the two
+routes above are not interchangeable: what Play installs carries Google's signature, and what
+GitHub offers carries the project's.
 
 ## Privacy
 
