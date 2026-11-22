@@ -118,3 +118,16 @@ jobs:
           --no-restore
           --configuration Release
           -p:AndroidKeyStore=false
+
+      # Google Play's threshold for DEX code, read on every pull request rather than for
+      # the first time while publishing. R8 writes what it achieved beside the DEX, and
+      # the build above writes that file whether or not it packages a bundle, so the
+      # figures are here already. The rule itself is in the script, which the release runs
+      # too, on the bundle it is about to hand to Play.
+      - name: R8 covered enough of the DEX code
+        run: |
+          set -euo pipefail
+          metadata=src/SolsticaKalendaro.App/obj/Release/net11.0-android/r8.json
+          cat "$metadata" || true
+          echo
+          python3 tools/r8-coverage.py "$metadata"

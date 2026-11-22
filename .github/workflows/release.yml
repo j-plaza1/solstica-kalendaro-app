@@ -201,6 +201,48 @@ jobs:
 
           echo "Both packages carry the certificate the README names."
 
+      # What Play will read, read here first: the bundle carries R8's own account of how
+      # much of the DEX code it covered, and from February 2027 Play asks for at least
+      # 25 % of each. CI reads the same figures on every pull request, from the copy the
+      # build leaves in obj/; this one is the bundle itself, the file about to be kept for
+      # upload, checked beside its signature rather than taken on trust from another run.
+      - name: R8 covered enough of the DEX code
+        env:
+          BUNDLE: ${{ steps.package.outputs.bundle }}
+        run: |
+          set -euo pipefail
+
+          metadata="$RUNNER_TEMP/r8.json"
+          inside=BUNDLE-METADATA/com.android.tools/r8.json
+
+          unzip -p "$BUNDLE" "$inside" > "$metadata" || {
+            echo "::error::The bundle carries no $inside, so R8 did not run on it."
+            exit 1
+          }
+
+          cat "$metadata"
+          echo
+          python3 tools/r8-coverage.py "$metadata"
+
+      # R8's deobfuscation map, which turns an obfuscated stack trace back into names.
+      # Play takes it from inside the bundle, where the publish puts it, so there is
+      # nothing to upload by hand beside the bundle. It is checked because a bundle that
+      # reached Play without it is a crash report nobody can read.
+      - name: The bundle carries the deobfuscation map
+        env:
+          BUNDLE: ${{ steps.package.outputs.bundle }}
+        run: |
+          set -euo pipefail
+
+          map=BUNDLE-METADATA/com.android.tools.build.obfuscation/proguard.map
+
+          unzip -l "$BUNDLE" "$map" | grep -q "$map" || {
+            echo "::error::The bundle carries no $map, so Play would have no names for a stack trace."
+            exit 1
+          }
+
+          echo "The bundle carries $map."
+
       - name: Remove the signing key
         if: always()
         run: rm -f "$RUNNER_TEMP/release.keystore"
