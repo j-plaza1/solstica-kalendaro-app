@@ -27,12 +27,12 @@ API 24; `SupportedOSPlatformVersion` says `24.0` and the manifest names no `minS
 its own, so that one is what the package carries. A device on Android 5 or 6 keeps v2.1.1.0,
 the last release built on .NET 10, and the README says so where it says how to install.
 
-**A Release publish compiles ReadyToRun, and its runtime packs come from the restore.**
-`PublishReadyToRun` is on by default for a Release Android build on CoreCLR, so a plain
-`dotnet restore` followed by `dotnet publish --no-restore` ends in `NETSDK1094`: the publish
-asking to be restored again. `release.yml` tells its restore step the same thing,
-`-p:PublishReadyToRun=true`. A `dotnet build` compiles no ReadyToRun images and needs none of
-this, which is why CI's Android job is untouched by it.
+**A Release Android build compiles ReadyToRun, and its runtime packs come from the restore.**
+`PublishReadyToRun` is on by default on CoreCLR, and packaging an APK runs the publish pipeline
+even under `dotnet build`, so this is not the release's problem alone. A plain `dotnet restore`
+followed by `--no-restore` ends in `NETSDK1094`, asking to be restored again. **Both workflows
+tell their restore step `-p:PublishReadyToRun=true`**, and a restore that forgets it fails the
+step after it rather than the one it is in.
 
 CI (`.github/workflows/ci.yml`) runs on push to `main` and on PRs, in two jobs: one restores,
 builds and tests the core in Release, scoped to the test project; the other installs the

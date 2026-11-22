@@ -97,8 +97,8 @@ jobs:
 
       # PublishReadyToRun is on by default for a Release Android build on CoreCLR, and the
       # runtime packs it compiles against are brought in by the restore, not by the publish.
-      # A plain restore followed by `publish --no-restore` therefore ends in NETSDK1094, with
-      # the publish asking to be restored again. Said here, the restore fetches them.
+      # A plain restore followed by `--no-restore` therefore ends in NETSDK1094, asking to be
+      # restored again. Said here, the restore fetches them. CI's build says the same.
       - name: Restore
         run: dotnet restore src/SolsticaKalendaro.App -p:PublishReadyToRun=true
 
