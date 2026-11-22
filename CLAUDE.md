@@ -94,8 +94,9 @@ kept as an artifact of the run, `solstica-kalendaro-aab-<display>`, and uploaded
 Console by hand; a rehearsal's is named `…-assaig` so that it cannot be mistaken for one.
 Both packages' certificate is read — `apksigner` for the APK, `keytool -printcert -jarfile`
 for the bundle, because `apksigner` does not read a bundle — and compared against
-`EXPECTED_SHA256`, which is the fingerprint the README publishes. Either one disagreeing ends
-the run.
+`EXPECTED_SHA256`, the project's own key, whose fingerprint the README publishes beside
+Google Play's — Play re-signs what it distributes, so only the project's applies here.
+Either one disagreeing ends the run.
 
 ## The app's words assume a reader who has not read the document
 
