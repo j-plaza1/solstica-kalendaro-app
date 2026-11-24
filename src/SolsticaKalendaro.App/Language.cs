@@ -16,6 +16,7 @@ public static class Language
     public const string Automatic = "auto";
 
     private const string Fallback = "en";
+    private const string Esperanto = "eo";
     private const string Preference = "language";
 
     /// <summary>The four, in the order the picker offers them.</summary>
@@ -53,11 +54,17 @@ public static class Language
     /// The device's own culture when it speaks the chosen language, so that a reader on a
     /// Catalan phone gets Catalan dates as that phone writes them, rather than a generic
     /// Catalan. Otherwise the language on its own.
+    ///
+    /// Esperanto is the exception: the app writes its months itself, because the platform's are
+    /// not dependably lower case, so a device set to Esperanto gets the app's Esperanto and not
+    /// its own. The other three are the platform's in every case.
     /// </summary>
     private static CultureInfo Resolve(string chosen)
     {
         string code = chosen == Automatic ? Device.TwoLetterISOLanguageName : chosen;
         if (!Codes.Contains(code)) code = Fallback;
+
+        if (code == Esperanto) return GregorianDates.Esperanto;
 
         return Device.TwoLetterISOLanguageName == code ? Device : CultureInfo.GetCultureInfo(code);
     }

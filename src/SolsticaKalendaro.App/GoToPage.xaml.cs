@@ -117,7 +117,7 @@ public partial class GoToPage : ContentPage
     {
         if (field.IsBeforeStart)
             MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.YearBeforeStart,
-                                                    Text.LongDate(Cal.Epoch.AdoptionDate)),
+                                                    Text.LongDateAccusative(Cal.Epoch.AdoptionDate)),
                                 moreInfo: true);
         else
             MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.YearInvalid,
@@ -323,7 +323,7 @@ public partial class GoToPage : ContentPage
             if (_beforeStart)
             {
                 MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.DateBeforeStart,
-                                                        Text.LongDate(Cal.Epoch.AdoptionDate)),
+                                                        Text.LongDateAccusative(Cal.Epoch.AdoptionDate)),
                                     moreInfo: true);
                 return;
             }

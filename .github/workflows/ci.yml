@@ -8,7 +8,7 @@ on:
 
 jobs:
   core:
-    name: Core library and tests
+    name: Core library and tests, and the app's words
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,17 +17,27 @@ jobs:
         with:
           dotnet-version: '11.0.x'
 
-      # Scoped to the test project, which pulls in the core library. Building the
-      # whole solution would drag in SolsticaKalendaro.App, and this runner has no
+      # Scoped to the two test projects, one of which pulls in the core library. Building
+      # the whole solution would drag in SolsticaKalendaro.App, and this runner has no
       # MAUI workloads: the Android build belongs in the job below.
+      #
+      # SolsticaKalendaro.App.Tests covers the app's own date wording, which needs no MAUI
+      # and so builds here: it links in the one file that holds it, with the four string
+      # files beside it. Everything else in the app does need MAUI and is not tested.
       - name: Restore
-        run: dotnet restore tests/SolsticaKalendaro.Core.Tests
+        run: |
+          dotnet restore tests/SolsticaKalendaro.Core.Tests
+          dotnet restore tests/SolsticaKalendaro.App.Tests
 
       - name: Build
-        run: dotnet build tests/SolsticaKalendaro.Core.Tests --no-restore --configuration Release
+        run: |
+          dotnet build tests/SolsticaKalendaro.Core.Tests --no-restore --configuration Release
+          dotnet build tests/SolsticaKalendaro.App.Tests --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test tests/SolsticaKalendaro.Core.Tests --no-build --configuration Release --verbosity normal
+        run: |
+          dotnet test tests/SolsticaKalendaro.Core.Tests --no-build --configuration Release --verbosity normal
+          dotnet test tests/SolsticaKalendaro.App.Tests --no-build --configuration Release --verbosity normal
 
       # The version a release would be given, worked out here on every pull request rather
       # than for the first time while publishing. A production tag is among them: that path

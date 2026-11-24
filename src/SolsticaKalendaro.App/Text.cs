@@ -35,16 +35,23 @@ public static class Text
     public static string DayName(SolsticaDate date) =>
         date.Period.IsExtraWeekly() ? date.Period.Name() : $"{date.Day} {date.Period.Name()}";
 
-    public static string FullDate(DateOnly date) => date.ToString("D", Culture);
+    public static string FullDate(DateOnly date) => GregorianDates.Full(date, Culture);
 
     /// <summary>
-    /// The day and its month, with the year. Catalan's genitive month carries its own "de"; the
-    /// other three do not, and none of them mind it being asked for.
+    /// The day and its month, with the year, where the date stands on its own or follows a
+    /// preposition. Catalan's genitive month carries its own "de"; the other three do not, and
+    /// none of them mind it being asked for.
     /// </summary>
     public static string LongDate(DateOnly? date) =>
-        date is { } d
-            ? string.Format(Culture, AppStrings.DateWithYear, d.ToString("d MMMM", Culture), d.Year)
-            : string.Empty;
+        date is { } d ? GregorianDates.Long(d, Culture) : string.Empty;
+
+    /// <summary>
+    /// The same date where the sentence puts it as a bare answer to "when?" — "comença el 21 de
+    /// desembre del 2026". Esperanto writes that in the accusative and the other three write it
+    /// as above; which of the two a screen wants is a fact about its sentence, so the screen
+    /// chooses rather than this.
+    /// </summary>
+    public static string LongDateAccusative(DateOnly date) => GregorianDates.LongAccusative(date, Culture);
 
     /// <summary>"el Jarfino de 2027": the article is the language's, the name is the calendar's.</summary>
     public static string Shift(SolsticaDate? date) =>

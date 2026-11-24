@@ -9,6 +9,7 @@ Requires the .NET 11 SDK. `Directory.Build.props` sets `TreatWarningsAsErrors` a
 
 ```bash
 dotnet test tests/SolsticaKalendaro.Core.Tests     # core library + test suite
+dotnet test tests/SolsticaKalendaro.App.Tests      # the app's date wording, in four languages
 dotnet test tests/SolsticaKalendaro.Core.Tests --filter FullyQualifiedName~EveryDayRoundTrips
 dotnet build src/SolsticaKalendaro.App -f net11.0-android -t:Run   # deploy to a device
 ```
@@ -188,6 +189,46 @@ Never translated: the names of the blocks (`Unua`, `Jarmezo`) and of the festivi
 (`Jarkomenco`, `Supertago`). Translated: weekdays, the notes beside a block's name, and every
 Gregorian date, which takes its shape from the chosen language.
 
+**The Esperanto is Karles Berga's.** Karles Berga, of the Associació Catalana d'Esperanto,
+read every Esperanto string and corrected it; `AppStrings.eo.resx` carries his wording and
+not a translation of the Catalan made here. A change to it is a change to someone else's
+reviewed text: a new string is written here and his review is what it is still waiting for.
+
+**An Esperanto date is an ordinal, and carries its own article.** *la 14-a de novembro 2031*:
+the day as an ordinal, the month spelled out and lower case, joined by *de*. Where the date is
+a bare answer to "when?" — *it begins on the 14th* — the ordinal takes the accusative *-an*;
+where it stands on its own, or follows a preposition such as *je*, it is *-a*. The two are
+`GregorianDates.LongAccusative` and `GregorianDates.Long`, and which one a screen wants is a
+fact about its sentence, so the screen chooses.
+
+The article is part of the date and not of the sentence around it, so the four Esperanto
+templates that take a date read `komenciĝi {0}` rather than `komenciĝi la {0}`. Catalan,
+Spanish and English leave their article to the template, which is where it belongs for them:
+theirs varies with the sentence and not with the date. **This is the one asymmetry between
+`Text`'s four languages, and it is deliberate** — a template cannot supply an article without
+knowing which of the two Esperanto forms is coming.
+
+**Esperanto's twelve month names are written in `GregorianDates` rather than read from the
+platform.** .NET's own culture data has written them capitalised, and the data an Android
+device carries need not be the data the machine that built the app carries, so the platform
+cannot be asked for a month that is dependably lower case. `Language.Resolve` therefore hands
+out the app's Esperanto even to a device set to Esperanto, where the other three languages get
+the device's own. Nothing else about the culture is replaced: the weekdays, the date patterns
+and the numbers stay the platform's, which is why the Gregorian heading of the day detail and
+the date picker's field need no Esperanto in them — they ask .NET for `"D"` and the month
+inside it is already ours.
+
+**Those patterns are not the same on every platform, and a test must not pin them.** On Android
+and on CI's Linux, `"D"` writes the Esperanto date with an article — *vendredo, la 14-a de
+novembro 2031* — and the Catalan one with *del 2031*; on Windows it writes neither. That is CLDR
+differing by platform, not the app, and the first version of these tests pinned the Windows
+strings and failed on CI for exactly that. `GregorianDatesTests.FullDate` therefore asserts what
+the app puts **inside** the pattern — the weekday, the day joined to its month, the year — and
+never the whole string. **The date picker's dialog is not covered at all**:
+Android draws it from the device's own locale, not from the language chosen in the app, so on an
+English phone it reads *Mon, Dec 22* whatever the app is set to. That is Android's answer and
+not the app's.
+
 ## The proposal is the source of truth
 
 The calendar is specified in a separate document (Plaza Alonso, J., *Solstica Kalendaro*,
@@ -328,6 +369,16 @@ with the document. `YearView` projects an outline into bindable rows and `Text` 
 Catalan, which is the whole of the app's own logic: which Gregorian month to repeat, what to
 call a block, how to say "demà". The core writes no sentences, so all of that belongs here.
 
+`GregorianDates` is the one piece of that which is tested, and the shape of it says why.
+It writes a Gregorian date in any of the four languages, and it has **no MAUI in it**: every
+method takes the culture to write in and reads its template with that same culture, rather
+than asking `Language` for the language in force — `Language` reads the reader's stored choice
+and so reaches MAUI. `Text` holds the wrappers that pass the language in force, and
+`YearView` asks it for the bands' and the cells' dates. That is what lets
+`tests/SolsticaKalendaro.App.Tests` link the file in and read four languages in one run.
+**Anything else moved out of the app for testing should move the same way** — a file with the
+culture passed in and nothing of the device in it — rather than by making the app referenceable.
+
 Its csproj blanks the `TargetFramework` inherited from `Directory.Build.props`, which would
 otherwise win over `TargetFrameworks` and silently build it as plain `net11.0`.
 
@@ -417,6 +468,16 @@ the whole tabulated window, not a handful of examples: every day round-trips, co
 Gregorian days map to consecutive Solstica days, every block starts on a Monday in every
 period, the table tiles 2000–10000 without gap or overlap. New conversion code should be
 covered the same way — assert the invariant across all periods rather than spot-checking dates.
+
+`tests/SolsticaKalendaro.App.Tests` covers the app's date wording, in all four languages and
+in every place a screen shows a Gregorian date. **The app cannot be referenced** — it is a
+MAUI Android project, and these tests run wherever the core's do — so the project links in
+`GregorianDates.cs` and embeds the four `AppStrings*.resx` beside it, with the app's
+`RootNamespace` so that the templates are found under the names the app looks them up by.
+A sentence is therefore asserted against the template that ships and not against a copy.
+The Catalan, Spanish and English rows are pinned at the values they gave before the Esperanto
+was touched, so a change to one language cannot quietly reach another. Both projects are built
+and run by CI's first job; neither builds the solution.
 
 ## Naming
 
