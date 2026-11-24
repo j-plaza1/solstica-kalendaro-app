@@ -130,25 +130,27 @@ public class GregorianDatesTests
     }
 
     // ── The Gregorian heading of the day detail, and the date picker's own field ────────────────
-    // Both ask .NET for "D". The pattern and the weekday are the platform's, and the platform is
-    // not the same everywhere: an Android device writes the Esperanto one with an article it has
-    // here ("lundo, la 22-a de decembro 2031") and the Catalan one with "del 2031" where this
-    // writes "de 2031". So what is pinned below is the shape .NET gives where these tests run, and
-    // what is asserted of it is the month — the one part that is the app's own and therefore the
-    // same on every device. A changed weekday or a changed separator here is the platform moving
-    // under us and is worth looking at; it is not the app writing a date differently.
+    // Both ask .NET for "D", and the pattern around the date is the platform's — which is not one
+    // thing. Linux and Android write Esperanto's with an article and Catalan's with "del 2031";
+    // Windows writes neither. Pinning the whole string would be pinning CLDR: it would fail on a
+    // machine the app was never going to run on, and it would say nothing about the app. So what
+    // is asserted is what the app puts inside that pattern — the weekday the language chose, the
+    // day joined to its month, and the year — the Esperanto month being ours and lower case
+    // wherever this runs. The twelve months in "D" are checked one by one further down.
 
     [Theory]
-    [InlineData("eo", "vendredo, 14-a de novembro 2031", "lundo, 21-a de decembro 2026")]
-    [InlineData("ca", "divendres, 14 de novembre de 2031", "dilluns, 21 de desembre de 2026")]
-    [InlineData("es", "viernes, 14 de noviembre de 2031", "lunes, 21 de diciembre de 2026")]
-    [InlineData("en", "Friday, November 14, 2031", "Monday, December 21, 2026")]
-    public void FullDate(string code, string expectedNovember, string expectedStart)
+    [InlineData("eo", "vendredo", "14-a de novembro")]
+    [InlineData("ca", "divendres", "14 de novembre")]
+    [InlineData("es", "viernes", "14 de noviembre")]
+    [InlineData("en", "Friday", "November 14")]
+    public void FullDate(string code, string weekday, string dayAndMonth)
     {
         CultureInfo culture = CultureFor(code);
+        string full = GregorianDates.Full(November, culture);
 
-        Assert.Equal(expectedNovember, GregorianDates.Full(November, culture));
-        Assert.Equal(expectedStart, GregorianDates.Full(Start, culture));
+        Assert.Contains(weekday, full, StringComparison.Ordinal);
+        Assert.Contains(dayAndMonth, full, StringComparison.Ordinal);
+        Assert.Contains("2031", full, StringComparison.Ordinal);
     }
 
     // ── The bands of the Jarfino and the Supertago, and a cell of the grid ──────────────────────

@@ -218,11 +218,13 @@ and the numbers stay the platform's, which is why the Gregorian heading of the d
 the date picker's field need no Esperanto in them — they ask .NET for `"D"` and the month
 inside it is already ours.
 
-**Those patterns are not the same on every platform, and that is expected.** On Android `"D"`
-writes the Esperanto date with an article — *lundo, la 22-a de decembro 2031* — and the Catalan
-one with *del 2031*, where the desktop .NET that CI and the tests run on writes neither. The
-month is the one part of those strings that is the app's, so it is the one part the tests assert
-and the only one that is the same everywhere. **The date picker's dialog is not covered at all**:
+**Those patterns are not the same on every platform, and a test must not pin them.** On Android
+and on CI's Linux, `"D"` writes the Esperanto date with an article — *vendredo, la 14-a de
+novembro 2031* — and the Catalan one with *del 2031*; on Windows it writes neither. That is CLDR
+differing by platform, not the app, and the first version of these tests pinned the Windows
+strings and failed on CI for exactly that. `GregorianDatesTests.FullDate` therefore asserts what
+the app puts **inside** the pattern — the weekday, the day joined to its month, the year — and
+never the whole string. **The date picker's dialog is not covered at all**:
 Android draws it from the device's own locale, not from the language chosen in the app, so on an
 English phone it reads *Mon, Dec 22* whatever the app is set to. That is Android's answer and
 not the app's.
