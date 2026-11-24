@@ -71,19 +71,19 @@
     <value>Elektu jaron, periodon aŭ daton</value>
   </data>
   <data name="HintToday" xml:space="preserve">
-    <value>Iras al la hodiaŭa dato</value>
+    <value>Iru al la hodiaŭa dato</value>
   </data>
   <data name="HintMenu" xml:space="preserve">
-    <value>Agordoj, kiel legi la kalendaron kaj pri la aplikaĵo</value>
+    <value>Opcioj, kiel legi ĝin kaj pri la apo</value>
   </data>
   <data name="MenuOptions" xml:space="preserve">
-    <value>Agordoj</value>
+    <value>Opcioj</value>
   </data>
   <data name="MenuHowToRead" xml:space="preserve">
-    <value>Kiel legi la kalendaron</value>
+    <value>Kiel legi ĝin</value>
   </data>
   <data name="MenuAbout" xml:space="preserve">
-    <value>Pri la aplikaĵo</value>
+    <value>Pri la apo</value>
   </data>
   <data name="Period" xml:space="preserve">
     <value>Periodo {0}–{1} ›</value>
@@ -101,10 +101,10 @@
     <value>Sen semajntago</value>
   </data>
   <data name="HintBackToYear" xml:space="preserve">
-    <value>Reen al la jaro</value>
+    <value>Revenu al la jaro</value>
   </data>
   <data name="HintBack" xml:space="preserve">
-    <value>Reen</value>
+    <value>Reiru malantaŭen</value>
   </data>
   <data name="DayOfYear" xml:space="preserve">
     <value>tago {0} el {1}</value>
@@ -134,10 +134,10 @@
     <value>La Jarfino kaj la Supertago apartenas al neniu semajntago. Tial la semajntago de ĉi tiu kalendaro kaj tiu de la gregoria diferencas je {0} tagoj. La lasta estis {1}; {2}</value>
   </data>
   <data name="NextShift" xml:space="preserve">
-    <value>la sekva estos {0}, je {1}.</value>
+    <value>la venonta estos {0} je {1}.</value>
   </data>
   <data name="NextShiftNoDate" xml:space="preserve">
-    <value>la sekva estos {0}.</value>
+    <value>la venonta estos {0}.</value>
   </data>
   <data name="NoMoreShifts" xml:space="preserve">
     <value>kaj ne estas pli en ĉi tiu kalendaro.</value>
@@ -164,10 +164,10 @@
     <value>kvara sezono</value>
   </data>
   <data name="UpcomingFromThisDay" xml:space="preserve">
-    <value>SEKVAJ UNIVERSALAJ FESTOJ (EKDE ĈI TIU TAGO)</value>
+    <value>VENONTAJ UNIVERSALAJ FESTOJ (EKDE ĈI TIU TAGO)</value>
   </data>
   <data name="UpcomingFromToday" xml:space="preserve">
-    <value>SEKVAJ UNIVERSALAJ FESTOJ (EKDE HODIAŬ)</value>
+    <value>VENONTAJ UNIVERSALAJ FESTOJ (EKDE HODIAŬ)</value>
   </data>
   <data name="AfterOne" xml:space="preserve">
     <value>la sekvan tagon</value>
@@ -257,7 +257,7 @@
     <value>Tiun jaron la solstico okazas la 22-an</value>
   </data>
   <data name="CalendarBeginsNote" xml:space="preserve">
-    <value>Ĉe ĉiuj ĉi tiuj datoj la decembra solstico okazas lunde.</value>
+    <value>Ĉe ĉiuj ĉi datoj la decembra solstico okazas lunde.</value>
   </data>
   <data name="StartsOn" xml:space="preserve">
     <value>Komenciĝas la {0}</value>
@@ -284,7 +284,7 @@
     <value>De {0} ĝis {1}</value>
   </data>
   <data name="GoButton" xml:space="preserve">
-    <value>Iri</value>
+    <value>Iri tien</value>
   </data>
   <data name="GregorianUpTo" xml:space="preserve">
     <value>Gregoriaj datoj ĝis 9999</value>
@@ -293,7 +293,7 @@
     <value>Gregoria</value>
   </data>
   <data name="CalendarSolstica" xml:space="preserve">
-    <value>Solstica</value>
+    <value>Solstico</value>
   </data>
   <data name="SeasonDays" xml:space="preserve">
     <value>Tagoj de ĉiu sezono</value>
@@ -302,13 +302,13 @@
     <value>{0} tagoj</value>
   </data>
   <data name="LeapSeason" xml:space="preserve">
-    <value>En superjaroj la {0} havas {1}: la Supertago venas post {2}.</value>
+    <value>En superjaroj la {0} havas {1}: la Supertago venas post la {2}.</value>
   </data>
   <data name="TransitionBlocks" xml:space="preserve">
     <value>Transiraj blokoj</value>
   </data>
   <data name="ChangesOnEntering" xml:space="preserve">
-    <value>Kiam ĉi tiu periodo komenciĝas, en {0}</value>
+    <value>Kiam ĉi tiu periodo komenciĝas, la {0}</value>
   </data>
   <data name="BlockChanged" xml:space="preserve">
     <value>{0} havas {2} tagojn anstataŭ {1}.</value>
@@ -326,7 +326,7 @@
     <value>{0} kaj {1}</value>
   </data>
   <data name="ArticleVersion" xml:space="preserve">
-    <value>Ĉi tiu aplikaĵo sekvas la version {0} de la artikolo.</value>
+    <value>Ĉi tiu apo sekvas la version {0} de la artikolo.</value>
   </data>
   <data name="ReadArticle" xml:space="preserve">
     <value>Legu la artikolon ›</value>
@@ -341,13 +341,13 @@
     <value>Malfermu la periodon</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>Propono de perpetua suna kalendaro</value>
+    <value>Propono de ĉiamdaŭra sunkalendaro</value>
   </data>
   <data name="AboutAuthor" xml:space="preserve">
     <value>De Javier Plaza Alonso</value>
   </data>
   <data name="SectionApp" xml:space="preserve">
-    <value>Aplikaĵo</value>
+    <value>Apo</value>
   </data>
   <data name="SectionArticle" xml:space="preserve">
     <value>Artikolo</value>
@@ -383,10 +383,10 @@
     <value>Ĝi havas dek du monatojn de ĝuste kvar semajnoj, tri transirajn blokojn ĉirkaŭ la ekvinoksoj kaj la junia solstico, kaj unu tagon, kiu apartenas al neniu tago de la semajno, por fermi la jaron (du en superjaroj).</value>
   </data>
   <data name="IntroWhat3" xml:space="preserve">
-    <value>Ĉar ĝi estas propono, ĝi ne havas fiksitan komencan daton. Defaŭlte la aplikaĵo komencas ĝin la 21-an de decembro 2026, sed en {0} vi povas elekti alian. Ĉiuj estas tagoj, en kiuj la decembra solstico okazas lunde, por ke la unua tago de la jaro estu samtempe la tago de la solstico kaj la unua de la semajno.</value>
+    <value>Ĉar ĝi estas propono, ĝi ne havas fiksitan komencan daton. Defaŭlte la apo komencas ĝin la 21-an de decembro 2026, sed en {0} vi povas elekti alian. Ĉiuj estas tagoj, en kiuj la decembra solstico okazas lunde, por ke la unua tago de la jaro estu samtempe la tago de la solstico kaj la unua de la semajno.</value>
   </data>
   <data name="IntroRead1" xml:space="preserve">
-    <value>Ĉiu vico estas semajno, de lundo ĝis dimanĉo. La granda nombro estas la tago en la Solstica kalendaro, kaj la malgranda, la gregoria dato de la sama tago. La kolora strio sube montras la sezonon.</value>
+    <value>Ĉiu vico estas semajno, de lundo ĝis dimanĉo. La granda numero estas la tago en la Solstica kalendaro, kaj la malgranda, la gregoria dato de la sama tago. La kolora strio sube montras la sezonon.</value>
   </data>
   <data name="IntroRead2" xml:space="preserve">
     <value>Ĉar la monatoj havas ĝuste kvar semajnojn, ĉiuj komenciĝas lunde.</value>
@@ -404,7 +404,7 @@
     <value>La nomoj estas en Esperanto kaj ne estas tradukataj.</value>
   </data>
   <data name="IntroNameMonths" xml:space="preserve">
-    <value>la unua, dua, tria… dek-dua monato.</value>
+    <value>unua, dua, tria… dek-dua monato.</value>
   </data>
   <data name="IntroNameEkvinokso" xml:space="preserve">
     <value>la blokoj de la marta kaj la septembra ekvinoksoj.</value>
@@ -413,7 +413,7 @@
     <value>la mezo de la jaro, ĉirkaŭ la junia solstico.</value>
   </data>
   <data name="IntroNameJarkomenco" xml:space="preserve">
-    <value>la komenco de la jaro, 1 Unua.</value>
+    <value>la komenco de la jaro, 1 de Unua.</value>
   </data>
   <data name="IntroNameRekomenco" xml:space="preserve">
     <value>la rekomenco, kiam komenciĝas la dua duono de la jaro.</value>
@@ -425,19 +425,19 @@
     <value>la aldona tago de superjaroj.</value>
   </data>
   <data name="IntroSkip" xml:space="preserve">
-    <value>Preterlasi</value>
+    <value>Preterlasu</value>
   </data>
   <data name="IntroNext" xml:space="preserve">
     <value>Sekva</value>
   </data>
   <data name="IntroStart" xml:space="preserve">
-    <value>Komenci</value>
+    <value>Komencu</value>
   </data>
   <data name="IntroClose" xml:space="preserve">
-    <value>Fermi</value>
+    <value>Fermu</value>
   </data>
   <data name="IntroAgain" xml:space="preserve">
-    <value>Revidi la klarigon ›</value>
+    <value>Revidu la klarigon ›</value>
   </data>
   <data name="RestDaysHeading" xml:space="preserve">
     <value>Ripoztagoj</value>
@@ -452,13 +452,13 @@
     <value>Kial ĉi tiuj datoj ›</value>
   </data>
   <data name="TodayNotStarted" xml:space="preserve">
-    <value>Hodiaŭ la kalendaro ankoraŭ ne komenciĝis. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas agordita por komenciĝi la {0}.</value>
+    <value>Hodiaŭ la kalendaro ankoraŭ ne komenciĝis. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi la {0}.</value>
   </data>
   <data name="DateBeforeStart" xml:space="preserve">
-    <value>Oni ne povas iri al ĉi tiu dato, ĉar ĝi estas antaŭ la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas agordita por komenciĝi la {0}.</value>
+    <value>Oni ne povas iri al ĉi tiu dato ĉar ĝi estas antaŭa al la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi la {0}.</value>
   </data>
   <data name="YearBeforeStart" xml:space="preserve">
-    <value>Oni ne povas iri al ĉi tiu jaro, ĉar ĝi estas antaŭ la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas agordita por komenciĝi la {0}.</value>
+    <value>Oni ne povas iri al ĉi tiu jaro ĉar ĝi estas antaŭa al la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi la {0}.</value>
   </data>
   <data name="YearInvalid" xml:space="preserve">
     <value>Tajpu jaron de {0} ĝis {1}.</value>
