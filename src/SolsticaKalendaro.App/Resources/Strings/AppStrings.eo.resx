@@ -260,7 +260,7 @@
     <value>Ĉe ĉiuj ĉi datoj la decembra solstico okazas lunde.</value>
   </data>
   <data name="StartsOn" xml:space="preserve">
-    <value>Komenciĝas la {0}</value>
+    <value>Komenciĝas {0}</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Lingvo</value>
@@ -452,13 +452,13 @@
     <value>Kial ĉi tiuj datoj ›</value>
   </data>
   <data name="TodayNotStarted" xml:space="preserve">
-    <value>Hodiaŭ la kalendaro ankoraŭ ne komenciĝis. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi la {0}.</value>
+    <value>Hodiaŭ la kalendaro ankoraŭ ne komenciĝis. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi {0}.</value>
   </data>
   <data name="DateBeforeStart" xml:space="preserve">
-    <value>Oni ne povas iri al ĉi tiu dato ĉar ĝi estas antaŭa al la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi la {0}.</value>
+    <value>Oni ne povas iri al ĉi tiu dato ĉar ĝi estas antaŭa al la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi {0}.</value>
   </data>
   <data name="YearBeforeStart" xml:space="preserve">
-    <value>Oni ne povas iri al ĉi tiu jaro ĉar ĝi estas antaŭa al la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi la {0}.</value>
+    <value>Oni ne povas iri al ĉi tiu jaro ĉar ĝi estas antaŭa al la komenco de la kalendaro. Ĝi povas komenciĝi nur je difinitaj datoj, kaj nun ĝi estas formita por komenciĝi {0}.</value>
   </data>
   <data name="YearInvalid" xml:space="preserve">
     <value>Tajpu jaron de {0} ĝis {1}.</value>

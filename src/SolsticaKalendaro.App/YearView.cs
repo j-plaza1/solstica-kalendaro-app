@@ -226,24 +226,12 @@ public static class YearView
     private static string ShortDate(DateOnly? date, bool withMonth) => date switch
     {
         null => string.Empty,                                   // beyond what DateOnly can represent
-        { } d when withMonth => $"{d.Day} {MonthName(Culture.DateTimeFormat.AbbreviatedMonthNames, d.Month)}",
+        { } d when withMonth => GregorianDates.DayAndShortMonth(d, Culture),
         { } d => d.Day.ToString(Culture)
     };
 
     private static string LongDate(DateOnly? date) =>
-        date is { } d ? $"{d.Day} {MonthName(Culture.DateTimeFormat.MonthNames, d.Month)}" : string.Empty;
-
-    /// <summary>
-    /// A bare month name. Catalan's date patterns take the genitive, which drags a "de" along
-    /// that a calendar cell has no room for and does not need beside a number.
-    /// </summary>
-    private static string MonthName(string[] names, int month)
-    {
-        string name = names[month - 1].TrimEnd('.');
-        if (name.StartsWith("de ", StringComparison.OrdinalIgnoreCase)) name = name[3..];
-        if (name.StartsWith("d'", StringComparison.OrdinalIgnoreCase)) name = name[2..];
-        return name;
-    }
+        date is { } d ? GregorianDates.DayAndMonth(d, Culture) : string.Empty;
 
     /// <summary>
     /// The short note beside a block's name. A month is named by its place among the months;

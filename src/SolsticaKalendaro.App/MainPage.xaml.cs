@@ -155,7 +155,7 @@ public partial class MainPage : ContentPage
     {
         1 => AppStrings.StartsOne,
         <= 365 => string.Format(Language.Culture, AppStrings.StartsMany, days),
-        _ => string.Format(Language.Culture, AppStrings.StartsOn, Text.LongDate(opens))
+        _ => string.Format(Language.Culture, AppStrings.StartsOn, Text.LongDateAccusative(opens))
     };
 
     private void OnPreviousYear(object? sender, EventArgs e) => ShowYear(_shownYear - 1);
@@ -252,7 +252,7 @@ public partial class MainPage : ContentPage
         if (YearOf(Today()) is not { } year)
         {
             MessageOverlay.Show(this, string.Format(Language.Culture, AppStrings.TodayNotStarted,
-                                                    Text.LongDate(Cal.Epoch.AdoptionDate)),
+                                                    Text.LongDateAccusative(Cal.Epoch.AdoptionDate)),
                                 moreInfo: true);
             return;
         }

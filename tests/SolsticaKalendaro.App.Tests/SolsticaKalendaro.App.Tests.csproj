@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- The app's root namespace and not this project's. The name a .resx is embedded under is
+         built from the root namespace and the file's path, so with the app's namespace and the
+         app's path the linked string files below are embedded here under the very names
+         AppStrings looks them up by there. -->
+    <RootNamespace>SolsticaKalendaro.App</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+  <!-- The app itself cannot be referenced: it is a MAUI Android project, and these tests are to
+       run wherever the core's do. What is under test is linked in instead, which is the reason
+       the date wording sits in a file with no MAUI in it rather than inside Text or a page. -->
+  <ItemGroup>
+    <Compile Include="../../src/SolsticaKalendaro.App/GregorianDates.cs" Link="GregorianDates.cs" />
+  </ItemGroup>
+  <!-- All four, so a sentence is asserted against the template the app ships and not against a
+       copy of it. The neutral file is the Catalan, as in the app. -->
+  <ItemGroup>
+    <EmbeddedResource Include="../../src/SolsticaKalendaro.App/Resources/Strings/AppStrings.resx"
+                      Link="Resources/Strings/AppStrings.resx">
+      <Generator>MSBuild:Compile</Generator>
+      <StronglyTypedFileName>$(IntermediateOutputPath)AppStrings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>SolsticaKalendaro.App.Resources.Strings</StronglyTypedNamespace>
+      <StronglyTypedClassName>AppStrings</StronglyTypedClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../../src/SolsticaKalendaro.App/Resources/Strings/AppStrings.es.resx"
+                      Link="Resources/Strings/AppStrings.es.resx" />
+    <EmbeddedResource Include="../../src/SolsticaKalendaro.App/Resources/Strings/AppStrings.en.resx"
+                      Link="Resources/Strings/AppStrings.en.resx" />
+    <EmbeddedResource Include="../../src/SolsticaKalendaro.App/Resources/Strings/AppStrings.eo.resx"
+                      Link="Resources/Strings/AppStrings.eo.resx" />
+  </ItemGroup>
+</Project>
