@@ -39,8 +39,9 @@ public static class Text
 
     /// <summary>
     /// The day and its month, with the year, where the date stands on its own or follows a
-    /// preposition. Catalan's genitive month carries its own "de"; the other three do not, and
-    /// none of them mind it being asked for.
+    /// preposition. How the day is joined to the month is the language's own — Catalan's genitive
+    /// month carries its "de", Spanish's is given one, English's wants none — and
+    /// <see cref="GregorianDates"/> is where that is settled.
     /// </summary>
     public static string LongDate(DateOnly? date) =>
         date is { } d ? GregorianDates.Long(d, Culture) : string.Empty;

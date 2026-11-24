@@ -6,7 +6,8 @@ namespace SolsticaKalendaro.App;
 /// <summary>
 /// How a Gregorian date is written, in each of the four languages the app speaks. The shapes
 /// themselves are the platform's — ".NET's Catalan writes 14 de novembre" — and what is here is
-/// the little that the platform cannot be asked for: Esperanto's ordinal dates, and its months.
+/// the little that the platform cannot be asked for: Esperanto's ordinal dates and its months,
+/// and the "de" a Spanish long date joins its day to its month with.
 ///
 /// Every method takes the culture it is to write in, and reads its one template with that same
 /// culture, rather than asking <see cref="Language"/> for the language in force.
@@ -17,6 +18,7 @@ namespace SolsticaKalendaro.App;
 public static class GregorianDates
 {
     private const string EsperantoCode = "eo";
+    private const string SpanishCode = "es";
 
     /// <summary>
     /// Esperanto's months, written here rather than read from the platform.
@@ -72,6 +74,13 @@ public static class GregorianDates
         culture.TwoLetterISOLanguageName == EsperantoCode;
 
     /// <summary>
+    /// Any Spanish, the device's own included: a reader on a Mexican or an Argentinian phone who
+    /// chooses Spanish gets that phone's Spanish, and all of them join a day to its month alike.
+    /// </summary>
+    private static bool IsSpanish(CultureInfo culture) =>
+        culture.TwoLetterISOLanguageName == SpanishCode;
+
+    /// <summary>
     /// "divendres, 14 de novembre de 2031": the whole date with its weekday, as the language
     /// writes it at length. The shape is .NET's; in Esperanto the month inside it is ours.
     /// </summary>
@@ -93,14 +102,36 @@ public static class GregorianDates
     public static string LongAccusative(DateOnly date, CultureInfo culture) =>
         WithYear(date, culture, accusative: true);
 
-    private static string WithYear(DateOnly date, CultureInfo culture, bool accusative)
-    {
-        string dayAndMonth = IsEsperanto(culture)
-            ? EsperantoOrdinal(date, culture, accusative)
-            : date.ToString("d MMMM", culture);
+    private static string WithYear(DateOnly date, CultureInfo culture, bool accusative) =>
+        string.Format(culture, Template(nameof(AppStrings.DateWithYear), culture),
+                      DayJoinedToItsMonth(date, culture, accusative), date.Year);
 
-        return string.Format(culture, Template(nameof(AppStrings.DateWithYear), culture),
-                             dayAndMonth, date.Year);
+    /// <summary>
+    /// "21 de desembre", "21 de diciembre", "21 December", "la 21-an de decembro": the day joined
+    /// to its month as the language writes it at length, which is where the four differ.
+    ///
+    /// Catalan's and English's are the platform's. Catalan's date patterns take the genitive, so
+    /// "d MMMM" writes "21 de desembre" and "1 d'abril" with the elision in it, which nothing
+    /// here would do better; English wants no preposition at all.
+    ///
+    /// Spanish's is the platform's month with the "de" written here, because Spanish's genitive
+    /// month is the bare name — "d MMMM" gives "21 diciembre" — and the preposition belongs to
+    /// the date and not to the month. It is written over a name <see cref="MonthName"/> has
+    /// stripped of any "de" of its own, so that a device whose Spanish spelled the month
+    /// "de diciembre" reads "21 de diciembre" and never "21 de de diciembre": culture data
+    /// differs between devices and is not ours to depend on.
+    ///
+    /// Esperanto's is an ordinal carrying its own article, below.
+    /// </summary>
+    private static string DayJoinedToItsMonth(DateOnly date, CultureInfo culture, bool accusative)
+    {
+        if (IsEsperanto(culture)) return EsperantoOrdinal(date, culture, accusative);
+
+        if (IsSpanish(culture))
+            return $"{date.Day.ToString(culture)} de " +
+                   MonthName(culture.DateTimeFormat.MonthGenitiveNames, date.Month);
+
+        return date.ToString("d MMMM", culture);
     }
 
     /// <summary>
@@ -128,8 +159,10 @@ public static class GregorianDates
         $"{date.Day.ToString(culture)} {MonthName(culture.DateTimeFormat.AbbreviatedMonthNames, date.Month)}";
 
     /// <summary>
-    /// A bare month name. Catalan's date patterns take the genitive, which drags a "de" along
-    /// that a calendar cell has no room for and does not need beside a number.
+    /// A bare month name, with any preposition the culture data wrote into it taken off again.
+    /// Catalan's date patterns take the genitive, which drags a "de" along that a calendar cell
+    /// has no room for and does not need beside a number; and a Spanish long date, which supplies
+    /// its own, must not find a second one here.
     /// </summary>
     private static string MonthName(string[] names, int month)
     {

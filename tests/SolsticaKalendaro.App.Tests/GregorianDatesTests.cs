@@ -7,11 +7,12 @@ namespace SolsticaKalendaro.App.Tests;
 /// <summary>
 /// What every place in the app that shows a Gregorian date says, in each of the four languages.
 ///
-/// The Esperanto rows are the ones under test: the day is an ordinal and the month is spelled out
-/// and joined to it with "de", the ordinal takes the accusative where the date is a bare answer to
-/// "when?", and the month is lower case. The Catalan, Spanish and English rows are here to say
-/// that they did not move — their values are what the app showed before any of this, pinned so
-/// that a change to the Esperanto cannot quietly reach them.
+/// Two languages are asserted here for their own sake. Esperanto writes the day as an ordinal with
+/// the month spelled out, joined by "de" and in lower case, and the ordinal takes the accusative
+/// where the date is a bare answer to "when?". A Spanish long date joins the day to its month with
+/// a "de" that its culture data does not carry, and carries that one and no second one. The Catalan
+/// and English rows are here to say that they did not move — their values are what the app showed
+/// before any of this, pinned so that a change to one language cannot quietly reach another.
 ///
 /// Sentences are formatted from the templates the app ships, read out of the four .resx files
 /// linked into this project, rather than from copies of them.
@@ -42,7 +43,7 @@ public class GregorianDatesTests
     [Theory]
     [InlineData("eo", "Komenciĝas la 21-an de decembro 2026")]
     [InlineData("ca", "Comença el 21 de desembre del 2026")]
-    [InlineData("es", "Empieza el 21 diciembre de 2026")]
+    [InlineData("es", "Empieza el 21 de diciembre de 2026")]
     [InlineData("en", "Begins on 21 December 2026")]
     public void StartsOn(string code, string expected)
     {
@@ -59,7 +60,7 @@ public class GregorianDatesTests
     [Theory]
     [InlineData("eo", "por komenciĝi la 21-an de decembro 2026.")]
     [InlineData("ca", "perquè comenci el 21 de desembre del 2026.")]
-    [InlineData("es", "para que empiece el 21 diciembre de 2026.")]
+    [InlineData("es", "para que empiece el 21 de diciembre de 2026.")]
     [InlineData("en", "to begin on 21 December 2026.")]
     public void BeforeTheStart(string code, string expectedTail)
     {
@@ -84,7 +85,7 @@ public class GregorianDatesTests
     [Theory]
     [InlineData("eo", "la venonta estos la Jarfino de 2031 je la 14-a de novembro 2031.")]
     [InlineData("ca", "el pròxim serà el Jarfino de 2031, el 14 de novembre del 2031.")]
-    [InlineData("es", "el próximo será el Jarfino de 2031, el 14 noviembre de 2031.")]
+    [InlineData("es", "el próximo será el Jarfino de 2031, el 14 de noviembre de 2031.")]
     [InlineData("en", "the next will be the Jarfino of 2031, on 14 November 2031.")]
     public void NextShift(string code, string expected)
     {
@@ -103,7 +104,7 @@ public class GregorianDatesTests
     [Theory]
     [InlineData("eo", "la 14-a de novembro 2031", "la 21-a de decembro 2026")]
     [InlineData("ca", "14 de novembre del 2031", "21 de desembre del 2026")]
-    [InlineData("es", "14 noviembre de 2031", "21 diciembre de 2026")]
+    [InlineData("es", "14 de noviembre de 2031", "21 de diciembre de 2026")]
     [InlineData("en", "14 November 2031", "21 December 2026")]
     public void DateOnItsOwn(string code, string expectedNovember, string expectedStart)
     {
@@ -209,6 +210,54 @@ public class GregorianDatesTests
 
         Assert.Equal($"14 {name}", GregorianDates.DayAndMonth(date, eo));
         Assert.Equal($"14 {shortName}", GregorianDates.DayAndShortMonth(date, eo));
+    }
+
+    // ── The "de" of a Spanish long date ─────────────────────────────────────────────────────────
+    // Spanish writes "21 de diciembre" and its culture data writes "diciembre", so the app supplies
+    // the preposition. That makes two ways to be wrong — none, and one too many — and which of them
+    // a device falls into depends on culture data the app does not ship. So every one of the twelve
+    // months is read back: the day, one "de", the month, and nothing between them.
+
+    [Theory]
+    [InlineData(1, "enero")]
+    [InlineData(2, "febrero")]
+    [InlineData(3, "marzo")]
+    [InlineData(4, "abril")]
+    [InlineData(5, "mayo")]
+    [InlineData(6, "junio")]
+    [InlineData(7, "julio")]
+    [InlineData(8, "agosto")]
+    [InlineData(9, "septiembre")]
+    [InlineData(10, "octubre")]
+    [InlineData(11, "noviembre")]
+    [InlineData(12, "diciembre")]
+    public void SpanishLongDateJoinsDayToMonthWithOneDe(int month, string name)
+    {
+        CultureInfo es = CultureFor("es");
+        var date = new DateOnly(2031, month, 14);
+
+        foreach (string written in new[] { GregorianDates.Long(date, es),
+                                           GregorianDates.LongAccusative(date, es) })
+        {
+            Assert.Equal($"14 de {name} de 2031", written);
+            Assert.DoesNotContain("de de", written, StringComparison.Ordinal);
+        }
+    }
+
+    /// <summary>
+    /// The same, over a culture whose Spanish has written the preposition into the month name
+    /// itself. No .NET ships that today, and the app cannot promise that no Android device ever
+    /// will, so the one thing asserted is that such a device would read "14 de marzo" and not
+    /// "14 de de marzo".
+    /// </summary>
+    [Fact]
+    public void SpanishLongDateAddsNoSecondDe()
+    {
+        var es = (CultureInfo)CultureInfo.GetCultureInfo("es").Clone();
+        es.DateTimeFormat.MonthGenitiveNames =
+            [.. es.DateTimeFormat.MonthGenitiveNames.Select(m => m.Length == 0 ? m : $"de {m}")];
+
+        Assert.Equal("14 de marzo de 2031", GregorianDates.Long(new DateOnly(2031, 3, 14), es));
     }
 
     /// <summary>
