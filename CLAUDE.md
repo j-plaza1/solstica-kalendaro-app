@@ -194,6 +194,16 @@ read every Esperanto string and corrected it; `AppStrings.eo.resx` carries his w
 not a translation of the Catalan made here. A change to it is a change to someone else's
 reviewed text: a new string is written here and his review is what it is still waiting for.
 
+**How a long date joins its day to its month is each language's own, and only Catalan's and
+English's can be left to the platform.** Catalan's date patterns take the genitive, so `d MMMM`
+writes *21 de desembre* and *1 d'abril* with the elision in it; English wants no preposition at
+all. Spanish's genitive month is the bare name, so the platform writes *21 diciembre* and the
+*de* is `GregorianDates`'s own — over a month name stripped of any the culture data carried, so
+that a device spelling the month *de diciembre* still reads *21 de diciembre* and never
+*21 de de diciembre*. The short labels — the Jarfino and Supertago bands, the grid's cells —
+carry no preposition in either language: they stand beside a number in a space with no room for
+one, which is what `MonthName` strips it for.
+
 **An Esperanto date is an ordinal, and carries its own article.** *la 14-a de novembro 2031*:
 the day as an ordinal, the month spelled out and lower case, joined by *de*. Where the date is
 a bare answer to "when?" — *it begins on the 14th* — the ordinal takes the accusative *-an*;
